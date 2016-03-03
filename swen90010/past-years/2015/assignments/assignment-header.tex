@@ -1,0 +1,58 @@
+\usepackage{fullpage}
+\usepackage{fancybox}
+%\usepackage{oz}
+\usepackage{multicol}
+\usepackage{ifthen}
+\usepackage{version}
+\usepackage{url}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\input{../pagestyle}
+
+\usepackage[textsize=scriptsize,textwidth=1cm]{todonotes}
+\newcommand{\tm}[1]{\todo[inline,color=yellow]{#1}}
+%=======================================================================
+%      New Environments
+%
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{exercise}[definition]{Exercise}
+\newtheorem{example}[definition]{Example}
+
+\newenvironment{omitable}[1]{}
+
+%----------------------------------------------------------------------
+%    The Document
+%
+
+\newcommand{\assignmenttitle}[2]{
+\begin{center}
+\textbf{\sc The University of Melbourne}\\[0.5ex]
+\textbf{\sc SWEN90010: High Integrity Software Engineering}\\[1ex]
+\textbf{\large Assignment {#1}}\\[1ex]
+%\textbf{\sc Second Semester, 2014}\\[1ex]
+\textbf{\sc Due Date: #2}
+\end{center}
+}
+
+
+\newcommand{\solutionstitle}[2]{
+\mbox{}\\
+%\vspace{10ex}
+\begin{center}n
+\textbf{\sc The University of Melbourne}\\[0.5ex]
+\textbf{\sc SWEN90010: High Integrity Software Engineering}\\[1ex]
+\textbf{\large Assignment {#1} Solutions}\\[1ex]
+%\textbf{\sc Second Semester, 2014}\\[1ex]
+\textbf{\sc Due Date: #2}
+\end{center}
+\vspace{5ex}
+}

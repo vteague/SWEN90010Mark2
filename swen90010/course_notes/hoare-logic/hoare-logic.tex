@@ -1,0 +1,1320 @@
+\chapter{Reasoning about program correctness}
+
+\begin{quote}
+``\emph{How do we convince people that in programming simplicity and clarity --- in short: what mathematicians call ``elegance'' --- are not a dispensable luxury, but a crucial matter that decides between success and failure?} --- Edsger W. Dijkstra \cite{dijkstra82}.
+\end{quote}
+
+
+In this chapter, we will look at a very powerful piece of work, known as \emph{Hoare logic}, named after its creator, Tony Hoare, who is currently a principal researcher at Microsoft. This work dates back as far as 1969, when Hoare proposed the first axiomatic basis for computer programming \cite{hoare69}. Taking only a set of few primitives programming constructs (now considered to be the basis of structured programming), Hoare demonstrated a simple logic that enabled programs to be \emph{proved} correctness. Since that time, much research has gone into building on Hoare's initial work, with considerable success.
+
+We will look at Hoare logic and show how to use it to reason about the correctness of programs, allowing us to \emph{prove} that a program meets its contract/specification. This is much more powerful than running tests, which constitute nothing more than a handful of observations about our program, and also more powerful that using review to check for a larger set of cases. For some systems, testing and review are not enough.
+
+By the mid-1970s, there was a general belief that this type of reasoning would pervade software engineering within a decade or two. However, three things happened:
+
+\begin{enumerate}
+
+ \item The speed and power of computers continued to increase so quickly that the types of systems that could be constructed using software outgrew the techniques for such complex reasoning.
+
+ \item Software began to pervade homes and businesses as useful tools, and the \emph{correctness} of these software systems was not as important as it was for systems in which software had previously been applied, such as digital components. Further, time to market became more important than it had previously, so there was an acceptance of lower quality for a faster turnaround.
+
+ \item The spread of the Internet has meant that fixing many software applications could be done by users downloading patches, or in the case of server-side problems, developers just uploading a new version to the server. This is not sufficient for many safety-critical system, in which the software resides in a non-PC and non-server environment (e.g.\ on a car ECU).
+
+\end{enumerate}
+
+It is my belief that the techniques presented  this chapter are the most important of the subject --- yet are also the techniques that I can confidently state none of you will ever apply as they are applied in these notes. The importance of this chapter is to change the way that you think about programs, the science of programming, and of software design and verification, in order to make you better programmers and software engineers.
+
+\subsubsection*{Learning outcomes}
+
+The learning outcomes of this chapter are:
+
+\begin{enumerate}
+
+ \item To critique the difference between program proof and other forms of verification, such as testing.
+
+ \item To be able to prove the correctness of simple programs against their contracts.
+
+ \item To think about programming in a more systematic and mathematical manner, with the result of improving our programming skills.
+
+\end{enumerate}
+
+\section{Introduction to reasoning about programs}
+
+The first thing to ask is why we would want to reason about programs at all.  In previous chapters, we have looked at how to formally specify and design (by contract) our system, and to prove that the specification and  design satisfy certain properties. Proof of formal statements are possible because we are operating in space of logic and set theory, which have well-founded proof theories.
+
+However, for high integrity systems, we want to ensure that our designs are implemented correctly. That is, we want to show that our code corresponds to our design.
+
+Quality assurance techniques such as peer review and testing seem to offer very good reliability for software. However, with respect to high-integrity constraints, they do not offer the level of assurance that is required. What if we have missed a few cases that can cause catastrophic consequences?
+
+This chapter covers the theory of how we can \emph{prove} that a program meets its contract. This is a powerful ability that provides us with assurance far above what is possible with testing and review.
+
+\subsection{The correctness of binary search}
+
+Let's motivate the idea of reasoning about programs using the following story from Jon Bentley:
+
+\begin{quote}
+``Binary search solves the problem [of searching within a pre-sorted array] by keeping track of a range within the array in which T [i.e. the sought value] must be if it is anywhere in the array.  Initially, the range is the entire array.  The range is shrunk by comparing its middle element to T and discarding half the range.  The process continues until T is discovered in the array, or until the range in which it must lie is known to be empty.  In an N-element table, the search uses roughly log(2) N comparisons.
+
+Most programmers think that with the above description in hand, writing the code is easy; they're wrong.  The only way you'll believe this is by putting down this column right now and writing the code yourself.  Try it.
+
+
+I've assigned this problem in courses at Bell Labs and IBM.  Professional programmers had a couple of hours to convert the above description into a program in the language of their choice; a high-level pseudocode was fine.  At the end of the specified time, almost all the programmers reported that they had correct code for the task.  We would then take thirty minutes to examine their code, which the programmers did with test cases.  In several classes and with over a hundred programmers, the results varied little: ninety percent of the programmers found bugs in their programs (and I wasn't always convinced of the correctness of the code in which no bugs were found).
+
+I was amazed: given ample time, only about ten percent of professional programmers were able to get this small program right.  But they aren't the only ones to find this task difficult: in the history in Section 6.2.1 of his Sorting and Searching, Knuth points out that while the first binary search was published in 1946, the first published binary search without bugs did not appear until 1962.''
+
+ --- Jon Bentley, Programming Pearls (1st edition), pp. 35-36 \cite{bentley00}.
+\end{quote}
+
+
+Donald Knuth mentions in {\em The Art of Computer Programming} \cite{knuth73} that the first version of the binary search algorithm appeared in 1946, but it was not until 1962 that the first {\em correct} version appeared. All previous versions contained faults.
+
+Further, the most well-known implementation, written and ``\emph{proved}'' by Jon Bentley, which has been adapted many times, contains a fault. The truth is, very few correct versions of the algorithm exist.
+
+
+
+\begin{exercise}
+There is a fault in the following widely-tested and widely-used version of binary search. Find this fault. TIP: Converting to SPARK and using the SPARK tools to verify the program will reveal the fault.
+
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/hoare-logic/code/BinarySearch.java}
+\end{exercise}
+
+The question then is: if some of the best and brightest minds in computer science cannot get a seemingly simple algorithm correct using testing, and dozens of versions in textbooks can be published with faults that remain undetected for decades, what hope do we have for producing correct software the first time?
+
+In this chapter, we will look at Hoare logic as one approach for proving a program correct with respect to its specification. In workshops, we will look at powerful support provided by the SPARK tools that can assist us in this goal.
+
+\section{A small programming language}
+
+Before we look at Hoare logic, we'll define a small structured programming language that is Turing compatible, and which will form the basis of the mathematical objects in Hoare's logic. The language consists of procedures, variables, expressions (numerical expressions and arrays of expressions), variable assignment, sequencing, conditionals, loops, and procedure calls:
+
+
+\begin{tabular}{lllp{13cm}}
+\multicolumn{4}{l}{\textbf{Procedures:}}\\
+ & $P$ & $:=$ & $\algorithmicprocedure~p(v_1,\ldots,v_n) \sdef S$\\[1mm]
+ &     &      & where $v_1, \ldots, v_n$ are variable names, $p$ is a procedure name, and $S$ is a program statement (defined below).\\[3mm]
+\multicolumn{4}{l}{\textbf{Expressions:}}\\
+ & $E$  & $:=$ & $NE ~|~ a[NE]$\\
+ & $NE$ & $:=$ & $n ~|~ v ~|~ E_1 + E_2 ~|~ E_1 - E_2 ~|~ E_1 \cross E_2 ~|~ E_1 / E_2 ~|~ $etc$\ldots$ \\[1mm]
+ &   & & where $n$ is a number, $v$ is a variable, $a$ is an array variable, $NE$ is a numerical expression, and $E$ an expression.\\[3mm]
+\multicolumn{4}{l}{\textbf{Booleans}}\\
+ & $B$  & $:=$ &  $\textbf{true} ~|~ \textbf{false} ~|~ \neg~B ~|~ E_1 = E_2 ~|~ E_1 \leq E_2 ~|~ $ etc$\ldots$\\[3mm]
+\multicolumn{4}{l}{\textbf{Statements}}\\
+ & $S$  & $:=$ & $\algorithmicskip ~|~ v := E ~|~ a[NE] := E ~|~ p(E_1,\ldots,E_n) ~|~ S_1 ; S_2 ~|~$\\
+ &      &      & $~~~~~~\algorithmicif~B~\algorithmicthen~S_1 ~\algorithmicelse~ S_2 ~\algorithmicend\algorithmicif ~|~ \algorithmicwhile~ B ~\algorithmicdo~ C ~\algorithmicdone~$\\[1mm]
+ & & & where $v$ is a variable, $a$ is an array variable, and $p$ is a procedure name.
+\end{tabular}
+
+The $\algorithmicskip$ statement is a statement that has no effect and always executes successfully, the same as \texttt{null} in Ada.
+
+A \emph{program} in this language consists of a (possibly empty) sequence of procedure definitions, and a final ``main'' program; e.g.:
+
+\begin{tabular}{ll}
+ & $\algorithmicprocedure~p_1(v_1,\ldots,v_m) \sdef S_1$\\
+ & $\ldots$\\
+ & $\algorithmicprocedure~p_n(v_1,\ldots,v_n) \sdef S_n$\\[1mm]
+ & $S$
+\end{tabular}
+
+where $S$ is the main program, which may reference procedures $p_1,\ldots, p_n$.
+
+Using this simple language, we can construct any program that possible with more expressive languages, such as those with references, but the program may be more long-winded. 
+
+\begin{example}
+Using this language, we can construct a program that calculates the factorial of 10 an assigns it to a variable $f$ (where $n$ is an input variable and $f$ is an output variable):
+
+\begin{algorithm}[h]
+\caption{A program for calculating the factorial of a number}
+\begin{algorithmic}[0]
+\Procedure {Factorial}{\textbf{in} $n$, \textbf{out} $f$}
+\State $f := 1$
+\State $i := 0$
+\While {$i \neq n$}
+   \State $i := i + 1$
+   \State $f := f \cross I$
+\EndWhile
+\EndProcedure
+\State $\textsc{Factorial}(10, f)$
+\end{algorithmic}
+\end{algorithm}
+\end{example}
+
+\section{Hoare logic}
+
+Hoare logic \cite{hoare69} is an axiomatisation of programming. Hoare's aim was to treat computer programs as mathematical objects, and to provide a sound and complete set of rules for proving things about these objects.
+
+\subsection{Introduction to Hoare logic}
+
+Hoare logic is a set of rules for reasoning about programs. The rules are organised around the program statements in the simple programming language defined above. Any program in the language is a collection of statements, as defined by the grammar $S$, with a (possibly empty) set of procedures that it references. 
+
+The rules are applied to the program in a top down manner, until the final result is the application of rules to atomic statements: $\algorithmicskip$ or variable assignments ($V := E$). The rules for compound program statements, such as sequencing and branching, require us to prove properties about the statements that make up the compound statement.
+
+Statements about  programs are written using {\em Hoare triples}, which take the following form:
+
+\begin{displaymath}
+  \{P\}\ S\ \{Q\}
+\end{displaymath}
+
+This states that, given a program \(S\) with precondition \(P\), if \(P\) is true when \(S\) is executed, then \(S\) will establish the postcondition \(Q\). In other words, a Hoare triple describes how executing a program changes the variables in the program.
+
+Hoare logic is a collection of axioms and rules of this form that can be used to reason about the correctness of programs; similar to using Peano's axioms to reason about numbers. To prove correctness of our program, we need to show that \(\{P\} S \{Q\}\) is true, using Hoare's axioms and rules.
+
+The rules are written as inference rules, of the form:
+
+\begin{displaymath}
+ \begin{array}{c}
+  H_1, \ldots, H_n\\
+ \hline
+  C
+ \end{array}
+\end{displaymath}
+
+where $H_1, \ldots, H_n$ are a collection of hypotheses, and $C$ is the conclusion. An inference rule should be read as: if hypotheses $H_1, \ldots, H_n$ can all be proved, then the conclusion $C$ is true. Thus, to prove $C$, we must prove $H_1, \ldots, H_n$.
+
+For example, consider the most famous inference rule of all --- \emph{modus ponens}:
+
+\begin{displaymath}
+ \begin{array}{c}
+  A, A \implies B\\
+ \hline
+  B
+ \end{array}
+\end{displaymath}
+
+This states that, if $A$ is true and $A \implies B$ is true, then we can infer that $B$ must be true.
+
+An inference rule with no hypotheses is called an \emph{axiom}, and in often just written as the conclusion with no line. For example, the following is an axiom of propositional logic:
+
+\begin{displaymath}
+ A \implies (B \implies A)
+\end{displaymath}
+
+That is, this proposition is always true. This could be written as:
+
+\begin{displaymath}
+ \begin{array}{c}
+  true\\
+ \hline
+  A \implies (B \implies A)
+ \end{array}
+\end{displaymath}
+
+\noindent but the line and premise are often omitted for readability.
+
+In Hoare logic, a hypothesis can be either a predicate or a Hoare triple, and the conclusion is always a Hoare triple.
+
+\subsection{An introductory example --- Incrementing an integer}
+
+Consider the following SPARK program used to increment a variable:
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  procedure Inc (X: in out Integer)
+  with
+     Pre => (X >= 0),
+     Post => (X > 0);
+  is begin
+     X := X + 1;
+  end Inc;
+\end{lstlisting}
+
+Can we {\em prove} that this program establishes its postcondition  for all {\tt X} that satisfy the precondition? It may seem quite easy for us to reason about this in our head to convince ourselves that the program is correct, however, how could we go about automating or mechanising this?
+
+
+\section{The rules of Hoare logic}
+
+In this section, we present the fundamental rules of Hoare logic, and present several examples.
+
+\subsection{Assignment axiom}
+
+The assignment axiom is specified as a triple:
+
+\begin{displaymath}
+  \{P[E/x]\}~ x := E~ \{P\}
+\end{displaymath}
+
+where \(P[E/x]\) represents substituting all occurrences of the variable \(x\) with expression \(E\) in \(P\). Note that this rule has no hypotheses, just a conclusion, so it is an axiom rather than an inference rule. 
+
+This rule says that, if we want to prove that \(P\) is true after executing the statement \(x := E\), then we need to prove that \(P[E/x]\) is true before executing \(x := E\). 
+
+When using this rule on a program proof, we \emph{derive} \(P[E/x]\) from the program and the postcondition. \(P[E/x]\) is called the {\em weakest precondition} of \(S\) that establishes \(P\).  That is, it is the weakest, or more general, predicate for which program \(S\) establishes the postcondition \(P\).
+
+\begin{example}
+The following are two simple Hoare triples that are true:
+
+\begin{displaymath}
+\begin{array}{l}
+ \{y=0\}~ x := y~ \{x = 0\}\\[2mm]
+  \{ 5 + y \geq 0\}~ x := 5~ \{x + y \geq 0\}
+\end{array}
+\end{displaymath}
+
+In both triples above,  the variable \(x\) has been substituted by the assigned expression to form the precondition.
+
+\end{example}
+
+\begin{example}
+So, using the assignment axiom, can we prove that our program {\tt Inc} establishes its postcondition?
+
+To do this, we need to prove the following:
+
+\begin{displaymath}
+  \{x \geq 0\}~ x := x + 1~ \{x > 0\}
+\end{displaymath}
+
+From Hoare's assignment axiom, we derive the weakest precondition of the program $x := x + 1$ from the postcondition $x > 0$. If we substitute $x + 1$ for all occurrences of $x$ in $x > 0$, we are left with $x + 1 > 0$, and the resulting proof we need to show is:
+
+\begin{displaymath}
+  \{x + 1 > 0\}~ x := x + 1~ \{x > 0\}
+\end{displaymath}
+
+However, the precondition of this statement is not the same (syntactically) as the precondition of the original program. To finish the proof, we need to introduce another rule, which we introduce now.
+
+\end{example}
+
+\subsection{Consequence rule}
+
+Hoare's consequence rule is as follows:
+
+\begin{displaymath}
+ \begin{array}{c}
+   P' \implies P,~  Q \implies Q', ~\{P\} ~S~ \{Q\}\\
+ \hline
+ \{P'\} ~S~ \{Q'\}
+ \end{array}
+\end{displaymath}
+
+This states that, if we can establish that \(\{P\} ~S~ \{Q\}\) is true, then any precondition that is at least as {\em strong} as \(P\), and any postcondition that is at least as {\em weak} as \(Q\), are also valid preconditions/postconditions for the program \(S\).
+
+\begin{example}
+
+Some examples:
+
+\begin{displaymath}
+\begin{array}{ll}
+  \{x \geq 0\}~  x := x + 1~ \{x > 0\} & (\textrm{because}~ x \geq 0 ~\implies~ x + 1 > 0) \\
+   \{5 + y \geq 0 \land z=0\}~ x := 5~ \{x + y \geq 0\} & (\textrm{a strengthened postcondition})\\
+   \{5 + y \geq 0\}~ x := 5~ \{true\} & (\textrm{a weakened postcondition})
+\end{array}
+\end{displaymath}
+\end{example}
+
+
+\subsubsection*{Proving assignment statements}
+
+To prove that an assignment statement establishes its postcondition for some precondition other than the weakest precondition, we need to prove that \(Q \implies P[E/x]\), where \(Q\) is the precondition. For example, to prove the following triple:
+
+\begin{displaymath}
+\{\textrm{true}\} ~x := 5~ \{x \geq 5\}
+\end{displaymath}
+
+Apply the assignment axiom:
+
+\begin{displaymath}
+\{5 \geq 5\} ~x := 5~ \{x \geq 5\},
+\end{displaymath}
+
+and then prove $true \implies 5 \geq 5$, which is trivially true.
+
+
+\begin{example}
+Let's return to our example of the \texttt{Inc} procedure. We need to prove the following:
+
+\begin{displaymath}
+  \{x \geq 0\}~ x := x + 1~ \{x > 0\}
+\end{displaymath}
+
+Applying the assignment rule, we get:
+
+\begin{displaymath}
+  \{x + 1 > 0\}~ x := x + 1~ \{x > 0\}
+\end{displaymath}
+
+Now, we need to prove that the precondition of the original program implies the weakest precondition above. That is, we know that the program establishes its postcondition if the precondition is $x + 1 > 0$, but does it prove it if $x \geq 0$? We need to prove:
+
+\begin{displaymath}
+  x \geq 0 \implies x + 1 > 0,
+\end{displaymath}
+
+which holds trivially: if $x$ itself is greater than or equal to 0, then $x + 1$ must be strictly greater then 0. Therefore, we have proved that our program establishes its postcondition when the precondition holds.
+
+\end{example}
+
+
+\subsection{Sequential composition rule}
+
+Consider the following SPARK program for swapping two numbers:
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  procedure Swap (X, Y : in out Float)
+  with
+      Post => (X = Y'Old and Y = X'Old);
+  is 
+      T : Float;
+  begin
+      T := X;
+      X := Y; 
+      Y := T;
+  end Swap;
+\end{lstlisting}
+
+Using Hoare logic, we need to prove the triple:
+
+\begin{displaymath}
+\{\textrm{true}\}\\
+ t := x; \\
+ x := y; \\
+ y := t\\
+\{x = Y \land y = X \}
+\end{displaymath}
+
+
+\subsubsection*{Auxiliary variables}
+
+Before we tackle this proof, consider using a programming language that allows simultaneous assignment; e.g. $x, y := y, x$; which means that $x$ gets the value of $y$ and $y$ gets the value of $x$ simultaneously, eliminating our need for the ``temp'' variable. If our swap program is implemented using that, we have to prove the triple:
+
+\begin{displaymath}
+\{ \textrm{true} \}~ x, y := y, x~ \{x = Y \land y = X \},
+\end{displaymath}
+
+in which $X$ and $Y$ are the values of $x$ and $y$ before the program is executed --- like \texttt{X~} in Ada.
+
+Applying the assignment axiom:
+
+\begin{displaymath}
+\{ y = Y \land x = X \}~ x, y := y, x~ \{x = Y \land y = X \}
+\end{displaymath}
+
+How do we prove $true \implies y = Y \land x = X$? The trick here is that we don't have to! The variables $X$ and $Y$ cannot occur in the program: they are {\em auxiliary variables}, and represent the value of the corresponding variable \emph{before} the program is executed. All free variables in a program have an auxiliary variable that specifies its pre-execution value. 
+
+At any point in a program, $x$ represents the current value of the variable $x$, where ``current'' means immediately after the previous statement is executed, and $X$ represents the pre-execution value. Therefore, at the start of the program, before any statement has been executed, it must be that $x = X$. That is, a variable is always equal to its pre-execution value before any part of the program has executed. As a result, $x = X$ is an implicit part of every precondition, so we do not need to prove propositions of the form $x = X$ in the precondition --- they always hold.
+
+
+\subsubsection*{Reasoning about swap using the assignment axiom --- incorrectly}
+
+Now, let's return to the original definition of the swap program.
+
+The assignment axiom on its own is not sufficient to prove this program is correct. If we simply substitute in the assignment expressions for the variables, we end up with the following:
+
+\begin{displaymath}
+\{y = Y \land t = X\}~ t := x; x := y; y := t~ \{x = Y \land y = X \}
+\end{displaymath}
+
+Here, we cannot prove $t=X$. And in fact, this does not need to be true for the program to establish its postcondition. The problem here is that we attempted to apply the assignment rule to a \emph{sequence} of (non-simultaneous) assignment statements, which does not work.
+
+Instead, we have to ``work backwards'' through the program sequential composition used in the program.
+
+\subsubsection*{Sequential composition rule}
+
+To solve this problem, we use Hoare's sequential composition rule:
+
+\begin{displaymath}
+ \begin{array}{c}
+  \{P\} ~S_1~ \{R\},~~ \{R\} ~S_2~ \{Q\} \\
+ \hline
+ \{P\} ~S_1; S_2~ \{Q\}
+ \end{array}
+\end{displaymath}
+
+This states that, to prove that the program $S_1; S_2$ will achieve the postcondition $Q$ from precondition $P$, we need to prove that the subprogram $S_1$ can get to some intermediate state $R$, and from $R$, subprogram $S_2$ will establish $Q$.
+
+But how do we determine what $R$ should be? The weakest precondition of $S_2$!
+
+\begin{example}
+Finally, we can reason about the correctness of the ``swap'' program correctly.
+First, we apply the sequential composition axiom:
+
+\begin{algorithmic}[0]
+\State $\{ \textrm{true} \}$
+\State $t := x; x := y$
+\State $\{R\}$
+\State $y := t$
+\State $\{x = Y\land y = X \}$
+\end{algorithmic}
+
+Note here that we are concatenating two Hoare triples as shorthand, such that 
+
+\begin{displaymath}
+\{P\} ~S_1~ \{R\},  \{R\} ~S_2~ \{Q\}
+\end{displaymath}
+
+is equivalent to 
+
+\begin{displaymath}
+\{P\} ~S_1~ \{R\} ~S_2~ \{Q\}.
+\end{displaymath}
+
+Then, we find the weakest precondition, $R$, using the assignment axiom:
+
+\begin{algorithmic}[0]
+\State $\{ \textrm{true} \}$
+\State $t := x; x := y$
+\State $\{x = Y\land t = X\}$
+\State $y := t$
+\State $\{x = Y\land y = X \}$
+\end{algorithmic}
+
+
+And then apply the sequential composition rule to the top triple:
+
+\begin{algorithmic}[0]
+\State $\{ \textrm{true} \}$
+\State $t := x$
+\State $\{ y = Y\land t = X\}$
+\State $x := y$
+\State $\{x = Y\land t = X\},$
+\State $y := t$
+\State $\{x = Y\land y = X \}$
+\end{algorithmic}
+
+The bottom two triples are trivially true from the assignment axiom, so we need to just prove the top one. Again, we apply the assignment axiom to get:
+
+\begin{displaymath}
+\{ y = Y\land x = X \}~ t := x~ \{ y = Y\land t = X\}.
+\end{displaymath}
+
+The above holds trivially from the assignment axiom, so all that is left is to prove that the weakest precondition above proves the precondition ($true$) of the swap program (the consequence rule). For this, we need to prove:
+
+\begin{displaymath}
+y = Y\land x = X ~\implies~ true
+\end{displaymath}
+
+which holds trivially --- everything proves $true$. In fact, the prove is equivalent to proving $true \implies true$, because both $y = Y$ and $x = X$ hold trivially at the start of the program.
+
+The three triples are all true, so our program is now proved to establish its postcondition.
+
+\end{example}
+
+\subsection{Empty statement axiom}
+
+The empty statement axiom asserts that the \algorithmicskip\ statement changes nothing, so whatever holds before \algorithmicskip\ is executed will hold afterwards:
+
+\begin{displaymath}
+ \{P\}~ \algorithmicskip~ \{P\}
+\end{displaymath}
+
+This axiom is trivial, but is important for completeness of the axioms.
+
+\subsection{Conditional rule}
+
+The next rule we introduce is for proving programs containing conditional statements. We assume that if-then-else  statements are the only conditionals, but other conditionals are just shorthand for if-then-else, and even then, the reasoning rules are much the same.
+
+The conditional rule is:
+
+\begin{displaymath}
+ \begin{array}{c}
+  \{P \land B\} ~S_1~ \{Q\},~~ \{P \land \neg B\} ~S_2~ \{Q\} \\
+ \hline
+ \{P\}~ \algorithmicif~ B ~\algorithmicthen~ S_1 ~ \algorithmicelse~ S_2 ~ \algorithmicend\algorithmicif~\{Q\}
+ \end{array}
+\end{displaymath}
+
+This states that, to prove that the program $\algorithmicif~ B ~\algorithmicthen~ S_1~ \algorithmicelse~ S_2~ \algorithmicend\algorithmicif$ establishes the postcondition $Q$  from precondition $P$, we need to prove that each branch establishes the same. However, we assume that $B$ holds for the true branch, and that $\neg B$ holds for the false branch.
+
+
+
+\begin{example}{Conditional swapping}
+
+The illustrate this, consider our swap program again, except that it only swaps the values of $x$ and $y$ if $x < y$. In other words, it establishes the postcondition $x \geq y$:
+
+\begin{algorithmic}[0]
+\State  $\{true\}$
+ \If {$x < y$} 
+  \State $x:=t;$
+  \State $x:=y;$
+  \State $y:=t$
+\Else
+  \State $\algorithmicskip$
+\EndIf
+\State $\{x \geq y\}$
+\end{algorithmic}
+
+As a side note, the statement $\algorithmicif\ B\ \algorithmicthen\ S\ \algorithmicelse\ \algorithmicskip\ \algorithmicend\algorithmicif$ is equivalent to just $\algorithmicif\ B\ \algorithmicthen\ S\ \algorithmicend\algorithmicif$ (that is, removing the $\algorithmicelse$ branch --- a one-armed branch statement), so there is no need to a rule covering this case.
+
+For our conditional swap program, we must prove the following two triples:
+
+\begin{displaymath}
+\{x < y\}~ t:=x; x:=y; y:=t~\{x \geq y\}\\
+\{x \geq y\}~\algorithmicskip~\{x \geq y\}
+\end{displaymath}
+
+
+Going backwards through the first triple, we can reason about this as follows:
+
+\begin{algorithmic}[0]
+\State $\{y \geq x\}$
+\State $t:=x$
+\State $\{y \geq t\}$
+\State $x:=y$
+\State $\{x \geq t\}$
+\State $y:=t$
+\State $\{x \geq y\}$
+\end{algorithmic}
+
+All that remains is to apply the consequence rule to show that the weakest precondition implies the precondition of the first Hoare triple; that is, $x < y \implies y \geq x$. This holds trivially, therefore, the first triple is proved.
+
+
+What remains is to prove the second triple:
+
+\begin{displaymath}
+\{x \geq y\}~\algorithmicskip~\{x \geq y\},
+\end{displaymath}
+
+which holds trivially from the empty statement axiom.
+
+We have proved that both branches of the statement establish the postcondition, and therefore, the entire program establishes its postcondition.
+
+\end{example}
+
+\subsection{Iteration rule}
+
+Now, we get to the most difficult-to-apply rule in Hoare logic: the {\em iteration} rule. As it name says, it is used to reason about iteration in programs. As with conditionals, we assume only one basic iteration operator, the {\em while} loop, but other type of loops, such as \emph{for} and \emph{do-while} loops, are straightforward extensions from this.
+
+The iteration rule is:
+
+\begin{displaymath}
+ \begin{array}{c}
+  \{P \land B\} ~S~~\{P\}  \\
+ \hline
+ \{P\}~ \algorithmicwhile~ B ~\algorithmicdo~ S ~ \algorithmicdone~\{\neg B \land P\}
+ \end{array}
+\end{displaymath}
+
+In this rule, the predicate $P$ is the \emph{loop invariant}. This rule states that, provided $B$ is true, if the loop invariant holds before the loop body $S$ executes, and holds after $S$ executes, then the while loop will preserve the loop invariant as well. In addition, the while loop will establish the condition $\neg B$ --- the branch condition $B$ must be false for the loop to exit. Therefore, a loop invariant is a property that holds before the loop, at the end of each iteration, and after the loop.
+
+\subsubsection*{Reasoning about loops}
+
+To reason about a while loop, we must actually calculate the loop invariant. It turns out that this is by far the hardest part about applying Hoare logic.
+
+The loop body change the variables of the program. Our job is to find a relationship between the values of the variables that are preserved by the execution of the loop body. That is, the individual values of the variables may change, but the relationship between them does not. 
+
+If we want to prove a postcondition that is different to the loop invariant; e.g.:
+\begin{displaymath}
+\{P\}~ \algorithmicwhile~ B ~\algorithmicdo~ S ~ \algorithmicdone~\{Q\}
+\end{displaymath}
+
+we use the iteration rule, and then prove that $(\neg B \land P) \implies Q$ using the consequence rule.
+
+\begin{example}
+\label{ex:hoare-logic:factorial-proof}
+
+To demonstrate the rule as well as the concept of loop invariants, we'll consider the following SPARK program for calculating the factorial of a number:
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  procedure Factorial (N : in Integer, 
+                       F : out Integer)
+  with
+    Pre => (N >= 0),
+    Post => (F = Fact(N));
+  is
+    I : Integer;
+  begin
+    F := 1;
+    I := 0;
+    while I /= N do
+      I := I + 1;
+      F := F * I;
+    done;
+  end Factorial;
+\end{lstlisting}
+
+In this procedure, the expression \texttt{Fact(N)} refers to the factorial mathematical function.
+
+To prove this program establishes its postcondition under its precondition, we need to prove the following triple:
+
+\begin{algorithmic}[0]
+\State $\{n \geq 0\}$
+
+\State $f := 1;$
+\State $i := 0;$
+
+\While {$i \neq n$}
+   \State $i := i + 1;$
+   \State $f := f * i;$
+\EndWhile
+
+\State $\{f = n!\}$
+\end{algorithmic}
+
+where $n!$ is defined as the factorial function:
+
+\begin{tabular}{p{1em}llll}
+ &  $0!$ & $=$ & $1$\\
+ & $n!$ & $=$ & $n \times (n - 1)!$ & where $n > 0$\\[2mm]
+\end{tabular}
+
+First, we need to establish the loop invariant.
+
+\subsubsection*{The factorial loop invariant}
+
+The loop invariant for the factorial program is:
+
+\begin{displaymath}
+f = i!
+\end{displaymath}
+
+That is, $f$ is the factorial of $i$ before the loop, and this is re-established after each iteration, including the final iteration. In this program, as with others, the loop invariant is generally based on the postcondition that the loop needs to establish.
+
+\subsubsection*{Back to the proof}
+
+The first step is to apply the sequential composition rule to split the program into its constituent parts:
+
+\begin{algorithmic}[1]
+\State $\{n \geq 0\}$
+\State $f := 1;$
+\State $i := 0;$
+\State $\{R\}$        \hspace{20mm} $\leftarrow$ new annotation (from composition rule)
+\While {$i \neq n$}
+   \State $i := i + 1;$
+   \State $f := f * i;$
+\EndWhile
+\State $\{f = n!\}$
+\end{algorithmic}
+
+To find $R$, we need to calculate the weakest precondition of the while loop using the iteration rule. From the iteration rule, we know that the final result will be $\neg B \land P$ --- the negation of the branch (the loop has exited) and the loop invariant. We annotate our proof such that after the loop, the branch is false and the invariant holds:
+
+\begin{algorithmic}[1]
+\State $\{n \geq 0\}$
+\State $f := 1;$
+\State $i := 0;$
+\State $\{R\}$
+\While {$i \neq n$}
+   \State $i := i + 1;$
+   \State $f := f * i;$
+\EndWhile
+\State $\{i = n \land f = i! \}$  \hspace{20mm} $\leftarrow$ new annotation
+\State $\{f = n!\}$
+\end{algorithmic}
+
+We need to prove that this new annotation, $(f = i! \land i = n)$, implies the postcondition. That is, we need to show:
+
+\begin{displaymath}
+ (f = i! \land i = n) \implies f = n!.
+\end{displaymath}
+
+We can substitute $n$ for $i$ in the premise using the \emph{one-point rule},  leaving $f = n! \implies f = n!$, which is true. Essentially, we can now eliminate the postcondition from the proof (although it will remain for completeness in these notes).
+
+The other thing we know from the iteration rule is that the invariant must hold at the both the start and the end of the loop. Also, at the start of the loop, the Boolean expression in the branch must be true. So, we annotate the start and end of the loop body with the invariant, and just the start of the loop with the negated branch condition:
+
+\begin{algorithmic}[1]
+\State $\{n \geq 0\}$
+\State $f := 1;$
+\State $i := 0;$
+\State $\{R\}$
+\While {$i \neq n$}
+   \State $\{f = i! \land i \neq n\}$ \hspace{11mm} $\leftarrow$ new annotation (loop invariant and negated branch condition)
+  \State $i := i + 1;$
+  \State $f := f * i;$
+  \State $\{f = i!\}$   \hspace{24mm} $\leftarrow$ new annotation (loop invariant)
+\EndWhile
+
+\State $\{f = i! \land i = n\}$  \label{alg:line:factorial:after-loop}
+\State $\{f = n!\}$  \label{alg:line:factorial:postcondition}
+\end{algorithmic}
+
+We have already established that the annotation at line \ref{alg:line:factorial:after-loop} implies the postcondition at line \ref{alg:line:factorial:postcondition}. The next thing to prove is that the loop body preserves the loop invariant. This involves proving the following Hoare triple:
+
+\begin{algorithmic}[0]
+  \State $\{f = i! \land i \neq n\}$
+  \State $i := i + 1;$
+  \State $f := f * i;$
+  \State $\{f = i!\}$
+\end{algorithmic}
+
+We apply the sequential composition rule and the assignment axiom to establish the weakest precondition of the sequential composition:
+
+\begin{algorithmic}[1]
+  \State $\{f = i! \land i \neq n\}$
+  \State $\{f \times (i + 1) = (i + 1)!\}$   \hspace{2mm} $\leftarrow$ new annotation (weakest precondition of $i := i + 1$)
+  \State $i := i + 1;$
+  \State $\{f * i = i!\}$   \hspace{22.5mm} $\leftarrow$ new annotation (weakest precondition of $f := f * i$)
+  \State $f := f * i;$
+  \State $\{f = i!\}$
+\end{algorithmic}
+
+We now need to prove that the loop invariant and the guard establish the weakest precondition of the loop body. For the factorial program, this means we must prove the following:
+
+\begin{displaymath}
+(f = i! \land i \neq n) ~\implies~ f \times (i + 1) = (i + 1)!
+\end{displaymath}
+
+From the definition of the $!$ operator, we know that $(i + 1)! = (i + 1) \times i!$. If we take the right-hand size of the implication and substitute this, we get:
+
+\begin{displaymath}
+(f = i! \land i \neq n) ~\implies~ f \times (i + 1) = (i + 1) \times i!
+\end{displaymath}
+
+Dividing both sides by $i + 1$ leaves us with
+
+\begin{displaymath}
+(f = i! \land i \neq n) ~\implies~ f  = i!
+\end{displaymath}
+
+which holds. Therefore, we have established that the loop preserves the loop invariant. Further to this, we have successfully applied the iteration rule, means that we now have the conclusion: $\{P\} ~\algorithmicwhile~B~\algorithmicdo~S~\algorithmicdone~ \{Q\}$. This means that we have established that the intermediate predicate $R$ can be replaced with just $P$, leaving our proof in the following state:
+
+\begin{algorithmic}[1]
+\State $\{n \geq 0\}$
+\State $f := 1;$
+\State $i := 0;$
+\State $\{f = i!\}$
+\While {$i \neq n$}
+  \State $\{f = i! \land i \neq n\}$
+  \State $\{f \times (i + 1) = (i + 1)!\}$
+  \State $i := i + 1;$
+  \State $\{f * i = i!\}$
+  \State $f := f * i;$
+  \State $\{f = i!\}$
+\EndWhile
+\State $\{f = i! \land i = n\}$ 
+\State $\{f = n!\}$  
+\end{algorithmic}
+
+The iteration rule has been successfully applied, completing the first part of the proof of the sequential composition rule. What remains is to prove the first part of the sequential composition:
+
+\begin{algorithmic}[0]
+\State $\{n \geq 0\}$
+\State $f := 1;$
+\State $i := 0;$
+\State $\{f = i!\}$
+\end{algorithmic}
+
+That is, we need to prove that the first part of the program (the assignment of initial values to the variables) establishes the loop invariant. We do this by applying the sequential composition rule, and two applications of the assignment rule:
+
+\begin{algorithmic}[0]
+\State $\{n \geq 0\}$
+\State $\{1 = 0!\}$
+\State $f := 1;$
+\State $\{f = 0!\}$
+\State $i := 0;$
+\State $\{f = i!\}$
+\end{algorithmic}
+
+To complete the proof, we need to show that the precondition implies the weakest precondition above:
+
+\begin{displaymath}
+ n \geq 0 \implies 1 = 0!
+\end{displaymath}
+
+$1 = 0!$ is true from the definition of factorial, so this is true, which completes our proof of the second part of the sequential composition rule, meaning that the entire sequential composition (the variable initialisation composed with the while loop --- the factorial program) establishes its postcondition whenever its precondition it true.
+
+\subsubsection*{A re-cap}
+
+To recap the proof of the factorial program, we did the following (in reverse order):
+
+\begin{enumerate}
+
+ \item We proved that the loop invariant was established just prior to executing the loop; that is, the initial variable assignment established the loop invariant.
+
+ \item We proved that the loop maintains the loop invariant; that is, the loop invariant holds at both the start of the loop body and the end of the loop body.
+
+ \item Using our loop invariant, we proved that the loop establishes the postcondition $f = n!$ after the loop finishes executing.
+
+\end{enumerate}
+
+These are the necessary conditions to prove the factorial program using the iteration rule, so this proves that the factorial program establishes its postcondition. 
+
+\end{example}
+
+\subsubsection*{Loops and termination}
+
+The iteration rule presented in this section is not valid for all while loops: it does not consider the case in which the loop does not terminate. 
+
+\begin{example}
+Consider the following non-terminating while loop, with precondition and postcondition:
+
+\begin{algorithmic}[0]
+\State $\{y \geq 0\}$
+\While {$y \geq 0$}
+  \State $x := 0;$
+\EndWhile
+\State $\{y \geq 0\}$
+\end{algorithmic}
+
+Applying the iteration rule, we can prove the hypothesis:
+
+\begin{displaymath}
+\{y \geq 0 \} ~x := 0 \{ y \geq 0 \}
+\end{displaymath}
+
+which allows us to conclude the following:
+
+\begin{algorithmic}[0]
+\State $\{y \geq 0\}$
+\While {$y \geq 0$}
+  \State $x := 0;$
+\EndWhile
+\State $\{y \geq 0 \land \neg y \geq 0\}$
+\end{algorithmic}
+
+The concluded postcondition is a contradiction. Not only does our loop achieve no postcondition because it never terminates, if it did, it could not possibly achieve the postcondition $y \geq 0 \land \neg y \geq 0$.
+
+\end{example}
+
+This means that the iteration rule only allows us to prove \emph{partial correctness}. The correctness is partial because we have not proved that the program terminates, and thus, it may not even achieve its postcondition. What we have proved is that, \emph{if the program does terminate}, then it will satisfy the postcondition.
+
+The solution is a modified rule that must include a proof that the loop terminates. Including the modified rule gives us the ability to prove \emph{total correctness}. We can define total correctness as:
+
+\begin{displaymath}
+ total~correctness := partial~correctness + termination
+\end{displaymath}
+
+We will not consider total correctness in completeness in these notes, however, for the interested reader, the rule is as follows:
+
+\begin{displaymath}
+ \begin{array}{c}
+  [P \land B \land E = n] ~S~[P \land E < n],~~~ P \land S \implies E \geq 0  \\
+ \hline
+ [P]~ \algorithmicwhile~ B ~\algorithmicdo~ S ~ \algorithmicdone~[\neg B \land P]
+ \end{array}
+\end{displaymath}
+
+Note that the Hoare triple is now expressed with square brackets instead of curly brackets --- this denotes a rule of total correctness.
+
+In the above rule, the expression $E$ refers to a \emph{loop variant}. The idea behind the rule is to demonstrate that the loop variant $E$ decreases on each iteration of the loop, implying that the loop must terminate.
+
+We will not consider total correctness further in these notes. However, the distinction between partial and total correctness is an important one.
+
+\subsection{Establishing loop invariants}
+
+Establishing loop invariants automatically is an open and challenging research question. This is good news for researchers in the area, but bad news for those of us that want to prove programs correct. 
+
+Loop invariants are important because knowing the loop invariant provides you with a stronger property to work with when showing that the loop establishes the required postcondition. There are three properties that we require in a loop invariant, $I$:
+
+\begin{enumerate}
+
+ \item It should hold before the loop executes. That is, if the annotation before the loop is $P$, then $P \implies I$. It must be \emph{weaker} than its precondition.
+
+ \item With the negated branch condition, $\neg B$, it should establish the result that we want. That is, if the result we want is $Q$, then $I \land \neg B \implies Q$. It must be \emph{stronger} than its postcondition.
+
+ \item With the branch condition, $B$, the body must re-establish the invariant. That is, $\{B \land I\} ~S~ \{I\}$. 
+
+\end{enumerate}
+
+\subsubsection*{Heuristics for finding loop invariants}
+
+The above properties are not enough to find loop invariants. While finding loop invariants requires some creativity, there are heuristics to help with this. The following heuristics can help us to infer loop invariants:
+
+\begin{enumerate}
+
+ \item Loop invariants generally contain most of the variables from the loop condition, loop body, the precondition, and the postcondition (where we mean the precondition/postcondition of the loop, not necessarily the entire program).
+
+ \item They generally state a relationship between the variables.
+
+ \item They generally contain a predicate that is closely related to the postcondition, but is not the same.
+
+ \item They hold even if the loop condition is false.
+
+\end{enumerate}
+
+\begin{example}
+In the factorial program, we have the following:
+
+\begin{enumerate}
+
+ \item Initially, $f = 1$ and $i = 0$.
+
+ \item After termination, we want that $f = n!$ and $i = n$.
+
+ \item At each loop, $i$ and $f$ are both increased.
+
+\end{enumerate}
+
+From this, we can infer that a good loop invariant is $f = i!$.
+
+\end{example}
+
+\begin{example}
+As an example of loop invariants and the iteration rule, let's consider the following program that sums the values in an array of length $N$:
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}[escapeinside={||}]
+  procedure Summation (N : in Integer; A : in IntArray; Sum : out Integer)
+  with
+     Pre => (N >= 0),
+     Post => (Sum = |$\sum_{j=0}^{N-1}$| A(J));
+  is begin
+     I := 0;
+     Sum := 0;
+     while I /= N do
+        Sum := Sum + A(I);
+        I := I + 1;
+     done;
+  end Summation;
+\end{lstlisting}
+
+
+%\begin{algorithmic}[0]
+% \State $\{N \geq 0\}$
+% \State $i := 0;$
+% \State $sum := 0;$
+% \While {$i < N$}
+%    \State $sum := sum + a[i];$
+%    \State $i := i + 1;$
+% \EndWhile
+% \State $\{sum = \sum_{j=0}^{N - 1} a[j]\}$
+%\end{algorithmic}
+
+What is the loop invariant for this program? We can eyeball the program to see that it will need to support precondition of $i = 0 \land sum = 0$, and the postcondition $sum = \sum_{j=0}^{N - 1} a[j]$.
+
+What we need to look for is a predicate that is close to the postcondition, but describes a relationship between $sum$ and $i$. We can use what we know about the program to help us. The loop body is summing up elements from an array, adding each element, $a[i]$, one at a time, and using the variable $sum$ to record the result. We know that $i$ is 0 initially and is incremented until it reaches $N$. The loop exits when $i = N$, so a good guess is to replace $i$ with $N$ in the postcondition to get:
+
+\begin{displaymath}
+ sum = \sum_{j=0}^{i - 1}
+\end{displaymath}
+
+This becomes our loop invariant. Now, we can annotate our program with the loop invariant in the right places (before/after the loop, and before/after the loop body), and work backwards to get the following annotations:
+
+\begin{algorithmic}[0]
+ \State $\{N \geq 0\}$
+ \State $\{0 = \sum_{j=0}^{-1}\}$
+ \State $i := 0;$
+ \State $\{0 = \sum_{j=0}^{i - 1}\}$
+ \State $sum := 0;$
+ \State $\{sum = \sum_{j=0}^{i - 1}\}$
+ \While {$i \neq N$}
+    \State $\{i \neq N \land sum = \sum_{j=0}^{i - 1}\}$
+    \State $\{sum + a[i] = \sum_{j=0}^{i}\}$
+    \State $sum := sum + a[i];$
+    \State $\{sum = \sum_{j=0}^{i}\}$
+    \State $i := i + 1;$
+    \State $\{sum = \sum_{j=0}^{i - 1}\}$
+ \EndWhile
+ \State $\{i = N \land sum = \sum_{j=0}^{i - 1}\}$
+ \State $\{sum = \sum_{j=0}^{N - 1} a[j]\}$
+\end{algorithmic}
+
+Using these, we need to prove:
+
+\begin{enumerate}
+
+ \item That the precondition entails $0 = \sum_{j=0}^{-1}$ (the consequence rule --- strengthening the precondition):
+
+   The predicate $0 = \sum_{j=0}^{-1}$ holds from the definition of $\sum$, because we are summing a list from index 0 to index -1 (an empty list), and the sum of an empty list is 0.
+
+ \item That the loop invariant is established at the start of the loop body:
+
+ \begin{displaymath}
+   i \neq N \land sum = \sum_{j=0}^{i - 1} ~~\implies~~ sum + a[i] = \sum_{j=0}^{i},
+ \end{displaymath}
+ 
+ which holds by reasoning that if $sum$ is the sum of the array from $0$ to $i-1$, then the sum of the array from $0$ to $i$ must be $sum + a[i]$.
+
+ \item That the invariant and negation of the loop condition establish the postcondition:
+
+ \begin{displaymath}
+  i = N \land sum = \sum_{j=0}^{i - 1} ~~\implies~~ sum = \sum_{j=0}^{N - 1} a[j],
+ \end{displaymath}
+
+ which holds be using the \emph{one-point rule} on $i=N$ and substituting $N$ for the value of $i$ in the premise.
+
+\end{enumerate}
+
+Proving these three conditions  means that our summation algorithm conforms to its contract.
+
+\end{example}
+
+
+\subsection{Array assignment rule}
+
+Our simple programming language permits arrays. The values of array variables and their indices can be treated as any other expression. That is, $a[1]$ or $a[x]$ are just expressions. However, array assignment must be treated separately from variable assignment.
+
+An array assignment is of the form:
+
+\begin{displaymath}
+  a[NE] := E
+\end{displaymath}
+
+in which $a$ is an array variable, $NE$ is a numerical expression, and $E$ is an expression. For example, $a[x] := a[x+1]$ assigns the value of the $(x+1)$-th element of $a$ to the index $x$.
+
+A first na\"ive attempt at an array assignment would look similar to the assignment axiom:
+
+\begin{displaymath}
+  \{P[E/a[NE]]\}~a[NE] := E~ \{P\} 
+\end{displaymath}
+
+That is, replace all occurrences of $a[NE]$ with $E$. However, this does not take into account that $NE$ may be a variable, and there may be other variables with the same value as $NE$ that can reference $a$ in the precondition or postcondition. This is known as the \emph{aliasing} problem.
+
+\begin{example}
+Consider the following counterexample for the rule above:
+
+\begin{displaymath}
+  \{ x = y \land a[x] = 0\}  ~a[y] := 5~ \{ a[x] = 0\}
+\end{displaymath}
+
+Because $a[x]$ is not referenced in the program, we must assume that its value has not changed.  However, this is not the case, because $x=y$, and therefore $a[x]$ should be 5 after the assignment.
+
+\end{example}
+
+The solution for this is to actually treat array assignment as an ordinary assignment statement, except that we consider the array in its entirety. That is, we treat the assignment:
+
+\begin{displaymath}
+  a[NE] := E
+\end{displaymath}
+
+as the assignment:
+
+\begin{displaymath}
+  a := a\{NE \rightarrow E\}
+\end{displaymath}
+
+in which $a\{NE \rightarrow E\}$ represents the array that is identical to $a$, except with the $NE$-th component has the value $E$ --- the same as array updates in the SPARK annotation language, discussed in Section~\ref{sec:dbc:spark:arrays-and-records}.
+
+Therefore, the array assignment rule is simply:
+
+\begin{displaymath}
+  \{P[a\{NE \rightarrow E\}/a]\}~a[NE] := E~ \{P\},
+\end{displaymath}
+
+which is the same as the assignment rule.
+
+To reason fully about arrays, we need to provide axioms for the notation $a\{NE \rightarrow E\}$. The following two axioms are the \emph{array} axioms in Hoare logic:
+
+\begin{displaymath}
+ a\{NE \rightarrow E\}[NE] = E\\
+ a\{NE_1 \rightarrow E\}[NE_2] = a[NE_2] ~~~~~~\textrm{where}~ NE_1 \neq NE_2
+\end{displaymath}
+
+That is, the new value at the overridden index is $E$, and the values remain the same at all other indices.
+
+\begin{example}
+As a demonstration of applying this rule, we use the counterexample of the na\"ive attempt, which also tests out the validity of the new rule. Using the na\"ive rule, the following Hoare triple is valid:
+
+\begin{displaymath}
+  \{ x = y \land a[x] = 0\}  ~a[y] := 5~ \{ a[x] = 0\}
+\end{displaymath}
+
+Using the updated array assignment axiom, we prove that the program does \emph{not} achieve the postcondition $a[x] = 0$. Applying the array assignment axiom and working backwards, we get the triple:
+
+\begin{displaymath}
+ \{ a\{y \rightarrow 5\}[x] = 0\} ~a[y] := 5~ \{ a[x] = 0\}   
+\end{displaymath}
+
+Now, we need to prove that the original precondition applies the weakest precondition above:
+
+\begin{displaymath}
+ x=y \land a[x] = 0 ~~\implies~~  a\{y \rightarrow 5\}[x] = 0
+\end{displaymath}
+
+From the array axioms, we can infer that $a[y] = 5$, however, from the premise ($x=y \land a[x]=0$), we can also infer that $a[y] = 0$, leaving us with:
+
+\begin{displaymath}
+ x=y \land a[x] = 0 ~~\implies~~  a\{y \rightarrow 5\}[x] = 0 \land a[y] = 0 \land a[y] = 5
+\end{displaymath}
+
+which is a contradiction. The proof fails, so the program does not establish its postcondition.
+
+\end{example}
+
+\subsection{Procedure call rule}
+
+In the first instance, we will consider only calls to non-recursive procedures --- either direct or indirect. The rule for this is straightforward, but comes with some restrictions. 
+
+The procedure call rule is:
+
+\begin{displaymath}
+ \begin{array}{cc}
+  \{P\}~S~ \{Q\} & ~~~\textrm{where}~ p(v_1,\ldots,v_n) \sdef S\\
+\overline{\{P  [E_1/v_1, \ldots, E_n/v_n]\} ~p(E_1, \ldots, E_n)~ \{Q [E_1/v_1, \ldots, E_n/v_n]\}}
+ \end{array}
+\end{displaymath}
+
+This states that, if the body, $S$, of a procedure $p$, establishes a postcondition, $Q$, under the precondition $P$, then a call to that procedure will establish the same postcondition, but with all parameters replaced by the supplied arguments.
+
+To prove a Hoare triple containing a procedure call, we first prove the correctness of the procedure call in terms of its formal parameters, and then replace the formal parameters with the actual arguments in the precondition and postcondition.
+
+Unfortunately, this rule is not valid for all procedure calls. If our language only had procedures with no parameters, the simplified version of this rule (with no renaming) would be sufficient. However, the rule is not valid for cases in which the same variable is used as an argument to the procedure. The following example, taken from Hoare \cite{hoare71}, demonstrates a counter example to the rule.
+
+\begin{example}
+
+\begin{displaymath}
+  \begin{array}{lllll}
+\textrm{Assume:} & p(x, y) \sdef x := y + 1 & & (1)\\[2mm]
+                 & \{y + 1 = y + 1\}~ x := y + 1~ \{x = y + 1\} & \textrm{[Assignment axiom]} & (2)\\[2mm]
+                 & true ~\implies ~ y + 1 = y + 1 & \textrm{[Logical theorem]} & (3)\\[2mm]
+ \textrm{From 2, 3:} & \{true\}~ x := y + 1~ \{x = y + 1\} & \textrm{[Consequence rule]} & (4)\\[2mm]
+ \textrm{From 1, 4:} & \{true\}~ p(x,y)~ \{ x = y + 1\} & \textrm{[Procedure rule]} & (5)\\[2mm]
+ \textrm{From 5:}    & \{true\}~ p(z,z)~ \{ z = z + 1\} & \textrm{[Procedure rule]} & (6)
+\end{array}
+\end{displaymath}
+
+Clearly, the final line (6) contains a contradiction because $z = z + 1$ is not satisfiable, showing that the procedure rule is not sound for all programs.
+
+\end{example}
+
+\subsubsection*{Parameters and arguments}
+
+In many languages, procedures take two types of arguments: \emph{value} variables, which are values passed to the procedure that cannot be changed; and \emph{value-result} variables, which are \emph{variables} passed to the procedure that can be changed. In Ada, these are labelled using the keywords \texttt{in} and \texttt{out}.
+
+From the counterexample above, it is clear that certain combinations of parameters and arguments can cause problems in some programs with respect to Hoare logic. To ensure that the procedure call rule is valid, the set of programs accepted by Hoare logic is restricted to the following:
+
+\begin{enumerate}
+
+ \item The number of arguments in a procedure call must be equal to the number of parameters in the procedure.
+
+ \item The formal parameter names must be distinct from each other.
+
+ \item The arguments for value-result variables must be distinct from each other. It is this rule that prevents the problem outlined in the counterexample above --- the procedure call would be illegal.
+
+ \item Value parameters cannot be changed in the procedure body.
+
+ \item No recursion.
+
+\end{enumerate}
+
+In languages such as SPARK, these rules apply, and the SPARK toolset will raise errors when typechecking programs that violate the above rules.
+
+\begin{example}
+As an example, consider the factorial program from Example~\ref{ex:hoare-logic:factorial-proof}. In that example, we established that the factorial program conforms to its contract.
+
+Now, we want to prove the following \emph{call} to the \textsc{Factorial} procedure:
+
+\begin{displaymath}
+ \{N = 10\} ~\textsc{Factorial(10, F)}~ \{F = 10!\}
+\end{displaymath}
+
+We have already proved the triple $\{N\geq 0\}~ \textsc{Factorial(N, F)}~ \{F = N!\}$, which is the hypothesis of the procedure call rule. So, applying the procedure call rule, we substitute in $10$ for $N$ to get:
+
+\begin{displaymath}
+ \{10 \geq 0\} ~\textsc{Factorial(10, F)}~ \{F = 10!\}
+\end{displaymath}
+
+The postcondition is achieved, but not the precondition. We use the consequence rule to show that the precondition of our program implies the weakest precondition above: $N = 10 \implies 10 \geq 0$. This is trivially true because $10 \geq 0$ is true.
+
+\end{example}
+
+\subsubsection*{Recursive procedures --- the Induction rule}
+
+Reasoning about recursive procedures is not possible using the procedure call rule above. This is because the procedure call rule ``unfolds'' a procedure call and proves its body. If the procedure is recursive, then the body contains the same procedure call, so the unfolding will continue \emph{ad infinitum}.
+
+Reasoning about recursive procedures is not so difficult, although it is not straightforward to automate. As it turns out, the solution is simple yet extremely powerful: in the proof of the procedure body, we assume that recursive calls to the procedure already hold. Formally, this can be stated:
+
+\begin{displaymath}
+ \begin{array}{cc}
+\underline{\{P\}  ~p()~ \{Q\} \vdash \{P\}~S~\{Q\}} & ~~~\textrm{where}~ p() \sdef S\\
+\{P\} ~p()~ \{Q\}
+ \end{array}
+\end{displaymath}
+
+in which we have omitted parameters to improve readability. In the above, the symbol $\vdash$ means ``entails'' or ``proves''; so $P \vdash Q$ means that $Q$ is provable if we assume that $P$ holds.
+
+This rule is called the \emph{induction} rule. It says: if we can prove that the procedure body satisfies the precondition and postcondition under assumption that all recursive calls to $p$ also do so, then $p$ satisfies the postcondition under the precondition.
+
+How can this be?! Assuming the conclusion as part of the program body proof seems strange, but the following example provides a concrete case on which it holds.
+
+\begin{example}
+
+The following program shows a recursive procedure:
+
+\begin{algorithmic}[0]
+\Procedure {$p$}{\textbf{in} $x$, \textbf{out} $y$}
+\If {$x \leq 5$ }
+    \State $y := 1$
+\Else
+    \State $x := x - 1;$
+    \State $p(x, y)$
+\EndIf
+\EndProcedure
+\end{algorithmic}
+
+It is clear to reason that if $x > 5$, it will be decremented until it reaches $5$, and the program will terminate. The program will always terminate with $y = 1$, so the fact that the second branch contains a recursive call is inconsequential: all that matters are the terminating states.
+
+\end{example}
+
+Recursive procedure calls can never be terminating statements themselves: the statements within the call must be executed. The terminating statements in the procedure are the only statements with end states, we need to only prove that these statements establish the postcondition. For the recursive statements, we assume that these are true for the purposes of establishing the proof. 
+
+This is analogous to the use of induction in logic: we prove the base case, and then the inductive case. In the recursive procedure rule above, we offer only the inductive step, because the base case corresponds to the zero-th unfolding of the procedure, which is achieved by default: the zero-th unfolding is not executing the procedure at all, which results in a terminating state of \textbf{false}, and \textbf{false} implies any postcondition.
+
+\subsection{Other rules}
+
+Many extensions of the basic Hoare logic have been proposed, including extensions that consider pointers and references, concurrency, goto statements, object-oriented programs, and real-time programs. However, the basic Hoare logic here is sufficient to reason about a wide range of programs -- including all programs written in the SPARK language.
+
+\section{Mechanising Hoare logic}
+
+It is clear that proofs about Hoare triple are long and tedious, even for small programs like the factorial program, with many small details that need to be done correctly. There are many opportunities to make mistakes, which may lead us to ``prove'' a correct program is incorrect, or even worse, that an incorrect program in correct.
+
+However, with the exception of finding loop invariants, many of the steps can be mechanised, improving both the speed at which we can prove programs, and the correctness of the proofs themselves.
+
+The procedure for mechanising proofs is straightforward, and it mimics that of how we tackle the proof manually. If we consider that the input to the process is a Hoare triple, then the following steps are undertaken:
+
+\begin{enumerate}
+
+ \item Annotate the program with the necessary predicates; for example, the annotations between sequentially composed statements, and the loop invariants. Many of these can be done automatically using the idea of weakest preconditions, but loop invariants are difficult. This is an active research area, even here at the University of Melbourne in the Department of Computing and Information Systems.
+
+ \item Use a program to generate \emph{verification conditions}. The verification conditions can be generated automatically by applying the Hoare logic rules. The parts of the Hoare logic proofs that remain are the verification conditions; for example, that a program precondition implies the weakest precondition.
+
+ \item Prove as many verifications conditions correct as possible using a theorem prover.
+
+ \item Leave the remainder of the verification conditions for the user, who can try to prove manually, or more likely, with a proof assistant tool.
+
+ \item If all verification conditions can be proved, the program is correct. If at least one is proved incorrect, the program is incorrect. If some cannot be proved or disproved, we cannot be certain of the program's correctness.
+
+\end{enumerate}
+
+In workshops, we will look at the SPARK tools, which use logics quite similar to Hoare logic and processes such as the one described above to prove that SPARK programs conform to their contracts.
+
+\section{Dijkstra's weakest precondition calculus}
+
+In this section, we briefly present the \emph{denotational} semantics of programming languages, known as \emph{Dijkstra's weakest precondition calculus}, or \emph{Dijkstra's predicate transformer semantics} \cite{dijkstra78}. Unlike Hoare logic, which uses axioms to define the semantics of a programming language, the weakest precondition calculus assigns each program to a corresponding \emph{predicate transformer}. These transformers are functions that map a postcondition of a program statement to the weakest precondition that achieves that postcondition.
+
+We have already seen weakest preconditions in Hoare logic, but the concept has a first-class importance in Dijkstra's definitions.
+
+\begin{definition}[Weakest precondition]
+Given a statement $S$ and a postcondition $R$, the weakest precondition of $S$ under $R$, written $wp(S, R)$, is the weakest predicate that as a precondition, establishes $R$ if $S$ is executed and terminates.
+\end{definition}
+
+Thus, the following holds:
+
+\begin{displaymath}
+\{ wp(S, Q) \}~ S ~\{Q\}.
+\end{displaymath}
+
+Dijkstra's weakest precondition calculus is a set of predicate transformers for determining the weakest precondition of a program given a postcondition.
+
+\subsection{Transformers}
+
+The transformers are similar to that of the Hoare logic rules:
+
+\begin{tabular}{llll}
+\toprule
+\textbf{Rule} & \textbf{Input} & \textbf{Output}\\
+\midrule
+Skip &       $wp(\algorithmicskip, R)$  & $R$\\[2mm]
+Assignment  & $wp(x := E, R)$ & $R[E/x]$\\[2mm]
+Sequence    & $wp(S_1; S_2, R)$ & $wp(S_1, wp(S_2, R))$\\[2mm]
+Conditional & $wp(\algorithmicif~B~\algorithmicthen~S_1 ~\algorithmicelse~ S_2 ~\algorithmicend\algorithmicif, R)$ & $B \rightarrow wp(S_1, R) \land \neg B \rightarrow wp(S_2, R)$\\[2mm]
+While loop  & $wp(\algorithmicwhile~ B ~\algorithmicdo~ S ~\algorithmicdone)$
+            & $\exists k . (k \geq 0 \land P_k)$\\
+          & & where $P_0 \equiv \neg B \land Q$\\
+          & & \quad\quad $P_{k+1} \equiv B \land wp(S, P_k)$\\
+\bottomrule
+\end{tabular}
+
+For the while loop, the rule states that the loop body $S$ executes $k$ times, and terminates with $Q$ holding. Note that $P_k$ is an infinitely long assertion, for which induction is the most suitable approach to prove in most cases.
+
+\subsection{Program proof}
+
+To prove that that a terminating program $S$ establishes a postcondition $Q$  under a precondition $P$
+ --- that is, the Hoare triple $\{P\}~S~\{Q\}$ is provable for terminating $S$ --  we need to just prove that $P$ satisfies the weakest precondition:
+
+\begin{displaymath}
+P \rightarrow wp(S, Q).
+\end{displaymath}
+
+\section{Additional reading}
+
+\begin{enumerate}
+
+ \item Hoare's original 1969 paper ``An axiomatic basis for computer programming'' \cite{hoare69} is a truly brilliant article that I highly recommend reading. It contains only a subset of the rules presented in this chapter.
+
+  A PDF copy is available on the LMS and in the subject repository.
+
+ \item Mike Gordon from Cambridge University has written an excellent article on Hoare logic titled ``Background reading on Hoare Logic'', which provides additional material and examples. This can be downloaded from \url{http://www.cl.cam.ac.uk/~mjcg/Teaching/2011/Hoare/Notes/Notes.pdf}
+
+ \item Dijkstra's seminal work on \emph{predicate transformer semantics} \cite{dijkstra78}. 
+
+\end{enumerate}
+
+% LocalWords:  Edsger Hoare Hoare's pseudocode aboveskip Booleans th
+% LocalWords:  Peano's na ive toolset typechecking infinitum goto pre
+% LocalWords:  IntArray lllp axiomatisation postconditions llll modus
+% LocalWords:  ponens displaymath indices lllll logics PDF LMS wp

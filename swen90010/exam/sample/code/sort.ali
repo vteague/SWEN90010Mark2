@@ -1,0 +1,39 @@
+V "GNAT Lib v4.6"
+A -g
+A -gnatq
+A -gnatQ
+P ZX
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U sort%b		sort.adb		b6281916 NE OO PK
+W interfaces%s		interfac.ads		interfac.ali
+
+U sort%s		sort.ads		94191267 EE NE OO PK
+
+D interfac.ads		20090409150019 f77d8799
+D sort.ads		20130527024420 94191267
+D sort.adb		20130527024737 22310b71
+D system.ads		20120503154647 23e1f70b
+X 2 sort.ads
+1K9*Sort 26l5 26e9 3|1b14 69l5 69t9
+3I12*Index{integer} 4r27 13r78 21r59 3|5r24 35r78 36r13 36r22 37r13 39r17
+. 51r59 53r11
+4A9*IntArray(integer)<integer> 8r42 13r34 21r34 3|3r42 35r34 51r34
+8U14*SelectionSort 8=28 3|3b14 33l8 33t21
+8a28 List{4A9} 3|3b28 9r17 16r20 19r16 19r26 26r15 27m10 27r21 28m10
+13U14*BinarySearch 13>27 13>44 13<65 3|35b14 49l8 49t20
+13a27 A{4A9} 3|35b27 43r12
+13i44 Target{integer} 3|35b44 43r21
+13i65 Result{3I12} 3|35b65 39m7 40r20 42r23 46m12
+21U14*FindMinIndex 21>27 21<44 3|51b14 68l8 68t20
+21a27 A{4A9} 3|51b27 58r18 61r12 61r19
+21i44 MinIndex{3I12} 3|51b44 57m7 61r21 62m11
+X 3 sort.adb
+5i7 I{2|3I12} 8m7 9r13 14r15 15r22 26r20 27r15 30m10 30r15
+5i10 J{2|3I12} 14m10 16r16 19r21 20r28 23m13 23r18
+5i13 MinIndex{2|3I12} 15m10 19r31 20m16 27r26 28r15
+6i7 T{integer} 26m10 28r28
+36i7 Low{2|3I12} 40r14 42r17 44m12
+37i7 Mid{2|3I12} 42m9 43r14 44r19 46r22
+53i7 J{2|3I12} 56m7 58r13 61r14 62r23 65m9 65r14
+

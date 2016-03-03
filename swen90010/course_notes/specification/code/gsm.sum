@@ -1,0 +1,586 @@
+module GSM is
+
+  ////////////////////////////////////////////////////////////////////////
+  // Files component
+  ////////////////////////////////////////////////////////////////////////
+
+  //The files on the SIM
+  FILES ::= mf | df_gsm | ef_iccid | ef_lp | ef_imsi | ef_ad | ef_kc | 
+           ef_nia | ef_acm;
+
+  DF == {mf, df_gsm};   //the set of all directories
+  EF == {ef_iccid, ef_lp, ef_imsi, ef_ad, ef_kc, ef_nia, ef_acm};
+
+  //The hierarchy of the file system.
+  FILES_CHILDREN == {(mf, df_gsm), (mf, ef_iccid),(df_gsm, ef_lp),
+                        (df_gsm, ef_imsi),(df_gsm, ef_ad),
+                        (df_gsm, ef_nia), (df_gsm, ef_acm)};
+
+  //The data in each file is a sequence of records, 
+  //in which each record is MAXBYTES long.
+  BYTE == (0 .. 255);
+  MAX_BYTES == 8;
+  RECORD == {s : seq BYTE | #s <= MAX_BYTES};
+  DATA == seq RECORD;
+
+  //There is a maximum number of records in each EF
+  MAX_RECORDS == 4;
+
+  /////////////////////////////////////////////////////////////////////////
+  // FileSystem: The state of the file system component, which consists  
+  //             of a current file, current directory, and data in the  
+  //             files. Directories do not contain data.
+  /////////////////////////////////////////////////////////////////////////
+  schema FileSystem is
+  dec
+    current_directory : DF;
+    current_file : power EF;
+    data : EF --> DATA
+  pred
+    //There is at most one current file
+    #current_file <= 1;
+
+    //Each file has at most MAX_RECORDS number of records
+    forall f : dom(data) @ #data(f) <= MAX_RECORDS;
+
+    //If there is no current file, then the current file must be 
+    //in the current directory
+    current_file = {} or 
+      (exists cf : current_file @ (current_directory, cf) in FILES_CHILDREN)
+  end FileSystem;
+
+  ////////////////////////////////////////////////////////////////////////
+  // Security component
+  ////////////////////////////////////////////////////////////////////////
+
+  //The PIN is a 4-digit number
+  CODE == (1000..9999);
+
+  //Permission types for the files
+  PERMISSION ::= always | chv | never | adm; 
+
+  //Read and write permissions for elementary files
+  axiom is
+  dec
+    PERMISSION_READ : EF --> PERMISSION;
+    PERMISSION_UPDATE : EF --> PERMISSION
+  pred
+    PERMISSION_READ = {(ef_iccid, always), (ef_lp, always), (ef_imsi, chv),
+		       (ef_ad, adm), (ef_kc, chv), (ef_nia, never),
+		       (ef_acm, chv)};
+    PERMISSION_UPDATE = {(ef_iccid, always), (ef_lp, chv), (ef_imsi, adm),
+                         (ef_ad, adm), (ef_kc, chv), (ef_nia, never),
+	                 (ef_acm, chv)}
+  end;
+
+  //The unblocking key value never changes
+  PUK == 1000;
+
+  //The maximum number of CHV and unblock attempts using the PIN and
+  //PUK respectively before the SIM is locked
+  MAX_CHV == 3; 
+  MAX_UNBLOCK == 10; 
+
+  //A data type for counting the number of remaining PIN and PUK unblocks
+  COUNTER_CHV == (0..MAX_CHV);
+  COUNTER_UNBLOCK_CHV == (0..MAX_UNBLOCK);
+
+  /////////////////////////////////////////////////////////////////////////
+  //Security: Models the security component: the number of remaining
+  //          unblock CHV attempts, file permissions, and the PIN value.
+  /////////////////////////////////////////////////////////////////////////
+  schema Security is
+  dec
+    counter_chv : COUNTER_CHV;
+    counter_unblock_chv : COUNTER_UNBLOCK_CHV;  
+    permission_session : PERMISSION --> bool;  
+    pin : CODE
+  pred
+    ((counter_chv = 0) => 
+          ((chv, (false)) in permission_session))
+  end Security;
+
+  /////////////////////////////////////////////////////////////////////////
+  //STATE: Combines the states of the two sub-components.
+  /////////////////////////////////////////////////////////////////////////
+  schema state is
+  dec
+    FileSystem;
+    Security
+  end state;
+
+  /////////////////////////////////////////////////////////////////////////
+  //FileSystemInit: Initially, the current directory is the master 
+  //                directory, and there is no current file. 
+  //                All elementary files are empty.
+  /////////////////////////////////////////////////////////////////////////
+  schema FileSystemInit is
+  dec
+    FileSystem'
+  pred
+    current_file' = {};
+    current_directory' = mf;
+    data' = {(ef_iccid, <>), (ef_lp, <>), (ef_imsi, <>), (ef_ad, <>),
+                (ef_kc, <>), (ef_nia, <>),  (ef_acm, <>)}
+  end FileSystemInit;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SecurityInit: Initially, there number of unblock attempts are at their
+  //              maximum, and CHV file access is denied.
+  /////////////////////////////////////////////////////////////////////////
+  schema SecurityInit is
+  dec
+    Security'
+  pred
+    counter_chv' = MAX_CHV;
+    counter_unblock_chv' = MAX_UNBLOCK;
+    permission_session' = {(always, (true)), (chv, (false)), (adm, (false)),
+		(never, (false))};
+    pin' = 1234
+  end SecurityInit;
+
+  schema init is
+  dec
+    FileSystemInit;
+    SecurityInit
+  end init;
+
+  //All operations have a response code, which can be used to identify
+  //incorrectly applied operations
+  RESPONSE_CODE ::= r9000 | r9402 | r9400 | r9404 | r9408 | r9804 | r9840;
+
+  //RESPONSE: Used to provide an output of a specified code.
+  schema RESPONSE is
+  dec
+    sw? : RESPONSE_CODE;
+    sw! : RESPONSE_CODE
+  pred
+    sw? = sw!
+  end RESPONSE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_DF_OK: Models the selection of a directory if it is either  
+  //                   the master file, or a child/parent of the current 
+  //                   directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_DF_OK is
+  dec
+    ff? : FILES
+  pred   
+    //The select file must be a directory file
+    pre ff? in DF;
+
+    //The selected directory must be the master directory, a child of 
+    //the current directory, or a parent of the current directory
+    pre (ff? = mf or
+        (ff?, current_directory) in FILES_CHILDREN or
+        (current_directory, ff?) in FILES_CHILDREN);
+
+    current_directory' = ff?;
+    current_file' = {};
+    changes_only{current_directory, current_file}
+  end SELECT_FILE_DF_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_EF_OK: Models the selection of an elementary file if it is 
+  //                   in the current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_EF_OK is
+  dec
+    ff? : FILES
+  pred
+    //The selected file must be an elementary file
+    pre ff? in EF;
+
+    //The selected file must be in the current directory
+    pre (current_directory, ff?) in FILES_CHILDREN;     
+
+    current_file' = {ff?};
+    changes_only{current_file}
+  end SELECT_FILE_EF_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  // SELECT_FILE_OK: Models the selection of a DF or EF.
+  /////////////////////////////////////////////////////////////////////////
+  SELECT_FILE_OK == (SELECT_FILE_DF_OK or SELECT_FILE_EF_OK);
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_DF_INVALID: Models the selection of a directory that is
+  //                        not the master file or a parent/child of the 
+  //                        current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_DF_INVALID is
+  dec
+    ff? : FILES
+  pred
+    //The select file must be a directory file
+    pre ff? in DF;
+
+    pre not( (ff? = mf or
+             (ff?, current_directory) in FILES_CHILDREN or
+             (current_directory, ff?) in FILES_CHILDREN));
+    changes_only {}
+  end SELECT_FILE_DF_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_EF_INVALID: Models the selection of an elementary file that 
+  //                        is not in the current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_EF_INVALID is
+  dec
+    ff? : FILES
+  pred
+    //The selected file must be an elementary file
+    pre ff? in EF;
+
+    (current_directory, ff?) not_in FILES_CHILDREN; 
+    changes_only {}
+  end SELECT_FILE_EF_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_INVALID: Models the selection of an invalid file or 
+  //                     directory.
+  /////////////////////////////////////////////////////////////////////////
+  SELECT_FILE_INVALID == (SELECT_FILE_DF_INVALID or SELECT_FILE_EF_INVALID);
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE: Models the selection of a file or directory.
+  /////////////////////////////////////////////////////////////////////////
+  SELECT_FILE == ((SELECT_FILE_OK and RESPONSE{r9000/sw?}) 
+                  or
+                  (SELECT_FILE_INVALID and RESPONSE{r9404/sw?})
+                 );
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_OK: Models the reading of a record if there is a current file
+  //              and the record exists in that file.
+  //              Returns the record at position rr?
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_OK is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    //There must be a selected file, and it must have a record at 
+    // position rr?
+    pre current_file /= {};
+    pre (exists ff : current_file @ rr? in (1..#data(ff)));
+
+    exists ff : current_file @ dd! = data(ff)(rr?);
+    changes_only {}
+  end READ_FILE_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_NOT_OK: Models the case that a read fails. Used in other 
+  //                  operations. Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_NOT_OK is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    dd! = <>;
+    changes_only {}
+  end READ_FILE_NOT_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_NO_SELECTED_FILE: Models the reading of a record when there
+  //                            is no current file.
+  //                            Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_NO_SELECTED_FILE is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    pre current_file = {};
+    dd! = <>;
+    changes_only{}
+  end READ_FILE_NO_SELECTED_FILE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_OUT_OF_BOUNDS: Models the reading of a record that is out of 
+  //                         bounds.
+  //                         Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_OUT_OF_BOUNDS is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    pre current_file /= {};
+    pre (exists ff : current_file @ rr? not_in (1..#data(ff)));
+    dd! = <>;
+    changes_only {}
+  end READ_FILE_OUT_OF_BOUNDS;
+  /////////////////////////////////////////////////////////////////////////
+  //READ_PERMISSION_OK: Models the case that read permission of a file is 
+  //                    granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_PERMISSION_OK is
+  pred
+    exists ff : current_file @ permission_session(PERMISSION_READ(ff))
+  end READ_PERMISSION_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_PERMISSION_INVALID: Models the case that read permission of a file
+  //                         is not granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_PERMISSION_INVALID is
+  pred
+    not (exists ff : current_file @ permission_session(PERMISSION_READ(ff)));
+    changes_only{}
+  end READ_PERMISSION_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE: Models the read (or attempted read) of data from a file.
+  /////////////////////////////////////////////////////////////////////////
+  READ_FILE == ((READ_FILE_OK and 
+                   READ_PERMISSION_OK and 
+                   RESPONSE{r9000/sw?})
+                or
+                (READ_FILE_NOT_OK and
+                   READ_PERMISSION_INVALID and 
+                   RESPONSE {r9804/sw?})
+                or
+                (READ_FILE_NO_SELECTED_FILE and RESPONSE {r9400/sw?})
+                or
+                (READ_FILE_OUT_OF_BOUNDS and RESPONSE {r9402/sw?})
+               );
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_OK: Models the update of a record if there is a current 
+  //                file and the index (rr?) is of an existing record, or
+  //                adds only to the end of the current file.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_OK is
+  dec
+    rr? :  1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file /= {};
+
+    //We can add a new record to the end of the file, or 
+    //update an existing one
+    pre (exists ff : current_file @ rr? in (1 .. (#data(ff) + 1)));
+    exists ff : current_file @ data' = data func_override
+				 {(ff |--> (data(ff) func_override
+					{(rr? |--> dd?)}))};
+    changes_only{data}
+  end UPDATE_FILE_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_NO_SELECTED_FILE: Models the update of a record if there is
+  //                              no file currently selected. 
+  //                              Does not update the data.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_NO_SELECTED_FILE is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file = {};
+    changes_only{}
+  end UPDATE_FILE_NO_SELECTED_FILE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_OUT_OF_BOUNDS: Models the update of a record that is out of 
+  //                           bounds.
+  //                           Does not update the data.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_OUT_OF_BOUNDS is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file /= {};
+    pre (exists ff : current_file @ rr? not_in (1 .. (#data(ff) + 1)));
+    changes_only {}
+  end UPDATE_FILE_OUT_OF_BOUNDS;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_PERMISSION_OK: Models the case that update permission of a file
+  //                      is granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_PERMISSION_OK is
+  pred
+    exists ff : current_file @ permission_session(PERMISSION_UPDATE(ff))
+  end UPDATE_PERMISSION_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_PERMISSION_INVALID: Models the case that update permission of a
+  //                           file is not granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_PERMISSION_INVALID is
+  pred
+    not(exists ff : current_file @ permission_session(PERMISSION_UPDATE(ff)));
+    changes_only{}
+  end UPDATE_PERMISSION_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_PERMISSION_INVALID: Models updating (or attempting to update) a
+  //                           record in a file.
+  /////////////////////////////////////////////////////////////////////////
+  UPDATE_FILE == ((UPDATE_FILE_OK and
+                     UPDATE_PERMISSION_OK and
+                     RESPONSE{r9000/sw?})
+                  or
+                  (UPDATE_FILE_OK and
+                     UPDATE_PERMISSION_INVALID and
+                     RESPONSE {r9804/sw?})
+                  or
+                  (UPDATE_FILE_NO_SELECTED_FILE and RESPONSE {r9400/sw?})
+                  or
+                  (UPDATE_FILE_OUT_OF_BOUNDS and RESPONSE {r9402/sw?})
+                 );
+
+  /////////////////////////////////////////////////////////////////////////
+  //VERIFY_CHV_OK: Models the verification of the CHV (entering the current
+  //               PIN to the security system).
+  /////////////////////////////////////////////////////////////////////////
+  op schema VERIFY_CHV_OK is
+  dec
+    code? : CODE
+  pred
+    pre counter_chv > 0;  //the CHV is not blocked
+    pre pin = code?;      //the inserted code is correct
+
+    //reset the number of CHV attempts remaining
+    counter_chv' = MAX_CHV;
+    
+    //unlock the CHV file access
+    permission_session' = permission_session 
+					func_override {(chv |--> (true))};
+    changes_only {counter_chv, permission_session}
+  end VERIFY_CHV_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //VERIFY_CHV_BLOCKED: Models attempting to verify the CHV when it is 
+  //                    blocked (no attempts remaining).
+  /////////////////////////////////////////////////////////////////////////
+  op schema VERIFY_CHV_BLOCKED is
+  dec
+    code? : CODE
+  pred
+    pre counter_chv = 0;  //the CHV is blocked
+    changes_only {}
+  end VERIFY_CHV_BLOCKED;
+
+  /////////////////////////////////////////////////////////////////////////
+  //VERIFY_CHV_WRONG_PIN: Models attempting to verify the CHV with the 
+  //                      incorrect PIN.
+  /////////////////////////////////////////////////////////////////////////
+  op schema VERIFY_CHV_WRONG_PIN is
+  dec
+    code? : CODE
+  pred
+    pre counter_chv > 0;  //the CHV is not blocked
+    pre pin /= code?;     //the inserted code is incorrect
+
+    counter_chv' = counter_chv - 1;  //One less attempt remaining
+
+    //If there are no attempts remaining, lock access to CHV files
+    counter_chv' = 0 =>
+       (permission_session' = permission_session 
+	                        func_override {(chv |--> (false))});
+    counter_chv' > 0 =>
+       (permission_session' = permission_session);
+
+    changes_only{counter_chv, permission_session}
+  end VERIFY_CHV_WRONG_PIN;
+
+  /////////////////////////////////////////////////////////////////////////
+  //VERIFY_CHV: Models attempting to verify the CHV.
+  /////////////////////////////////////////////////////////////////////////
+  VERIFY_CHV == ((VERIFY_CHV_OK and RESPONSE{r9000/sw?})
+                 or
+                 (VERIFY_CHV_BLOCKED and RESPONSE{r9840/sw?})
+                 or
+                 (VERIFY_CHV_WRONG_PIN and RESPONSE{r9804/sw?})
+                );
+
+  /////////////////////////////////////////////////////////////////////////
+  //VERIFY_CHV_OK: Models the unblocking of the CHV (entering the PUK),
+  //               which has the effect of updating the PIN.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UNBLOCK_CHV_OK is
+  dec
+    code_unblock?, new_code? : CODE
+  pred
+    pre counter_unblock_chv > 0;
+    pre code_unblock? = PUK;
+
+    pin' = new_code?;
+    counter_chv' = MAX_CHV;
+    counter_unblock_chv' = MAX_UNBLOCK;
+    permission_session' = permission_session func_override {chv |--> (true)};
+    changes_only {pin, counter_chv, counter_unblock_chv, permission_session}
+  end UNBLOCK_CHV_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UNBLOCK_CHV_BLOCKED: Models attempting to unblock the CHV when it is 
+  //                     blocked (no attempts remaining).
+  /////////////////////////////////////////////////////////////////////////
+  op schema UNBLOCK_CHV_BLOCKED is
+  dec
+    code_unblock?, new_code? : CODE
+  pred
+    pre counter_unblock_chv = 0;
+    changes_only {}
+  end UNBLOCK_CHV_BLOCKED;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UNBLOCK_CHV_WRONG_PIN: Models attempting to unblock the CHV with the 
+  //                       incorrect PUK code.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UNBLOCK_CHV_WRONG_PUK is
+  dec
+    code_unblock?, new_code? : CODE
+  pred
+    pre counter_unblock_chv > 0;
+    pre code_unblock? /= PUK;
+
+    counter_unblock_chv' = counter_unblock_chv - 1;  //One less attempt remaining
+    changes_only{counter_unblock_chv}
+  end UNBLOCK_CHV_WRONG_PUK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UNBLOCK_CHV: Models attempting to unblock the CHV.
+  /////////////////////////////////////////////////////////////////////////
+  UNBLOCK_CHV == ((UNBLOCK_CHV_OK and RESPONSE{r9000/sw?})
+                  or
+                  (UNBLOCK_CHV_BLOCKED and RESPONSE{r9840/sw?})
+                  or
+                  (UNBLOCK_CHV_WRONG_PUK and RESPONSE{r9804/sw?})
+                 );
+
+  /////////////////////////////////////////////////////////////////////////
+  //STATUS: Outputs the status of the pertinent state variables.
+  /////////////////////////////////////////////////////////////////////////
+  op schema STATUS is
+  dec
+    cd! : FILES;
+    cf! : power FILES;
+    cc! : COUNTER_CHV;
+    cuc! : COUNTER_UNBLOCK_CHV
+  pred
+    cd! = current_directory;
+    cf! = current_file;
+    cc! = counter_chv;
+    cuc! = counter_unblock_chv;
+    changes_only {}
+  end STATUS;
+
+  /////////////////////////////////////////////////////////////////////////
+  //RESET: Reset the current file, current directory, and CHV status.
+  /////////////////////////////////////////////////////////////////////////
+  op schema RESET is
+  pred
+    current_file' = {} and
+    current_directory' = mf and
+    permission_session' = {(always, (true)), (chv, (false)), 
+				(adm, (false)), (never, (false))};
+    changes_only{current_file, current_directory, permission_session}
+  end RESET
+
+end GSM

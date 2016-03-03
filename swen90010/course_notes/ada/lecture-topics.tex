@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+
+\def\rootdir{../}
+
+\input{../packages}
+\input{../pagestyle}
+
+\begin{document}
+
+\section*{SWEN90010 lecture -- Ada}
+
+\section*{Lecture outline}
+
+ \begin{enumerate}
+  
+  \item Obtain an initial understanding of the basic Ada language -- enough to construct a small program.
+
+  \item To understand the properties of Ada that make it suitable for high integrity systems.
+
+
+ \end{enumerate}
+
+\section*{Lecture plan}
+
+\begin{enumerate}
+
+ \item History:
+
+  \begin{enumerate}
+
+   \item Introduced in 1977 when DoD became frustrated with supporting \emph{hundreds} of programming languages (platform specific, obsolete, not re-usable). Wanted a \emph{safe, modular} programming language.
+
+   \item Four contractors asked to put forward designs;  CII Honeywell Bull's proposal called \emph{Ada} was selected. 
+
+   \item Designed for embedded, real-time systems, but adopted more generally.
+
+   \item Named after \emph{Augusta Ada King, Countess of Lovelace}, (more generally known as \emph{Ada Lovelace}) -- thought to be the first computer programmer on Charles Babbage's \emph{analytical engine} (calculating Bernoulli numbers).
+
+  \end{enumerate}
+
+\item Ada for software engineering:
+
+   \begin{enumerate}
+
+   \item  A strong, static and safe type system; all type errors detected automatically at compile time.
+
+  \item Modularity. Ada modules (called ``packages'') compiled separately before implementation.
+
+  \item Information hiding. 
+
+  \item Readability. Ada favours the \emph{reader} over the \emph{writer}.
+
+  \item Portability. 
+  
+  \item Standardisation. Ada is an ANSI and ISO standard.
+
+   \end{enumerate}
+
+ \item hello\_world.adb:  compilation, procedure, ``with'', ``begin..end'', must be called ``hello\_world.adb''
+
+ \item greetings.ads/b:  package specifications and bodies.
+
+ \item Types: major reason for Ada's success. Of important: types are equivalent by \emph{name only}.
+
+  \begin{enumerate}
+
+  \item Integer, Float, Character, String, Boolean, etc.
+
+  \item Arrays: indices are not (just) integers (array\_examples.adb)
+
+  \item New data types: dates.ads
+
+  \end{enumerate}
+
+  \item Control structures: if-then, case, loops,
+
+  \item Procedures and functions.
+
+   A procedure call is a statement and does not return any value and is considered a statement. 
+
+   A function returns a value and is itself an expression. 
+
+  \item Parameter modes: in, out, in out, access (pointers)
+
+  \item Calling: no parameters, positional, named associations.
+
+  \item Tasks:
+
+   \begin{enumerate}
+     \item Show the ``housekeeping'' template, fill in the body, and run the tasks. Note the ``null'' main procedure.
+
+    \item Show the ``entry call'' example (without the \texttt{terminate}), which explains entry calls. Demonstrate the lack of termination. Add in termination condition to the select statement.
+    \item Insert the guard \texttt{Datum < 100} into the entry call example, and modify the main procedure to set \texttt{Datum} to be greater than 100. Re-run the example.
+   \end{enumerate}
+
+ \item Subtyping: If time permits, lead into workshop 2 with an example of subtyping in \texttt{subtyping.adb}. Play around with the two sub-types, and show how the compiler detects out of bounds errors, but does not specify that the types are incompatible:
+
+   Example of why subtyping is good: Mars Climate Orbiter. Disintegrated in 1999 when going towards Mars. Too close to the planet due to the ground-based software outputing non-SI pounds per second instead of the metric Netwons per second.
+
+\end{enumerate}
+
+\pagebreak
+
+\lstinputlisting[caption={hello\_world.adb}]{./code/hello_world.adb}
+
+\vfill
+
+\lstinputlisting[caption={greetings.ads}]{./code/greetings.ads}
+
+\lstinputlisting[caption={greetings.adb}]{./code/greetings.adb}
+
+\pagebreak
+
+\lstinputlisting[caption={array\_examples.adb}]{./code/array_examples.adb}
+
+\vfill
+
+\lstinputlisting[caption={date.ads}]{./code/date.ads}
+
+\pagebreak
+
+\lstinputlisting[caption={calling\_subprograms.adb}]{./code/calling_subprograms.adb}
+
+\vfill
+
+\lstinputlisting[caption={subtyping.adb}]{./code/subtyping.adb}
+
+
+\end{document}  
+
+% LocalWords:  mins atomicity DoD CII adb Subtyping subtyping

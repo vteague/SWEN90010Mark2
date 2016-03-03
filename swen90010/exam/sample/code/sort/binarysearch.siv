@@ -1,0 +1,219 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.BinarySearch
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 39:
+
+procedure_binarysearch_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to assertion of line 41:
+
+procedure_binarysearch_2.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H3:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H4:    target >= - 2147483648 .
+H5:    target <= 2147483647 .
+H6:    integer__size >= 0 .
+H7:    index__size >= 0 .
+       ->
+C1:    element(a, [1]) <= target .
+C2:    target <= element(a, [10]) .
+
+
+For path(s) from assertion of line 41 to assertion of line 41:
+
+procedure_binarysearch_3.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= low and i_ <= result and element(a, [i_]) = 
+          target) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H6:    target >= - 2147483648 .
+H7:    target <= 2147483647 .
+H8:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H9:    result <= 10 .
+H10:   low >= 1 .
+H11:   low <= 10 .
+H12:   (low + result) div 2 >= 1 .
+H13:   low + result >= - 2147483648 .
+H14:   low + result <= 2147483647 .
+H15:   element(a, [(low + result) div 2]) < target .
+H16:   (low + result) div 2 + 1 < result .
+H17:   integer__size >= 0 .
+H18:   index__size >= 0 .
+       ->
+C1:    for_some(i_ : integer, i_ >= (low + result) div 2 + 1 and i_ <= result 
+          and element(a, [i_]) = target) .
+C2:    element(a, [(low + result) div 2 + 1]) <= target .
+
+
+procedure_binarysearch_4.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= low and i_ <= result and element(a, [i_]) = 
+          target) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H6:    target >= - 2147483648 .
+H7:    target <= 2147483647 .
+H8:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H9:    result >= 1 .
+H10:   result <= 10 .
+H11:   low >= 1 .
+H12:   (low + result) div 2 <= 10 .
+H13:   low + result >= - 2147483648 .
+H14:   low + result <= 2147483647 .
+H15:   target <= element(a, [(low + result) div 2]) .
+H16:   low < (low + result) div 2 .
+H17:   integer__size >= 0 .
+H18:   index__size >= 0 .
+       ->
+C1:    for_some(i_ : integer, i_ >= low and i_ <= (low + result) div 2 and 
+          element(a, [i_]) = target) .
+
+
+For path(s) from assertion of line 41 to run-time check associated with 
+          statement of line 44:
+
+procedure_binarysearch_5.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 41 to run-time check associated with 
+          statement of line 45:
+
+procedure_binarysearch_6.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 41 to run-time check associated with 
+          statement of line 46:
+
+procedure_binarysearch_7.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= low and i_ <= result and element(a, [i_]) = 
+          target) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H6:    target >= - 2147483648 .
+H7:    target <= 2147483647 .
+H8:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H9:    result >= 1 .
+H10:   result <= 10 .
+H11:   low >= 1 .
+H12:   low <= 10 .
+H13:   (low + result) div 2 >= 1 .
+H14:   (low + result) div 2 <= 10 .
+H15:   low + result >= - 2147483648 .
+H16:   low + result <= 2147483647 .
+H17:   element(a, [(low + result) div 2]) < target .
+H18:   integer__size >= 0 .
+H19:   index__size >= 0 .
+       ->
+C1:    (low + result) div 2 <= 9 .
+
+
+For path(s) from assertion of line 41 to run-time check associated with 
+          statement of line 48:
+
+procedure_binarysearch_8.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to finish:
+
+procedure_binarysearch_9.
+*** true .   /* contradiction within hypotheses. */
+
+
+
+For path(s) from assertion of line 41 to finish:
+
+procedure_binarysearch_10.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= low and i_ <= result and element(a, [i_]) = 
+          target) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H6:    target >= - 2147483648 .
+H7:    target <= 2147483647 .
+H8:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H9:    result >= 1 .
+H10:   result <= 10 .
+H11:   low >= 1 .
+H12:   low <= 10 .
+H13:   (low + result) div 2 >= 1 .
+H14:   low + result >= - 2147483648 .
+H15:   low + result <= 2147483647 .
+H16:   element(a, [(low + result) div 2]) < target .
+H17:   (low + result) div 2 <= 9 .
+H18:   result <= (low + result) div 2 + 1 .
+H19:   integer__size >= 0 .
+H20:   index__size >= 0 .
+       ->
+C1:    element(a, [result]) = target .
+
+
+procedure_binarysearch_11.
+H1:    for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= element(
+          a, [i_ + 1])) .
+H2:    for_some(i_ : integer, i_ >= low and i_ <= result and element(a, [i_]) = 
+          target) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H6:    target >= - 2147483648 .
+H7:    target <= 2147483647 .
+H8:    for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) = 
+          target) .
+H9:    result >= 1 .
+H10:   result <= 10 .
+H11:   low >= 1 .
+H12:   low <= 10 .
+H13:   (low + result) div 2 >= 1 .
+H14:   (low + result) div 2 <= 10 .
+H15:   low + result >= - 2147483648 .
+H16:   low + result <= 2147483647 .
+H17:   target <= element(a, [(low + result) div 2]) .
+H18:   (low + result) div 2 <= low .
+H19:   integer__size >= 0 .
+H20:   index__size >= 0 .
+       ->
+C1:    element(a, [(low + result) div 2]) = target .
+
+

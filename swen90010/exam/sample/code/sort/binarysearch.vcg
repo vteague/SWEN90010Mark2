@@ -1,0 +1,490 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 27-MAY-2013 13:49:21.65
+
+                        procedure Sort.BinarySearch
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 39:
+
+procedure_binarysearch_1.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H3:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H4:    target >= integer__first .
+H5:    target <= integer__last .
+        ->
+C1:    index__last >= index__first .
+C2:    index__last <= index__last .
+ 
+
+For path(s) from start to assertion of line 41:
+
+procedure_binarysearch_2.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H3:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H4:    target >= integer__first .
+H5:    target <= integer__last .
+H6:    index__last >= index__first .
+H7:    index__last <= index__last .
+H8:    index__last >= index__first .
+H9:    index__last <= index__last .
+H10:   index__first >= index__first .
+H11:   index__first <= index__last .
+H12:   index__first < index__last .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C2:    for_some(i_: integer, ((i_ >= index__first) and (i_ <= 
+           index__last)) and (element(a, [i_]) = target)) .
+C3:    element(a, [index__first]) <= target .
+C4:    target <= element(a, [index__last]) .
+C5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+C6:    target >= integer__first .
+C7:    target <= integer__last .
+C8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+ 
+
+For path(s) from assertion of line 41 to assertion of line 41:
+
+procedure_binarysearch_3.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   element(a, [(low + result) div 2]) < target .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+H26:   (low + result) div 2 + 1 >= index__first .
+H27:   (low + result) div 2 + 1 <= index__last .
+H28:   result >= index__first .
+H29:   result <= index__last .
+H30:   (low + result) div 2 + 1 >= index__first .
+H31:   (low + result) div 2 + 1 <= index__last .
+H32:   (low + result) div 2 + 1 < result .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C2:    for_some(i_: integer, ((i_ >= (low + result) div 2 + 1) and (
+           i_ <= result)) and (element(a, [i_]) = target)) .
+C3:    element(a, [(low + result) div 2 + 1]) <= target .
+C4:    target <= element(a, [result]) .
+C5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+C6:    target >= integer__first .
+C7:    target <= integer__last .
+C8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+ 
+
+procedure_binarysearch_4.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   not (element(a, [(low + result) div 2]) < target) .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+H26:   (low + result) div 2 >= index__first .
+H27:   (low + result) div 2 <= index__last .
+H28:   (low + result) div 2 >= index__first .
+H29:   (low + result) div 2 <= index__last .
+H30:   low >= index__first .
+H31:   low <= index__last .
+H32:   low < (low + result) div 2 .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C2:    for_some(i_: integer, ((i_ >= low) and (i_ <= (low + 
+           result) div 2)) and (element(a, [i_]) = target)) .
+C3:    element(a, [low]) <= target .
+C4:    target <= element(a, [(low + result) div 2]) .
+C5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+C6:    target >= integer__first .
+C7:    target <= integer__last .
+C8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+C9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+ 
+
+For path(s) from assertion of line 41 to run-time check associated with statement of line 44:
+
+procedure_binarysearch_5.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+        ->
+C1:    (low + result) div 2 >= index__first .
+C2:    (low + result) div 2 <= index__last .
+C3:    2 <> 0 .
+C4:    low + result >= integer__base__first .
+C5:    low + result <= integer__base__last .
+ 
+
+For path(s) from assertion of line 41 to run-time check associated with statement of line 45:
+
+procedure_binarysearch_6.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+        ->
+C1:    (low + result) div 2 >= index__first .
+C2:    (low + result) div 2 <= index__last .
+ 
+
+For path(s) from assertion of line 41 to run-time check associated with statement of line 46:
+
+procedure_binarysearch_7.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   element(a, [(low + result) div 2]) < target .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+        ->
+C1:    (low + result) div 2 + 1 >= index__first .
+C2:    (low + result) div 2 + 1 <= index__last .
+ 
+
+For path(s) from assertion of line 41 to run-time check associated with statement of line 48:
+
+procedure_binarysearch_8.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   not (element(a, [(low + result) div 2]) < target) .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+        ->
+C1:    (low + result) div 2 >= index__first .
+C2:    (low + result) div 2 <= index__last .
+ 
+
+For path(s) from start to finish:
+
+procedure_binarysearch_9.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H3:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H4:    target >= integer__first .
+H5:    target <= integer__last .
+H6:    index__last >= index__first .
+H7:    index__last <= index__last .
+H8:    index__last >= index__first .
+H9:    index__last <= index__last .
+H10:   index__first >= index__first .
+H11:   index__first <= index__last .
+H12:   not (index__first < index__last) .
+        ->
+C1:    element(a, [index__last]) = target .
+ 
+
+For path(s) from assertion of line 41 to finish:
+
+procedure_binarysearch_10.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   element(a, [(low + result) div 2]) < target .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+H26:   (low + result) div 2 + 1 >= index__first .
+H27:   (low + result) div 2 + 1 <= index__last .
+H28:   result >= index__first .
+H29:   result <= index__last .
+H30:   (low + result) div 2 + 1 >= index__first .
+H31:   (low + result) div 2 + 1 <= index__last .
+H32:   not ((low + result) div 2 + 1 < result) .
+        ->
+C1:    element(a, [result]) = target .
+ 
+
+procedure_binarysearch_11.
+H1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H2:    for_some(i_: integer, ((i_ >= low) and (i_ <= result)) and (element(
+           a, [i_]) = target)) .
+H3:    element(a, [low]) <= target .
+H4:    target <= element(a, [result]) .
+H5:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(a, [i___1]) >= 
+           integer__first) and (element(a, [i___1]) <= 
+           integer__last))) .
+H6:    target >= integer__first .
+H7:    target <= integer__last .
+H8:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1 - 1)) -> (element(a, [i_]) <= element(
+           a, [i_ + 1]))) .
+H9:    for_some(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) and (element(a, [i_]) = 
+           target)) .
+H10:   result >= index__first .
+H11:   result <= index__last .
+H12:   low >= index__first .
+H13:   low <= index__last .
+H14:   (low + result) div 2 >= index__first .
+H15:   (low + result) div 2 <= index__last .
+H16:   2 <> 0 .
+H17:   low + result >= integer__base__first .
+H18:   low + result <= integer__base__last .
+H19:   (low + result) div 2 >= index__first .
+H20:   (low + result) div 2 <= index__last .
+H21:   (low + result) div 2 >= index__first .
+H22:   (low + result) div 2 <= index__last .
+H23:   not (element(a, [(low + result) div 2]) < target) .
+H24:   (low + result) div 2 >= index__first .
+H25:   (low + result) div 2 <= index__last .
+H26:   (low + result) div 2 >= index__first .
+H27:   (low + result) div 2 <= index__last .
+H28:   (low + result) div 2 >= index__first .
+H29:   (low + result) div 2 <= index__last .
+H30:   low >= index__first .
+H31:   low <= index__last .
+H32:   not (low < (low + result) div 2) .
+        ->
+C1:    element(a, [(low + result) div 2]) = target .
+ 
+

@@ -1,0 +1,455 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.SelectionSort
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+procedure_selectionsort_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 9:
+
+procedure_selectionsort_2.
+H1:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H2:    integer__size >= 0 .
+H3:    index__size >= 0 .
+       ->
+C1:    9 >= system__min_int .
+C2:    9 <= system__max_int .
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 9:
+
+procedure_selectionsort_3.
+H1:    for_all(m_ : integer, 1 <= m_ and m_ <= 8 -> for_all(n_ : integer, 1 <= 
+          n_ and n_ <= 8 and m_ <= n_ -> element(list, [m_]) <= element(list, [
+          n_]))) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    element(list, [9]) >= - 2147483648 .
+H4:    element(list, [9]) <= 2147483647 .
+H5:    integer__size >= 0 .
+H6:    index__size >= 0 .
+       ->
+C1:    9 >= system__min_int .
+C2:    9 <= system__max_int .
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 9:
+
+procedure_selectionsort_4.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [9]) < element(list, [minindex]) .
+H6:    i >= 1 .
+H7:    element(list, [i]) >= - 2147483648 .
+H8:    element(list, [i]) <= 2147483647 .
+H9:    element(list, [9]) >= - 2147483648 .
+H10:   element(list, [9]) <= 2147483647 .
+H11:   i <= 9 .
+H12:   integer__size >= 0 .
+H13:   index__size >= 0 .
+       ->
+C1:    9 >= system__min_int .
+C2:    9 <= system__max_int .
+
+
+procedure_selectionsort_5.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [minindex]) <= element(list, [9]) .
+H6:    i >= 1 .
+H7:    element(list, [i]) >= - 2147483648 .
+H8:    element(list, [i]) <= 2147483647 .
+H9:    element(list, [minindex]) >= - 2147483648 .
+H10:   element(list, [minindex]) <= 2147483647 .
+H11:   i <= 9 .
+H12:   integer__size >= 0 .
+H13:   index__size >= 0 .
+       ->
+C1:    9 >= system__min_int .
+C2:    9 <= system__max_int .
+
+
+For path(s) from start to assertion of line 10:
+
+procedure_selectionsort_6.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 10 to assertion of line 10:
+
+procedure_selectionsort_7.
+*** true .   /* contradiction within hypotheses. */
+
+
+
+For path(s) from assertion of line 17 to assertion of line 10:
+
+procedure_selectionsort_8.
+*** true .   /* contradiction within hypotheses. */
+
+
+
+procedure_selectionsort_9.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [minindex]) <= element(list, [9]) .
+H6:    i >= 1 .
+H7:    element(list, [i]) >= - 2147483648 .
+H8:    element(list, [i]) <= 2147483647 .
+H9:    element(list, [minindex]) >= - 2147483648 .
+H10:   element(list, [minindex]) <= 2147483647 .
+H11:   9 >= system__min_int .
+H12:   9 <= system__max_int .
+H13:   i < 8 .
+H14:   integer__size >= 0 .
+H15:   index__size >= 0 .
+       ->
+C1:    for_all(m_ : integer, 1 <= m_ and m_ <= i -> for_all(n_ : integer, 1 <= 
+          n_ and n_ <= i and m_ <= n_ -> element(update(update(list, [i], 
+          element(list, [minindex])), [minindex], element(list, [i])), [m_]) <= 
+          element(update(update(list, [i], element(list, [minindex])), [
+          minindex], element(list, [i])), [n_]))) .
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 14:
+
+procedure_selectionsort_10.
+H1:    for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : integer, 1 
+          <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) <= element(
+          list, [n_]))) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    i >= 1 .
+H4:    i <= 10 .
+H5:    integer__size >= 0 .
+H6:    index__size >= 0 .
+       ->
+C1:    i <= 9 .
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 15:
+
+procedure_selectionsort_11.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 10 to assertion of line 17:
+
+procedure_selectionsort_12.
+H1:    for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : integer, 1 
+          <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) <= element(
+          list, [n_]))) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    i >= 1 .
+H4:    i < 9 .
+H5:    integer__size >= 0 .
+H6:    index__size >= 0 .
+       ->
+C1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= i + 1 -> element(list, [i]) 
+          <= element(list, [m_])) .
+
+
+For path(s) from assertion of line 17 to assertion of line 17:
+
+procedure_selectionsort_13.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    j >= 1 .
+H4:    minindex >= 1 .
+H5:    minindex <= 10 .
+H6:    element(list, [j]) < element(list, [minindex]) .
+H7:    j < 9 .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j + 1 -> element(list, [j]) 
+          <= element(list, [m_])) .
+
+
+procedure_selectionsort_14.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    j >= 1 .
+H4:    minindex >= 1 .
+H5:    minindex <= 10 .
+H6:    element(list, [minindex]) <= element(list, [j]) .
+H7:    j < 9 .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j + 1 -> element(list, [
+          minindex]) <= element(list, [m_])) .
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 19:
+
+procedure_selectionsort_15.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 20:
+
+procedure_selectionsort_16.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 23:
+
+procedure_selectionsort_17.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    j >= 1 .
+H4:    j <= 10 .
+H5:    minindex >= 1 .
+H6:    minindex <= 10 .
+H7:    element(list, [j]) < element(list, [minindex]) .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    j <= 9 .
+
+
+procedure_selectionsort_18.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    j >= 1 .
+H4:    j <= 10 .
+H5:    minindex >= 1 .
+H6:    minindex <= 10 .
+H7:    element(list, [minindex]) <= element(list, [j]) .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    j <= 9 .
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 26:
+
+procedure_selectionsort_19.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 26:
+
+procedure_selectionsort_20.
+*** true .          /* all conclusions proved */
+
+
+procedure_selectionsort_21.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 27:
+
+procedure_selectionsort_22.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 27:
+
+procedure_selectionsort_23.
+*** true .          /* all conclusions proved */
+
+
+procedure_selectionsort_24.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 28:
+
+procedure_selectionsort_25.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 28:
+
+procedure_selectionsort_26.
+*** true .          /* all conclusions proved */
+
+
+procedure_selectionsort_27.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 10 to run-time check associated with 
+          statement of line 30:
+
+procedure_selectionsort_28.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 17 to run-time check associated with 
+          statement of line 30:
+
+procedure_selectionsort_29.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [9]) < element(list, [minindex]) .
+H6:    i >= 1 .
+H7:    i <= 10 .
+H8:    element(list, [i]) >= - 2147483648 .
+H9:    element(list, [i]) <= 2147483647 .
+H10:   element(list, [9]) >= - 2147483648 .
+H11:   element(list, [9]) <= 2147483647 .
+H12:   integer__size >= 0 .
+H13:   index__size >= 0 .
+       ->
+C1:    i <= 9 .
+
+
+procedure_selectionsort_30.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [minindex]) <= element(list, [9]) .
+H6:    i >= 1 .
+H7:    i <= 10 .
+H8:    element(list, [i]) >= - 2147483648 .
+H9:    element(list, [i]) <= 2147483647 .
+H10:   element(list, [minindex]) >= - 2147483648 .
+H11:   element(list, [minindex]) <= 2147483647 .
+H12:   integer__size >= 0 .
+H13:   index__size >= 0 .
+       ->
+C1:    i <= 9 .
+
+
+For path(s) from start to finish:
+
+procedure_selectionsort_31.
+*** true .   /* contradiction within hypotheses. */
+
+
+
+For path(s) from assertion of line 10 to finish:
+
+procedure_selectionsort_32.
+H1:    for_all(m_ : integer, 1 <= m_ and m_ <= 8 -> for_all(n_ : integer, 1 <= 
+          n_ and n_ <= 8 and m_ <= n_ -> element(list, [m_]) <= element(list, [
+          n_]))) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    element(list, [9]) >= - 2147483648 .
+H4:    element(list, [9]) <= 2147483647 .
+H5:    9 >= system__min_int .
+H6:    9 <= system__max_int .
+H7:    integer__size >= 0 .
+H8:    index__size >= 0 .
+       ->
+C1:    for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : integer, 1 <= 
+          j_ and j_ <= 10 and i_ <= j_ -> element(list, [i_]) <= element(list, [
+          j_]))) .
+
+
+For path(s) from assertion of line 17 to finish:
+
+procedure_selectionsort_33.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [9]) < element(list, [minindex]) .
+H6:    element(list, [i]) >= - 2147483648 .
+H7:    element(list, [i]) <= 2147483647 .
+H8:    element(list, [9]) >= - 2147483648 .
+H9:    element(list, [9]) <= 2147483647 .
+H10:   i <= 9 .
+H11:   9 >= system__min_int .
+H12:   9 <= system__max_int .
+H13:   8 <= i .
+H14:   integer__size >= 0 .
+H15:   index__size >= 0 .
+       ->
+C1:    for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : integer, 1 <= 
+          j_ and j_ <= 10 and i_ <= j_ -> element(update(update(list, [i], 
+          element(list, [9])), [9], element(list, [i])), [i_]) <= element(
+          update(update(list, [i], element(list, [9])), [9], element(list, [i]))
+          , [j_]))) .
+
+
+procedure_selectionsort_34.
+H1:    for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [minindex]
+          ) <= element(list, [m_])) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(list, [i___1]) and element(list, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(list, [minindex]) <= element(list, [9]) .
+H6:    element(list, [i]) >= - 2147483648 .
+H7:    element(list, [i]) <= 2147483647 .
+H8:    element(list, [minindex]) >= - 2147483648 .
+H9:    element(list, [minindex]) <= 2147483647 .
+H10:   i <= 9 .
+H11:   9 >= system__min_int .
+H12:   9 <= system__max_int .
+H13:   8 <= i .
+H14:   integer__size >= 0 .
+H15:   index__size >= 0 .
+       ->
+C1:    for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : integer, 1 <= 
+          j_ and j_ <= 10 and i_ <= j_ -> element(update(update(list, [i], 
+          element(list, [minindex])), [minindex], element(list, [i])), [i_]) <= 
+          element(update(update(list, [i], element(list, [minindex])), [
+          minindex], element(list, [i])), [j_]))) .
+
+

@@ -1,0 +1,63 @@
+V "SPARK 2011"
+A -noswitch
+A -noindex_file
+A -nowarning_file
+A -notarget_compiler_data
+A -config_file=spark.cfg
+A -source_extension=ada
+A -listing_extension=lst
+A -nodictionary_file
+A -report_file=spark.rep
+A -nohtml
+A -vcg
+A -nostatistics
+A -fdl_identifiers=accept
+A -flow_analysis=information
+A -language=95
+A -profile=sequential
+A -annotation_character=#
+A -rules=none
+A -error_explanations=off
+A -justification_option=full
+A -output_directory=.
+A -output_directory (actual)=/home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/
+P
+R
+
+U Sort%b sort.adb
+U Sort%s sort.ads
+
+D sort.ads 00000000000000 00000000
+D sort.adb 00000000000000 00000000
+
+X 1 sort.ads
+3I12 Index 6r45 6r56 19r39 19r50 19r68
+4A9 IntArray 6r31 19r25
+6V17 Sorted 6>24 6>41 6>52
+8a28 List 9m16 9r26 10r43 11r41 11r67 11r78 2|11r66 11r77 18r22
+. 18r33
+10i21 I 11r57 11r72
+11i19 J 11r62 11r83
+13a27 A 14r28 15r43 15r60 15r68 16r44 16r57 17r13 2|41r45 41r62
+. 41r70 42r52 43r7 43r38
+13i44 Target 14r31 16r64 17r25 2|42r59 43r17 43r28
+13i65 Result 14m16 17r15 2|42r41 43r40
+15i21 I 15r62 15r70
+16i22 I 16r59
+19V17 Min 19>21 19>35 19>46 19>57 28r13 2|74r21
+21i25 N 22r28 23r16
+21i41 Result 22m16 23r20 2|59r14
+26a27 A 27r30 28r17 28r23 2|74r25
+26i44 MinIndex 27m16 28r33 2|74r34
+X 2 sort.adb
+5i7 I 10r51 11r46 17r49
+5i10 J 17r58
+5i13 MinIndex 18r38
+10i29 M 11r56 11r71
+11i24 N 11r61 11r82
+17i32 M 18r27
+36i7 Low 42r34 43r9
+41i23 I 41r64 41r72
+42i17 I 42r54
+54i7 K 59r26
+67i7 J 74r31

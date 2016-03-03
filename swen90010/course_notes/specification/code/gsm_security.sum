@@ -1,0 +1,116 @@
+module GSMSecurity is
+
+  import GSMFiles;
+  visible GSMFiles;
+
+  //The PIN is a 4-digit number
+  CODE == (1000..9999);
+
+  //Permission types for the files
+  PERMISSION ::= always | chv | never | adm; 
+
+  //The status of the CHV
+  BLOCKED_STATUS ::= blocked | unblocked; 
+
+  //Read and write permissions for elementary files
+  PERMISSION_READ == {(ef_iccid, always), (ef_lp, always), (ef_imsi, chv),
+			(ef_ad, adm), (ef_kc, chv), (ef_nia, never),
+			(ef_acm, chv)};
+  PERMISSION_UPDATE == {(ef_iccid, always), (ef_lp, chv), (ef_imsi, adm),
+			(ef_ad, adm), (ef_kc, chv), (ef_nia, never),
+			(ef_acm, chv)};
+
+  //The unblocking key value never changes
+  PUK == 1000;
+
+  //The maximum number of CHV and unblock attempts using the PIN and
+  //PUK respectively before the SIM is locked
+  MAX_CHV == 3; 
+  MAX_UNBLOCK == 10; 
+
+  //A data type for counting the number of remaining PIN and PUK unblocks
+  COUNTER_CHV == (0..MAX_CHV);
+  COUNTER_UNBLOCK_CHV == (0..MAX_UNBLOCK);
+
+  /////////////////////////////////////////////////////////////////////////
+  //STATE: Models the status of the CHV, including the number of unblock 
+  //       attempts, the file permissions, and the PIN value.
+  /////////////////////////////////////////////////////////////////////////
+  schema state is
+  dec
+    file : power EF;
+    counter_chv : COUNTER_CHV;
+    counter_unblock_chv : COUNTER_UNBLOCK_CHV;  
+    blocked_chv_status : BLOCKED_STATUS;
+    blocked_status : BLOCKED_STATUS;
+    permission_session : PERMISSION --> bool;  
+    pin : CODE
+  pred
+    #file < 2;
+    ((blocked_chv_status = blocked) => 
+          ((chv, (false)) in permission_session));
+    ((counter_chv = 0) <=> (blocked_chv_status = blocked));
+    ((counter_unblock_chv = 0) <=> (blocked_status = blocked))
+  end state;
+
+  schema init is
+  pred
+    counter_chv' = MAX_CHV;
+    counter_unblock_chv' = MAX_UNBLOCK;
+    blocked_chv_status' = unblocked;
+    blocked_status' = unblocked;
+    permission_session' = {(always, (true)), (chv, (false)), (adm, (false)),
+		(never, (false))};
+    pin' = 1234
+  end init;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_PERMISSION_OK: Models the case that read permission of a file is 
+  //                    granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_PERMISSION_OK is
+  pred
+    exists ff : file @ permission_session(PERMISSION_READ(ff));
+    changes_only{}
+  end READ_PERMISSION_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_PERMISSION_INVALID: Models the case that read permission of a file
+  //                         is not granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_PERMISSION_INVALID is
+  pred
+    not (exists ff : file @ permission_session(PERMISSION_READ(ff)));
+    changes_only{}
+  end READ_PERMISSION_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_PERMISSION_OK: Models the case that update permission of a file
+  //                      is granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_PERMISSION_OK is
+  pred
+    exists ff : file @ permission_session(PERMISSION_UPDATE(ff));
+    changes_only{}
+  end UPDATE_PERMISSION_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_PERMISSION_INVALID: Models the case that update permission of a
+  //                           file is not granted.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_PERMISSION_INVALID is
+  pred
+    not(exists ff : file @ permission_session(PERMISSION_UPDATE(ff)));
+    changes_only{}
+  end UPDATE_PERMISSION_INVALID;
+
+  op schema NOCHANGE is
+  pred
+     changes_only{}
+  end NOCHANGE;
+
+  op schema CHANGE_CF is
+  pred
+     changes_only {file}
+  end CHANGE_CF
+end GSMSecurity

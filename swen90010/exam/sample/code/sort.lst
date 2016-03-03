@@ -1,0 +1,112 @@
+           *******************************************************
+                            Listing of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 27-MAY-2013 13:49:21.66
+
+Line
+   1  package body Sort is
+   2  
+   3     procedure SelectionSort(List : in out IntArray)
+   4     is
+   5        I, J, MinIndex : Index;
+   6        T : Integer;
+   7     begin
+   8        I := 1;
+   9        while I < List'Length - 1 loop
+  10           --# assert for all M in Index range 1 .. I - 1 =>
+  11           --#  (for all N in Index range 1 .. I - 1 => (M <= N -> List(M) <= List(N)));
+  12  
+  13           -- find the minimum element in the remaining part of the list
+  14           J := I + 1;
+  15           MinIndex := I;
+  16           while J < List'Length loop
+  17              --# assert for all M in Index range I + 1 .. J =>
+  18              --#     (List(M) >= List(MinIndex));
+  19              if List(J) < List(MinIndex) then
+  20                 MinIndex := J;
+  21              end if;
+  22  
+  23              J := J + 1;
+  24           end loop;
+  25  
+  26           T := List(I);
+  27           List(I) := List(MinIndex);
+  28           List(MinIndex) := T;
+  29  
+  30           I := I + 1;
+  31        end loop;
+  32  
+  33     end SelectionSort;
+
++++        Flow analysis of subprogram SelectionSort 
+           performed: no errors found.
+
+  34     
+  35     procedure BinarySearch(A : in IntArray; Target : in Integer; Result : out Index) is
+  36        Low : Index := Index'First;
+  37        Mid : Index;
+  38     begin
+  39        Result := Index'Last;
+  40        while (Low < Result) loop
+  41  	 --# assert (for all I in Index range 1 .. A'Length - 1 => (A(I) <= A(I+1))) and
+  42  	 --# (for some I in Index range Low .. Result => (A(I) = Target)) and
+  43  	 --# A(Low) <= Target and Target <= A(Result);
+  44  	 Mid := (Low + Result) / 2;
+  45  	 if A(Mid) < Target then
+  46  	    Low := Mid + 1;
+  47  	 else
+  48  	    Result := Mid;
+  49  	 end if;
+  50        end loop;
+  51     end BinarySearch;
+
++++        Flow analysis of subprogram BinarySearch 
+           performed: no errors found.
+
+  52     
+  53     procedure PowerOfTwo(N : in Integer; Result : out Integer) is
+  54        K : Integer;
+  55     begin
+  56        K := 0;
+  57        Result := 1;
+  58        while K /= N loop
+  59  	 --# assert Result = 2**K;
+  60  	 K := K + 1;
+  61  	 Result := 2 * Result;
+  62        end loop;
+  63     end PowerOfTwo;
+
++++        Flow analysis of subprogram PowerOfTwo 
+           performed: no errors found.
+
+  64     
+  65     procedure FindMinIndex(A : in IntArray; MinIndex : out Index)
+  66     is
+  67        J : Index;
+  68     begin
+  69        -- find the minimum element in the list
+  70        J := 1;
+  71        MinIndex := 1;
+  72        while J /= A'Length loop
+  73           ----# assert for all I in Index range 1 .. J => (A(I) >= A(MinIndex));
+  74           --# assert Min(A, 1, J, MinIndex);
+  75          if A(J) < A(MinIndex) then
+  76            MinIndex := J;
+  77          end if;
+  78  
+  79          J := J + 1;
+  80        end loop;
+  81  
+  82     end FindMinIndex;
+
++++        Flow analysis of subprogram FindMinIndex 
+           performed: no errors found.
+
+  83  end Sort;
+
+
+--End of file--------------------------------------------------

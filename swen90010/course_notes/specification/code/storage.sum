@@ -1,0 +1,111 @@
+module Storage is
+
+  schema Container is
+  dec
+    contents : nat;
+    capacity : nat
+  pred
+    contents <= capacity
+  end Container;
+
+  Light ::= on | off;
+
+  schema Indicator is
+  dec
+    light : Light;
+    reading : nat;
+    danger_level : nat
+  pred
+    light = on <=> (reading <= danger_level)
+  end Indicator;
+
+  schema state is
+  dec
+    Container;
+    Indicator
+  pred
+    reading = contents;
+    capacity = 5000;
+    danger_level = 50
+  end state;
+
+  schema init is
+  pred
+    capacity' = 5000;
+    danger_level' = 50;
+    contents' = 0
+  end init;
+
+  schema state2 is
+  dec   
+    contents : nat;
+    capacity : nat;
+    light : Light;
+    reading : nat;
+    danger_level : nat
+  pred
+    contents <= capacity;
+    light = off <=> (reading <= danger_level);
+    reading = contents;
+    capacity = 5000;
+    danger_level = 50
+  end state2;
+
+  op schema PreFill is
+  dec
+    amount? : nat
+  pred
+    pre contents + amount? <= capacity
+  end PreFill;
+
+  op schema PostFill is
+  dec
+    amount? : nat;
+    report! : string
+  pred
+    contents' = contents + amount?;
+    report! = "Ok";
+    changes_only{contents, reading, light}
+  end PostFill;
+
+  FillOK == (PreFill and PostFill);
+
+  op schema ExpandedFill is
+  dec
+    amount? : nat;
+    report! : string
+  pred
+    pre contents + amount? <= capacity;
+    contents' = contents + amount?;
+    report! = "Ok";
+    changes_only{contents, reading, light}
+  end ExpandedFill;
+
+  op schema OverFill is
+  dec
+    amount? : nat;
+    report! : string
+  pred
+    amount? + contents > capacity;
+    report! = "Tank is overfull";
+    changes_only{}
+  end OverFill;
+
+  Fill == (FillOK or OverFill);
+
+  one == 1;
+  FillOne == (FillOK {one/amount?});
+
+  op schema FillExpanded is
+  dec
+    report! : string
+  pred
+    pre 1 + contents <= capacity;
+    contents' = contents + 1;
+    report! = "Ok";
+    changes_only{contents, reading, light}
+  end FillExpanded;
+
+  FillTwice == (Fill s_compose Fill);
+
+end Storage

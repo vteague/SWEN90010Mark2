@@ -1,0 +1,6 @@
+axiom is
+dec
+  square : nat --> nat
+pred
+  forall n : nat @ square(n) = n*n
+end

@@ -1,0 +1,9 @@
+rule_family summation:
+
+    summation(X, A) requires [X : i; A : FloatArray] .
+
+    summation(1): summation(0, A) may_be_replaced_by 0 .
+
+    summation(2): summation(N, A) may_be_deduced_from summation(N-1, A) + A(N) if [N > 0] .
+
+

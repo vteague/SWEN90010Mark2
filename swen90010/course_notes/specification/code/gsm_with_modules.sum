@@ -1,0 +1,83 @@
+file "code/gsm_files.sum";
+file "code/gsm_security.sum";
+
+module GSM is
+
+  import GSMFiles;
+  visible GSMFiles;
+
+  import GSMSecurity;
+  visible GSMSecurity;
+
+  RESPONSE_CODE == {9000, 9402, 9400, 9404, 9408, 9804, 9840};
+
+  /////////////////////////////////////////////////////////////////////////
+  // STATE: Combines the states of the two sub-components. Both 
+  //        sub-components contain a variable referencing the currently
+  //        selected file, so the state invariant makes these equal.
+  /////////////////////////////////////////////////////////////////////////
+  schema state is
+  dec
+    GSMFiles.state;
+    GSMSecurity.state
+  pred
+    GSMFiles.current_file = GSMSecurity.file
+  end state;
+
+  schema init is
+  dec
+    GSMFiles.init;
+    GSMSecurity.init
+  end init;
+
+  // RESPONSE: Used to provide an output of a specified code.
+  schema RESPONSE is
+  dec
+    sw? : RESPONSE_CODE;
+    sw! : RESPONSE_CODE
+  pred
+    sw? = sw!
+  end RESPONSE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //INV: An operation schema to inforce the state invariant. The schemas
+  //     below are not operation schemas in this module, so do not 
+  //     implicitly include the state invariant.
+  /////////////////////////////////////////////////////////////////////////
+  op schema INV is
+  pred
+    file' = current_file'
+  end INV;
+
+  SELECT_FILE == (SELECT_FILE_OK and CHANGE_CF and INV and RESPONSE{9000/sw?}) 
+                 or
+                 (SELECT_FILE_INVALID and NOCHANGE and INV and RESPONSE{9404/sw?})
+                 ;
+
+  UPDATE_FILE == (UPDATE_FILE_OK and
+                    UPDATE_PERMISSION_OK and
+                    RESPONSE{9000/sw?})
+                 or
+                 (UPDATE_FILE_OK and
+                    UPDATE_PERMISSION_INVALID and
+                    RESPONSE {9804/sw?})
+                 or
+                 (UPDATE_FILE_NO_SELECTED_FILE and RESPONSE {9400/sw?})
+                 or
+                 (UPDATE_FILE_OUT_OF_BOUNDS and RESPONSE {9402/sw?})
+                 ;
+
+  READ_FILE == (READ_FILE_OK and 
+                  READ_PERMISSION_OK and 
+                  RESPONSE{9000/sw?})
+               or
+               (READ_FILE_NOT_OK and
+                  READ_PERMISSION_INVALID and 
+                  RESPONSE {9804/sw?})
+               or
+               (READ_FILE_NO_SELECTED_FILE and RESPONSE {9400/sw?})
+               or
+               (READ_FILE_OUT_OF_BOUNDS and RESPONSE {9402/sw?})
+
+end GSM;
+param currentmodule GSM

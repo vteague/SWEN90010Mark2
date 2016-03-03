@@ -1,0 +1,53 @@
+#possum_session_file
+Warning: if you fiddle too much with this file it won't work in possum!
+
+1 sum: !!P_C_S!!file "models/storage_workshop_5_solution.sum"  !!P_C_F!!
+Yes
+
+2 sum: !!P_C_S!! param currentmodule Storage  !!P_C_F!!
+Yes
+
+3 Storage: !!P_C_S!! init !!P_C_F!!
+<|capacity' == 5000, contents' == 0, danger_level' == 50, light' == on,
+  reading' == 0|>
+
+4 Storage: !!P_C_S!! Fill {50/amount?} >>  !!P_C_F!!
+<|capacity == 5000, contents == 0, danger_level == 50, light == on,
+  reading == 0, capacity' == 5000, contents' == 50, danger_level' == 50,
+  light' == on, reading' == 50|>
+    report! == "Ok"
+
+5 Storage: !!P_C_S!! Fill {5000/amount?} >>  !!P_C_F!!
+<|capacity == 5000, contents == 50, danger_level == 50, light == on,
+  reading == 50, capacity' == 5000, contents' == 50, danger_level' == 50,
+  light' == on, reading' == 50|>
+    report! == "Tank is overfull"
+
+6 Storage: !!P_C_S!!Fill {-1/amount?} >>  !!P_C_F!!
+no solution
+
+6 Storage: !!P_C_S!! ChangeDangerLevel {2501/new_level?} >>   !!P_C_F!!
+<|capacity == 5000, contents == 50, danger_level == 50, light == on,
+  reading == 50, capacity' == 5000, contents' == 50, danger_level' == 50,
+  light' == on, reading' == 50|>
+    report! == "New level is too high (more than capacity/2)"
+
+7 Storage: !!P_C_S!! ChangeDangerLevel {2500/new_level?} >>  !!P_C_F!!
+<|capacity == 5000, contents == 50, danger_level == 50, light == on,
+  reading == 50, capacity' == 5000, contents' == 50,
+  danger_level' == 2500, light' == on, reading' == 50|>
+    report! == "OK"
+
+8 Storage: !!P_C_S!! Fill {50/amount?} >>  !!P_C_F!!
+<|capacity == 5000, contents == 50, danger_level == 2500, light == on,
+  reading == 50, capacity' == 5000, contents' == 100,
+  danger_level' == 2500, light' == on, reading' == 100|>
+    report! == "Ok"
+
+9 Storage: !!P_C_S!! Fill {4901/amount?} >> !!P_C_F!!
+<|capacity == 5000, contents == 100, danger_level == 2500, light == on,
+  reading == 100, capacity' == 5000, contents' == 100,
+  danger_level' == 2500, light' == on, reading' == 100|>
+    report! == "Tank is overfull"
+
+10 Storage: 

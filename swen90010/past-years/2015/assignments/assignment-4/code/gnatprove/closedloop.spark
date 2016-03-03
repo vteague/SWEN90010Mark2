@@ -1,0 +1,9 @@
+[
+{ "name" : "ClosedLoop.Is_Practitioner", "file" :"closedloop.ads", "line" :  23, "spark" : "all" }
+, { "name" : "ClosedLoop.Is_Cardiologist", "file" :"closedloop.ads", "line" :  26, "spark" : "all" }
+, { "name" : "ClosedLoop.SwitchMode", "file" :"closedloop.ads", "line" :  29, "spark" : "all" }
+, { "name" : "ClosedLoop.ReadLast50Shocks", "file" :"closedloop.ads", "line" :  33, "spark" : "all" }
+, { "name" : "ClosedLoop.ReadSettings", "file" :"closedloop.ads", "line" :  37, "spark" : "all" }
+, { "name" : "ClosedLoop.ChangeSettings", "file" :"closedloop.ads", "line" :  42, "spark" : "all" }
+, { "name" : "ClosedLoop", "file" :"closedloop.ads", "line" :  1, "spark" : "all" }
+]

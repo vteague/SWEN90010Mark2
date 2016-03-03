@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+
+\def\rootdir{../}
+\input{\rootdir/packages}
+
+\begin{document}
+
+\section*{Lecture aims}
+
+ \begin{enumerate}
+
+
+ \item Systematically construct tests from formal models using the Test Template Framework.
+
+ \item Apply adapted Test Template Framework to Alloy models.
+
+\end{enumerate}
+
+\section*{Lecture plan}
+  
+\subsubsection*{Introduction to model-based testing}
+
+\begin{enumerate}
+
+ \item Why test in high-integrity systems? Catch mistakes. Test in environment. Validation.
+
+ \item Testing can be: ad-hoc, exploratory, or systematic. For high-integrity systems, systematic is essential, exploratory is useful, ad-hoc is almost worthless.
+
+ \item Model-based testing: use of design models to generate test artifacts (inputs, oracles, stubs, drivers).
+
+ \item Example: triangle program. Show Alloy definition (below)
+
+\end{enumerate}
+
+\subsubsection*{Test template framework}
+
+\begin{enumerate}
+
+ \item Early model-based testing, which has inspired many new tools and frameworks.
+
+ \item It considers testing to be more than just a statement about input data --- the functional behaviour specification, the test outputs, and test purpose are all important considerations that must be taken into account.
+
+ \item Process: (1) IS, OS, VIS; (2) partition; (3) prune; (4) select inputs; and (5) derive outputs.
+
+ \item Show IS, VIS, and OS for the Triangle program.
+
+ \item Partitioning tactics:
+
+  \begin{enumerate}
+
+   \item Cause-effect analysis: four types of triangle (described using input space)
+
+   \item Partition analysis: 
+
+\lstset{aboveskip=3mm}
+\lstset{language=alloy}
+\begin{lstlisting}
+ PA_ISO.1 == [CE_ISO | x = y and z != x]
+ PA_ISO.2 == [CE_ISO | x = z and y != x]
+ PA_ISO.3 == [CE_ISO | y = z and y != x]
+\end{lstlisting}
+
+   \item Ordered types permutation:
+
+\lstset{aboveskip=3mm}
+\lstset{language=alloy}
+\begin{lstlisting}
+ PERM_SCA.xyz == [CE_SCA | x < y < z]
+ PERM_SCA.xzy == [CE_SCA | x < z < y]
+ PERM_SCA.yxz == [CE_SCA | y < x < z]
+ PERM_SCA.yzx == [CE_SCA | y < z < x]
+ PERM_SCA.zyx == [CE_SCA | z < y < x]
+ PERM_SCA.zxy == [CE_SCA | z < x < y]
+\end{lstlisting}
+
+   \item Boundary value analysis: e.g. divide \verb+x <= y+ into cases \verb+x < y+ and \verb+x=y+.
+
+  \end{enumerate}
+
+  \item Test template hierarchies: draw for the simple triangle example so far. Note that if all children are disjoint and form the parent that: (1) all leaf nodes are disjoint; and (2) their disjunction/union is the VIS!
+
+  \item Test template: path from VIS to leaf; or expanded schema.
+
+  \item Prune infeasible paths. Explain and show an example of doing this with Alloy.
+
+  \item Generate inputs and expected outputs using Alloy. Show with \texttt{PERM\_SCA.xyz} example.
+
+ \item Recap the process.
+
+ \item Discuss automation. The example is small but tedious. Tools/frameworks: Fastest (Flowgate consulting), Smartesting, SpecExplorer (Microsoft).
+\end{enumerate}
+
+
+\pagebreak
+
+\lstset{language=alloy}
+\alloyfile{language=alloy}{\rootdir/ttf/models/triangle.als}
+
+
+\end{document}  
+
+
+% LocalWords:  hoc VIS aboveskip SCA xyz xzy yxz yzx zyx zxy
+% LocalWords:  lll Flowgate Smartesting SpecExplorer EQI INV dec
+% LocalWords:  validTriangle

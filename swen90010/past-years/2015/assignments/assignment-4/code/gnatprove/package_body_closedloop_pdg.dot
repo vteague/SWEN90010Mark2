@@ -1,0 +1,19 @@
+// package_body_closedloop_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="type modetype is (on, off);\n<VId: 6>"];
+    7 [label="type roletype is (cardiologist, clinicalassistant, patient);\n<VId: 7>"];
+    8 [label="type persontype is new integer;\n<VId: 8>"];
+    9 [label="type roleassignment is array (persontype) of roletype;\n<VId: 9>"];
+    10 [label="type icdtype is recordowner : persontype;roleassigned : roleassignment;upperbound : integer;numberofjoulestodeliver : integer;last50shocks : integer;mode : modetype;end record;\n<VId: 10>"];
+    20 [label="null;\n<VId: 20>"];
+
+    1 ->  6 [arrowType="normal"];
+    1 ->  7 [arrowType="normal"];
+    1 ->  8 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    1 ->  10 [arrowType="normal"];
+    1 ->  20 [arrowType="normal"];
+}

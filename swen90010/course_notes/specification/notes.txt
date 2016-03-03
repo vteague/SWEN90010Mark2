@@ -1,0 +1,6 @@
+Don't blame me for the fact that competent programming, as I view it as an intellectual possibility, will be too difficult for "the average programmer" — you must not fall into the trap of rejecting a surgical technique because it is beyond the capabilities of the barber in his shop around the corner.
+Dijkstra (1975) Comments at a Symposium (EWD 512)
+
+
+It is not the task of the University to offer what society asks for, but to give what society needs.
+Dijkstra (2000), "Answers to questions from students of Software Engineering" (EWD 1305)

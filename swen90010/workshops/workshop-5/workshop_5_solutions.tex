@@ -1,0 +1,65 @@
+\documentclass{article} 
+
+\def\rootdir{..}
+
+\input{../packages}
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+
+\tutorialsolutionstitle{5}
+\lstset{language=}
+\section*{Sample solutions for tasks}
+
+The Sum specification and script for executing the answers below are available in the subject repository.
+
+\begin{enumerate}
+
+ \item
+\lstinputlisting[linerange={1-9}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+ \item 
+\lstinputlisting[linerange={11-15}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+ \item 
+\lstinputlisting[linerange={17-21}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+ \item 
+\lstinputlisting[linerange={23-24}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+Possum has responded with ``no solution''. What Possum tries to do is find bindings for all variables in the operation as it is executed. However, if we try bind \texttt{-1} to the variable \texttt{amount?}, this will fail, because \texttt{amount? : nat} declares that the variable \texttt{amount?} can only take on values from 0 upwards. As such, Possum cannot find a solution to the query \texttt{Fill \{-1/amount?\}} because one does not exist.
+
+The ``no solution'' response will become familiar if you use Possum on assignment 3. It always means that Possum was unable to find a solution (but not necessarily that one does not exist). It can be caused by having a precondition or postcondition that is inconsistent, or from simple problems with variable declarations.
+
+For those of you familiar with logic programming, it is the same as being unable to find bindings for variables in a goal. In fact, Possum is implemented in Mercury -- a logic programming language conceived and implemented at the University of Melbourne.
+ 
+ \item This operation has been divided into its normal and exceptional behaviours using the schema calculus:
+
+\lstinputlisting[linerange={72-93}]{\rootdir/workshop-5/models/storage_workshop_5_solution.sum}
+
+We run a couple of tests to convince ourselves that this is working for a couple of basic cases on the boundary:
+
+\lstinputlisting[linerange={26-36}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+
+\item The \emph{fillsafe} axiom is specified as follows:
+
+\lstinputlisting[linerange={3-10}]{\rootdir/workshop-5/models/storage_workshop_5_solution.sum}
+
+We update the \texttt{FillOK} and \texttt{OverFill} operations to the following:
+
+
+\lstinputlisting[linerange={47-68}]{\rootdir/workshop-5/models/storage_workshop_5_solution.sum}
+
+Again, we run a couple of tests to check our solution:
+
+
+\lstinputlisting[linerange={38-48}]{\rootdir/workshop-5/models/storage_solution_clean.script}
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  nat fillsafe FillOK OverFill

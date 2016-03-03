@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{rotate}
+
+\def\rootdir{../}
+
+\input{../packages}
+\input{../pagestyle}
+
+\begin{document}
+
+\section*{Lecture aims}
+
+ \begin{enumerate}
+  
+  \item Refresh knowledge of first-order predicate logic and set theory.
+
+  \item Critique the use of formal modelling in software engineering, why it is used, what it is good for, what it is not good for.
+
+  \item Read and write basic of Alloy state machines from informal requirements.
+
+  \item Use Alloy operators to incrementally derive a specification.
+
+ \end{enumerate}
+
+\section*{Lecture plan}
+
+\begin{enumerate}
+
+ \item Background:
+
+   \begin{enumerate}
+
+   \item Overview of set theory, propositional logic, and predicate logic
+     
+   \item Important concepts: 
+     
+   \item Propositional logic: atomic propositions, conjunction, disjunction, implication, equivalence, negation, tautologies and contradictions
+     
+   \item Predicate logic: quantifiers (all, some, none, lone, one), predicates
+
+   \item Relational calculus: sets as unary relaions, set membership, Cartesian product, union, intersection, difference, dot join, box join, relations, functions (total and partial), function override,  domain \& range restriction.
+
+   \end{enumerate}
+ 
+ \item Motivation for formal, model-based specification:
+
+ \begin{enumerate}
+
+ \item Example: sorting a list; binary search
+
+ \item What is formal specification? What is model-based specification?
+   
+ \item Why use formal specification? 
+
+ \item Why use set theory and predicate logic?
+   
+ \item Cost savings: no ambiguity, solve problems up front, easier to implement, \emph{proof}, post-release costs (more mistakes made \emph{and found} in specification).
+   
+ \item Objections: too hard for ``average'' programmer
+
+ \end{enumerate}
+
+ \item Alloy
+
+ \begin{enumerate}
+
+  \item Motivation: based on Z which is well-known, highly-used language; intuitive notation, state-of-the-art tool support. Loads and loads of examples.
+
+  \item Alloy = logic + language + analysis; analysis is NOT proof, but counterexample driven.
+
+  \item Basic: modules. 
+
+  \item Running example of the PassBook
+
+  \item Signatures are basically types.
+
+  \item Facts hold over entire signature space
+
+  \item Predicates and functions; we use these to specify \emph{operations}.
+
+  \item Assertions state properties about model; can be checked but also serve to help understand the model itself. 
+
+ 
+  \item Incremental specification: abstract state machines (state, inv, init, operations); preconditions and postconditions, inclusion (building up from components using conjunction and disjunction), assertions (invariant preservation).
+
+ \end{enumerate}
+
+ \item Formal development process (see figure below).
+
+ \item V\&V: animation, model checking, review!!, and proof.
+
+ \item Example: Needham-Schroeder protocol mutual authentication. Considered correct for many years, but man-in-the-middle attach was possible, and found using formal proof.
+
+ \item Example: modal checking -- NASA's use of checking high-level models to find deadlock.
+
+ \item Show Bill Gates quote about proof (without the name!) below.
+
+ \item Example proof: storage tank in chemical plant does not overflow.
+
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+\includegraphics[scale=0.8]{./figures/CICS-graph}
+\end{center}
+
+\pagebreak
+
+\begin{center}
+\includegraphics[scale=0.6,angle=90]{./figures/specification-process}
+\end{center}
+
+\pagebreak
+
+~
+
+~
+
+~
+
+~
+
+~
+
+~
+
+~
+
+
+\begin{quote}
+``Things like even software verification, this has been the Holy Grail of computer science for many decades but now in some very key areas, for example, driver verification we're building tools that can do actual proof about the software and how it works in order to guarantee the reliability." 
+\end{quote}
+
+\newpage
+
+\alloyfile{}{\rootdir/specification/code/lastpass.als}
+
+\newpage
+
+\alloyfile{}{\rootdir/specification/code/expanded_lastpass.als}
+
+
+\end{document}  
+
+% LocalWords:  init PreFill PostFill FillOK GSM de Franche

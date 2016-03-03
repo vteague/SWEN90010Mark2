@@ -1,0 +1,142 @@
+//////////////////////////////////////////////////////////////
+// Specifies a loan system for a library
+//////////////////////////////////////////////////////////////
+
+module Library is
+
+[BookID, BookDesc, ReaderID, ReaderDesc];
+
+maxloans == 10;
+
+schema state is
+dec
+    books : BookID <--> BookDesc;
+    readers : ReaderID <--> ReaderDesc;
+    reserved : power BookID; 
+    onLoanTo : BookID <--> ReaderID 
+pred
+    reserved subset dom(books) diff dom(onLoanTo);
+    dom(onLoanTo) subset dom(books);
+    ran(onLoanTo) subset dom(readers);
+    forall r : dom(readers) @ 
+                #(onLoanTo ran_restrict {r}) <= maxloans
+end state;
+
+schema init is
+pred
+    books' = {};
+    readers' = {};
+    reserved' = {};
+    onLoanTo' = {}
+end init;
+
+op schema AddBook is
+dec
+    bookNo? : BookID;
+    desc?  : BookDesc
+pred
+    changes_only {books};
+    bookNo? not_in dom(books);
+    books' = books func_override {bookNo? |--> desc?}
+end AddBook;
+
+op schema RemoveBook is
+dec
+    bookNo? : BookID
+pred
+    changes_only {books,reserved};
+    bookNo? in dom(books) diff dom(onLoanTo);
+    books' = {bookNo?} dom_subtract books; 
+    reserved' = reserved diff {bookNo?}
+end RemoveBook;
+
+op schema AddToReserve is
+dec
+    bookNo? : BookID
+pred
+    changes_only {reserved};
+    bookNo? in dom(books) diff (reserved union dom(onLoanTo));
+    reserved' = reserved union {bookNo?}
+end AddToReserve;
+
+op schema RemoveFromReserve is
+dec
+    bookNo? : BookID
+pred
+    changes_only {reserved};
+    bookNo? in reserved;
+    reserved' = reserved diff {bookNo?}
+end RemoveFromReserve;
+
+op schema AddReader is
+dec
+    readerNo? : ReaderID;
+    rDesc?     : ReaderDesc
+pred
+    changes_only {readers};
+    readerNo? not_in dom(readers);
+    readers' = readers func_override {readerNo? |--> rDesc?}
+end AddReader;
+
+op schema RemoveReader is
+dec
+    readerNo? : ReaderID
+pred
+    changes_only {readers};
+    readerNo? in dom(readers) diff ran(onLoanTo);
+    readers' = {readerNo?} dom_subtract readers
+end RemoveReader;
+
+op schema BorrowBook is
+dec
+    bookNo? : BookID;
+    readerNo? : ReaderID
+pred
+    changes_only {onLoanTo};
+    readerNo? in dom(readers);
+    bookNo? in dom(books) diff (reserved union dom(onLoanTo));
+    #(onLoanTo ran_restrict {readerNo?}) < maxloans;
+    onLoanTo' = onLoanTo func_override {bookNo? |--> readerNo?}
+end BorrowBook;
+
+op schema ReturnBook is
+dec
+    bookNo? : BookID
+pred
+    changes_only {onLoanTo};
+    bookNo? in dom(onLoanTo);
+    onLoanTo' = {bookNo?} dom_subtract onLoanTo 
+end ReturnBook;
+
+op schema RetrieveBookDesc is
+dec
+    bookNo? : BookID;
+    desc!  : BookDesc
+pred
+    changes_only {};
+    bookNo? in dom(books);
+    desc! = books(bookNo?)
+end RetrieveBookDesc;
+
+op schema RetrieveReaderDesc is
+dec
+    readerNo? : ReaderID;
+    rDesc!  : ReaderDesc
+pred
+    changes_only {};
+    readerNo? in dom(readers);
+    rDesc! = readers(readerNo?)
+end RetrieveReaderDesc;
+
+
+op schema RetrieveBooksBorrowed is
+dec
+    readerNo? : ReaderID;
+    borrowedSet!  : power BookID
+pred
+    changes_only {};
+    readerNo? in dom(readers);
+    borrowedSet! = dom(onLoanTo ran_restrict {readerNo?})
+end RetrieveBooksBorrowed
+
+end Library

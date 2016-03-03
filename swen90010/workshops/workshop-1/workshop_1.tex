@@ -1,0 +1,224 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+\input{../packages}
+
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+
+\tutorialtitle{1}
+
+\section*{Introduction}
+\label{section:introduction}
+
+The aim of this workshop is to start getting you familiar with:
+
+\begin{itemize}
+  \item Ada syntax;
+  \item problem solving in Ada and methods for expressing certain
+    computations; and
+  \item compiling and executing Ada programs.
+\end{itemize}
+
+This first Ada workshop aims to give you a look at strings, character handling, specifications, package bodies, and generic packages. The program that you will be working with is simple; the aim is to learn Ada and not to test your programming ability (although this will come later).
+
+It is not necessarily intended that you complete workshops in the allocated time slot. The workshops in the subject are set to a length that you may often have to complete the final tasks outside of contact hours.
+
+\section*{Tools}
+
+All tools we use in this subject are available on lab machines. The tools we will be using in this workshop are the GNAT Ada compiler and GNAT Programming Studio (GPS). 
+
+If you want to install the tools on your local machine, they can be downloaded from  \url{http://libre.adacore.com/tools/spark-gpl-edition/}. Later in the subject, we will be using the SPARK toolkit in combination with these, so you should download and install the following two packages:
+
+\begin{itemize}
+ \item GNAT Ada GPL 2014
+ \item SPARK GPL 2014
+\end{itemize}
+
+\section*{Specification}
+\label{sec:spec}
+
+\paragraph{Overview}  The \emph{WordCount} program accepts a string from the standard input and delivers a count of words in the input string.  
+
+The following is a list of requirements:
+
+\begin{enumerate}
+
+  \item The program should accept a string characters on the standard
+    input and count the number of words in the input.
+
+  \item The input is terminated by a `\#' character.
+
+  \item Words are separated by white spaces. To simplify the task, assume that white spaces are the space character (i.e.\ ignore tabs and new line characters).
+
+  \item For the purposes of this workshop, a character that is not a whitespace character.
+    
+  \item The output is a single integer displaying the word count.
+
+\end{enumerate}
+
+\section*{Input and output}
+
+In the subject notes, we have already encountered the \texttt{Put} and \texttt{Put\_Line} procedures for printing string to standard output (defined in the \texttt{Ada.Text\_IO} and \texttt{Ada.Integer\_Text\_IO} packages).
+
+To receive a \emph{single character} from standard input, use:
+
+\begin{itemize}
+ \item \texttt{Get(Ch : out Character)}: Gets the next character from standard input.
+\end{itemize}
+
+\section*{Subprograms and Packages}
+\label{section:packages}
+
+Recall that Ada does not require the main procedure to be called \texttt{main}, but each compilation unit must be stored in a file of the same name. If you are going to call your procedure for this workshop \texttt{WordCount} then you must store your procedure in the file named \texttt{wordcount.adb} or \texttt{WordCount.adb}. Recall that the \texttt{.adb} extension is for implementations and the \texttt{.ads} extension is for specifications.
+
+\section*{Some supporting files}
+\label{section:files}
+
+There are two  supporting files available from the subject repository:
+
+\begin{enumerate}
+
+  \item \texttt{ProtectedStack.ads} --- containing the {\em specification} of a
+    protected generic stack abstract data type.
+
+  \item \texttt{ProtectedStack.adb} --- containing the {\em implementation} of the protected generic stack.
+
+  \item \texttt{WordCount.adb} --- a compilation unit that gets your started on the word counting program.
+ 
+\end{enumerate}
+
+
+
+\section*{Tasks}
+
+\begin{enumerate}
+
+ \item Your first task is to download the supporting source code for the workshop, available from the LMS.
+
+\begin{comment}
+ get access to the subject repository. All subject material will be hosted on a Git repository. If you are unfamiliar with Git, there is a nice tutorial available at \url{https://confluence.atlassian.com/x/cgozDQ}. For the remainder of this subject, it is assumed that you will now how to pull changes are a git repository.
+
+ The subject repository is hosted at \url{https://gibber_blot@bitbucket.org/gibber_blot/swen90010-2015.git}. 
+
+ To clone this on the command line (Windows, Mac, or Unix), use:
+
+ \quad\texttt{git clone https://gibber\_blot@bitbucket.org/gibber\_blot/swen90010-2015.git}
+
+To update the repository in future, run \texttt{git pull}.
+\end{comment}
+
+ \item Your next task is to test that you can run the Ada compiler. You can do this using \texttt{gnatmake} from the terminal or using GNAT Professional Studio (GPS). 
+
+  Run \texttt{gnatmake} command on the protected stack package using \texttt{gnatmake protectedstack} to see if the compiler executes successfully. \texttt{gnatmake} can be found at \texttt{C:\textbackslash GNAT\textbackslash 2014\textbackslash bin\textbackslash gnatmake}
+
+  To run on GPS, you must set up a project, and import the files. First, open GPS. This can be found under the main Windows menu. If you cannot find it there (sometimes this just happens!), the executable file itself is at \texttt{C:\textbackslash GNAT\textbackslash 2014\textbackslash bin\textbackslash gnat-gps}.
+
+ Instructions for how to create, build, and run the \texttt{WordCount} skeleton program can be found in the Appendix.
+
+ \item Implement the word counting program specified in the \emph{Specification} section, and run a few tests to convince yourself that the program works on most inputs.
+
+   Tip: it is of course a good idea to implement your program incrementally. Start by writing and running a small program that extends the program given.
+
+ \textbf{Note} the following in the skeleton provided. \texttt{ProtectedStack} is importaed by adding the following:
+
+  \begin{enumerate}
+
+    \item At the top of word count program, including the following:
+
+      \quad\quad\textbf{with} \texttt{Ada.Strings.Unbounded;} 
+
+     This provides us with a data type representing a string of an unbound size. Recall that strings are just character arrays, so have a bounded length. The \texttt{Ada.Strings.Unbounded} package allows us to simulate variable length strings in Ada. There are some tips on how to use this package below.
+
+    \item In the declarations of the program:
+
+        \quad\quad\textbf{package} \texttt{ASU} \textbf{renames} \texttt{Ada.Strings.Unbounded;}
+
+        \quad\quad\textbf{use} \texttt{ASU;}
+
+        \quad\quad\textbf{package} \texttt{StringStack} \textbf{is new} \texttt{ProtectedStack(100, ASU.Unbounded\_String);}
+
+        The final line introduces some new syntax and a new concept that we have not seen before: \emph{generics}. The protected stack module uses a generic type, which means that the type can be instantiated at compile time, rather than design time.
+
+        In the above, we create a new package called \texttt{StringStack}, which is the same as \texttt{ProtectedStack}, except it accepts strings; specifically, unbounded strings.
+
+        To declare a stack, use:
+
+        \quad\quad\texttt{St : StringStack.Stack;}
+     \end{enumerate}
+
+     \item Every time a word is recognised, \emph{push} the recognised
+      word on the protected stack.
+
+    \item Write a loop to \emph{pop} every word from the protected stack and print it using \texttt{Put}. The result should be the words from the input text printed in  reverse order.
+
+\end{enumerate}
+
+\subsection*{Tips}
+
+Strings, and unbounded strings, have some procedures and functions that are relevant to this workshop:
+
+\begin{itemize}
+
+ \item To append a character, \texttt{Ch}, to a string, \texttt{Str}, use: \texttt{Str := Str \& Ch;}
+
+ \item To check if a character, \texttt{Ch}, is a tab, use \texttt{Ch = Ada.Characters.Latin\_1.HT}. Remember to import the package!
+
+ \item To convert from a string to an unbound string and vice-versa, use \texttt{ASU.To\_Unbounded\_String(Str : in String)} and \texttt{ASU.To\_String(UBStr : in Unbound\_String)} (where \texttt{ASU} is the renamed package above).
+
+
+\end{itemize}
+
+\appendix
+
+\section{Creating, building, and running a project in GNAT Professional Studio}
+
+Here are the steps to follow to set up and build a project in GPS:
+
+\begin{enumerate}
+
+\item When you first start it up, select the option to create a new project. Select the path to be the path that points to the workshop-1 source code.
+
+\item To identify a ``main'' file for the project, select \emph{Project} $\rightarrow$ \emph{Edit Project Properties} $\rightarrow$ \emph{Main files} $\rightarrow$ \emph{Add}, and select \texttt{wordcount.adb}. Click \emph{Ok}.
+
+\item To build the project, select \emph{Build} $\rightarrow$ \emph{Project}$\rightarrow$ \emph{Build all}, which will compile the \texttt{wordcount.adb} file, and the related files (protected stack).
+
+\item To run the program, select  \emph{Build} $\rightarrow$ \emph{Run}$\rightarrow$ \emph{wordcount}, and just click \emph{Execute}. For the template word count program, it accepts a single character and prints ``Hello world!:'', followed by the character.
+
+\end{enumerate}
+
+
+
+\begin{comment}
+\section{Accessing the ``timber'' machine from the labs}
+\label{app:timber-access}
+
+  To access the \texttt{timber} Linux machine from the labs, you can connect to  \texttt{timber.csse.unimelb.edu.au} using MobaXterm. All enrolled students have an account on the machine. Your username will be the same as your central university ID. Your default password is your username. Two important notes:
+
+  \begin{enumerate}
+
+   \item Change your password \emph{as soon as you long in for the first time}. 
+
+   \item If you know your friend's username, please do not log in under their name for a joke. It may seem funny (and if you do something clever, it could actually be funny!), but it is a breach of the University security policy.
+
+  \end{enumerate}
+
+  To log in, go to ``Start'' $\rightarrow$ ``All programs'' $\rightarrow$ ``Network Apps'' $\rightarrow$ ``MobaXterm''. 
+
+  Once the MobaXterm window is up, from the top menu select ``Session'' $\rightarrow$ ``SSH'' and enter \texttt{timber.csse.unimelb.edu.au} into the host field. Check the ``username'' box, and type in your username. Connect to the machine, enter your password when prompted, and select ``No'' when asked if you want your password remembered.
+
+  You should now see a Unix shell.
+
+  Type ``passwd'' at the shell prompt to change your password on the machine.
+
+  If you want to open more terminal windows, type ``gnome-terminal'' at the prompt.
+\end{comment}
+
+\end{document}
+
+% LocalWords:  ProtectedStack adb WordCount ASU StringStack Str versa
+% LocalWords:  UBStr wordcount CIS username MobaXterm gnatmake passwd
+% LocalWords:  protectedstack svn

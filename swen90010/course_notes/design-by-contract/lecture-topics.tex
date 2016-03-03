@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+
+\def\rootdir{../}
+
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{javabackground}{rgb}{0.9,0.9,0.9}
+\definecolor{javablack}{rgb}{0,0,0}
+
+
+\lstset{language=Ada,
+  backgroundcolor=\color{javabackground},
+  basicstyle=\ttfamily\fontsize{10}{12}\selectfont,
+  keywordstyle=\color{javablack}\bfseries,
+  aboveskip={1.5\baselineskip},
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=single,
+  numbersep=10pt,
+  stepnumber=1,
+  tabsize=8,
+  xleftmargin=0ex,
+  xrightmargin=0ex,
+  showspaces=false,
+  showstringspaces=false,
+  aboveskip=0.5ex
+}
+
+
+
+\begin{document}
+
+\section*{Lecture aims}
+
+ \begin{enumerate}
+
+ \item To understand the motivation, advantages, and disadvantages of design by contract.
+
+ \item To specify formal contracts for small- and medium-scale packages in SPARK.
+
+
+ \end{enumerate}
+
+\section*{Lecture plan}
+  
+\subsubsection*{Introduction to DbC}
+
+\begin{enumerate}
+
+  \item Based on the metaphor of ``clients'' and ``suppliers'', who have \emph{obligations} for and receive  \emph{benefits} from (respectively) a mutual \emph{contract}. Contracts are formal, mathematical statements specifying module behaviour.
+
+  \item Developed by Bertrand Meyer, while a professor University of California, Santa Barbara. DbC + Eiffel efforts resulted in the 2006 ACM Software System Award.
+
+  \item Re-iterate concepts of information hiding, encapsulation, and ADTs.
+
+\end{enumerate}
+
+\subsubsection*{Specifying ADT interfaces}
+
+\begin{enumerate}
+
+ \item Importance of interfaces (for information hiding of ADTs).
+ 
+ \item Discuss comments as interface specifications, and show example below.
+
+ \item Discuss idea of preconditions and postconditions as \emph{structured comments}, and show 2nd example below.
+
+ \item Advantages of pre/post approach: (1) obligations are clear; and (2) forces designer to consider issues (especially preconditions and postconditions).
+
+ \item Introduce the concept of a \emph{contract}:  an agreement between two or more parties with mutual obligations and benefits.  Show first table below.
+
+ \item Metaphor of contracts and software: module is the supplier and the calling code is the client. Using contracts on interfaces ensures that interaction between components is governed by contracts.
+
+ \item Contracts have at least: invariant, precondition, and postcondition.
+
+\end{enumerate}
+
+\subsubsection*{Formal contracts}
+
+\begin{enumerate}
+
+ \item DbC paradigm advocates that software designers should define \emph{formal}, \emph{precise} and \emph{verifiable} contracts. 
+
+ \item Draw similarities with \emph{assertions}. The DbC paradigm goes further:  assertions are so valuable in establishing software correctness, they should be a routine part of the software design.
+
+ \item Show Java  example below.
+
+ \item Advantages of formal contracts: precise behaviour (documentation) --- thinking over the issues goes a long way towards ensuring correctness; runtime assertions; test oracles; static analysis; and no duplication of precondition checks.  Disadvantages: small overhead, which is recovered quickly.
+
+\end{enumerate}
+
+\subsubsection*{SPARK contracts}
+
+\begin{enumerate}
+
+ \item Pre/post annotations are optional (unlike ``own'' and ``derives'').
+
+ \item SPARK pre/post annotations are propositions + quantifiers. All normal SPARK/Ada expressions can be used as well.
+
+  \item Show Swap\_Add\_Max example below. Stress importance of preconditions for Add and Divide operations
+
+ \item Things to note: \texttt{V'Old} to refer to pre-state value; similarity to using prime in Alloy; contracts specify a state machine.
+
+\end{enumerate}
+
+\pagebreak
+
+\lstset{language=Java}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+//Implements a bounded stack data type.
+//The stack must also be less than a specified size.
+public class StackImpl implements IStack
+{
+  //Create a new empty stack, with a maximum size, which
+  // must be greater than 0
+  public StackImpl(int size);
+
+  //Add Object o to the top of the stack
+  // if the stack is not full.
+  public void push(Object o);
+
+  //Return and remove the object at the top of the stack
+  // if the stack is not empty.
+  public Object pop();
+
+  //Return the size of the stack.
+  public int size();
+}
+\end{lstlisting}
+
+\vfill
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+   & \textbf{Obligation} & \textbf{Benefit}\\
+\midrule
+ \textbf{Client} & Pay for product & Receives product \\
+ \textbf{Supplier}  & Provide product & Receives income\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vfill
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+   & \textbf{Obligation} & \textbf{Benefit}\\
+\midrule
+ \textbf{Client} & Establish precondition & Receives result of computation \\
+ \textbf{Supplier}  & Provide result of computation & Has precondition established\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vfill
+
+\pagebreak
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/design-by-contract/code/Swap_Add_Max.ads}
+
+\pagebreak
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/design-by-contract/code/linear_search.ads}
+
+
+\end{document}  
+
+% LocalWords:  init PreFill PostFill FillOK GSM de Franche

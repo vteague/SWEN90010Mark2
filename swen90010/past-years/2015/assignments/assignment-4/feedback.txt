@@ -1,0 +1,18 @@
+SPARK contracts: /4
+=====================
+
+- Correctness & completeness: /3
+- Consistency: /1
+
+SPARK Implementation: /3
+==========================
+
+- Correctness: /1
+- SPARKness: /1
+- Clarity and code formatting: /1
+
+Discussion: /3
+================
+
+Total: /10
+============

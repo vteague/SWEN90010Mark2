@@ -1,0 +1,118 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+\lstset{language=}
+\tutorialtitle{5}
+
+\section*{An Introduction}
+
+This workshop is about specifying system behaviour in Sum. As in workshop 4, we'll be using the Possum animation tool for evaluation and testing to help learn the language and its possibilities. We'll also introduce a typechecker for Sum, which can be used to prove that a Sum specification is type consistent.
+
+The aim of the workshop is to continue building your confidence with Sum, building experience with Possum, and to show you how to run the Sum typechecker.
+
+\section*{Typechecking Sum state machines}
+
+Before you start this task, update your local copy of the subject repository. In the directory \texttt{workshops/ workshop-5/models}, you will find a specification of the chemical storage tank system used in the lectures. This is located in the file \texttt{storage.sum}.
+
+To perform a syntax check on the specification, run:
+
+ \quad\quad \texttt{sumtt storage.sum}
+
+To perform a syntax and type check on the specification, run:
+
+ \quad\quad \texttt{sumtt -T storage.sum}
+
+Running the typechecker on the storage specification should result in no errors. Try changing the line 19 of the specification to the following and re-run the typecheck to see what happens:
+
+\quad\quad \texttt{light = on <=> ...}   to  \texttt{light = reading <=> ...}
+
+The error message states that the expected types on either side of the \texttt{=} operator are inconsistent. It is expecting the type for the \texttt{=} operator to be \texttt{(poly T cross poly T )  --> bool}, but the left operator (type \texttt{Light}) is not the same as the right (type \texttt{int}).
+
+\section*{Animating Sum state machines with Possum}
+
+The following section is adapted from the Possum user guide, which is available on the LMS (under the \emph{Workshops} menu) and in the subject repository.
+
+Possum can be used to load a Sum specification and to step through successive states of a Sum state machine:
+
+\begin{enumerate}
+
+ \item The first step is to read the specification into Possum. Select \emph{Read Spec ...} from the \emph{Files} menu and open the file named \emph{storage.sum}.
+
+ \item Possum has a notion of a ``current module''. To be able to work with the \texttt{Storage} module, you must make it the current module by typing:
+
+\quad\quad \texttt{param currentmodule Storage}
+
+into the Possum interpreter window and hit \emph{Ctrl-Enter} (or by selecting \texttt{Storage} as the current module under the \emph{Parameters ...} option of the \emph{Dialogs} menu).
+
+ \item  When stepping through a state machine, we often want to see how the state is updated after various operations. To display the state, type:
+
+\quad\quad \texttt{display state}
+
+into the Possum interpreter window (then \emph{Ctrl-Enter}). This should open a window containing a list of state variables and their values. Note that the state variables are unbound because no operation has been invoked yet.
+
+\item The next thing to do is to initialise the module. You can do this by typing:
+
+\quad\quad \texttt{init}
+
+into the Possum interpreter window. The query response is a schema binding for the module state, which shows the state variables and their current values. Note also that the state display window is updated, and that the new values correspond to those of their dashed counterparts in a satisfying binding of the schema init which has just been invoked. Possum has overwritten the undashed bindings with the values provided by the dashed bindings.
+
+\item We can now invoke operation schemas. Invoking the \texttt{Fill} operation can be done using the following:
+
+\quad\quad \texttt{Fill \{2/amount?\} >>}
+
+Note that this syntax is the same as Sum variable renaming, except that when using Possum, a variable can be renamed with expressions as well as variables. In this case, the command above is equivalent to the \texttt{Fill} operation schema, but with all references to the variable \texttt{amount?} replaced by the expression \texttt{2}.
+
+The \texttt{>>} operator on the end is used to ``flush'' variable bindings. The nuances behind this are not important for this subject, but you should always use \texttt{>>} at the end of calls to operations, otherwise you may encouter headaches in some cases.
+
+\item Key \emph{Ctrl-Up} in the interpreter window to go to the previous command. Doing this repeatedly will iterate over all previous commands. \emph{Ctrl-Down} will go back the other way.
+
+Using this, fill the storage tank with 1 unit again. Note that the state variables continue to update.
+
+\item Key \emph{Ctrl-Enter} on an empty command line to undo the previous command. Note that the state variables revert to their values from before the previous command.
+
+\item You can use scripts to save and rerun queries on Possum modules as well. Select \emph{Save ...} from the \emph{Files} menu, and save the file as \texttt{storage.script}. Then select \emph{reset} from the Possum menu or quit and restart Possum. Select \emph{Run Script ...} from the \emph{Files} menu and run the saved file. This will run all commands from the saved session.
+
+\end{enumerate}
+
+\section*{Your tasks}
+
+\begin{enumerate}
+
+ \item Load the \texttt{Storage} specification, change the current module to \texttt{Storage}, and initialise the module.
+
+ \item Invoke a query that adds a 50 units to the tank.
+
+ \item Invoke a query that adds 5000 units to the tank. Note that this takes  the tank beyond its capacity, so the \texttt{report!} variable should report this.
+
+ \item Invoke a query that adds -1 units to the tank. What is the output? What do you think this means?
+
+ \item The danger level in the storage module is set at 50. Add an operation that can change the danger level to a specified value, provided that the value is not larger than half of the capacity of the tank. Add both normal and error case operations for this.
+
+  Note, for this to work, you will have to remove the constraint \texttt{danger\_level = 50} from the state invariant of the \texttt{state} schema.
+
+  TIP: The division expression \texttt{5/2} has no solution because the \texttt{/} operator is for integer division, and therefore only has a solution when there is no remainder. Instead, use the \texttt{div} operator, which rounds down to the nearest integer: \texttt{5 div 2} will equal 2.
+
+  HINT: If the danger level changes, this may affect whether the light is on.
+
+  Before testing with Possum, use the Sum typechecker to detect any type faults that may have been introduced.
+
+ \item In the \texttt{FillOk} operation, the precondition prevents the tank being filled if the specified amount would overfill the tank.
+
+  Write a function called \emph{fillsafe} as an axiom that checks whether the tank will be overfilled for a specified amount. This axiom must take, as input, the current contents, the capacity, and the proposed amount to be added, and must return true if and only if the tank will not overfill. Add this axiom before the state declarations, but inside the module.
+ 
+ Re-write the \texttt{FillOK} and \texttt{OverFill} operations to use the \emph{fillsafe} function in place of the current precondition.
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  typechecker Typechecking sumtt typecheck bool param
+% LocalWords:  currentmodule Ctrl Dialogs init undashed FillOk FillOK
+% LocalWords:  fillsafe

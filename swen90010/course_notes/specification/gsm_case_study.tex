@@ -1,0 +1,263 @@
+\section{Case study: The GSM 11.11 system}
+
+In the remainder of this chapter, we will walk through a case study of a system in which model-based specification was used to specify components. Further, the specification was used to automatically generate a test suite for the component. The case study is simplified to remove some elements that are not of interest, or are out of the scope of the subject.
+
+The entire Sum specification can be found in the subject repository under \texttt{chapter-3/code}.
+
+The system is a specification of the GSM 11.11 standard \cite{gsm99}: a standard for SIM file systems and file access on mobile devices. The standard is implemented by many modern mobile and smart phones, and has specific security aspects that are unique to this standard.
+
+\subsection{The informal specification}
+The GSM 11.11 Standard is a smart card application for mobile phones
+that describes the interface between the {\em Subscriber Interface
+  Module} (SIM) and the {\em Mobile Equipment} (ME).  Only a subset of the complete standard is modelled here: the selection, reading and updating of files on the SIM, and the
+security access associated with them.
+
+\subsubsection{Files}
+
+There are two types of files in the GSM standard:
+\begin{itemize}
+\item Elementary Files (EF), which contain the data. Data is 
+stored as a sequence of sequence of records, with each record
+being a sequence of bytes.
+\item Dedicated Files (DF), which are directories and can contain
+EFs and other DFs. There is one special DF called the Master File
+($\mathit{mf}$), which is the root directory.
+\end{itemize}
+
+In GSM 11.11, there are two DFs. One is the Master File, and the other
+is called $df\_gsm$, which is a child of the Master File.  There are 6
+EF files.  Figure~\ref{fig:gsm-file-structure} shows the structure of
+the file system. DFs and EFs are prefixed with $df$ and $ef$
+respectively.
+
+\begin{figure}
+ \begin{center}
+ $\xymatrix{
+  & {mf}\ar[dl]\ar[dr]\\
+  ef\_iccid & &  df\_gsm\ar[dr]\ar[dl]\ar[d]\ar[ddl]\ar[ddr]& \\
+  & ef\_acm & ef\_nia & ef\_lp \\
+  & ef\_ad &  & ef\_imsi & \\
+ }$
+ \end{center}
+\caption{The directory structure of the GSM 11.11 SIM file system}
+\label{fig:gsm-file-structure}
+\end{figure}
+
+The system maintains a current directory (a DF) and a current file (an
+EF). The user can change the values of these by selecting them
+explicitly.  If a DF is selected, and that selection is valid, this
+becomes the current directory. No current file is marked as being
+selected after the selection of a DF. If an EF is selected, and that
+selection is valid, this becomes the current file, and the current
+directory is unchanged. A selection is valid if one of the following
+conditions holds:
+\begin{itemize}
+\item the selected file is the master file; or
+\item the selected file is a child or parent of the current
+  directory.
+\end{itemize}
+
+Once an EF is selected, the user can attempt to read or update that
+EF. The EF must first have the correct read or update permissions
+in order to be read or updated respectively (discussed in the next
+section). If the permissions are correct, the user can read or update a specific record.
+If any problems occur during the selection, reading, or updating for a
+file, specific error codes are returned.
+
+\subsubsection{Security}
+
+To read or update an EF, the file must have the correct access
+permissions. Each EF has its own access conditions for reading
+and updating. A {\em personal identification number} (PIN) can be
+presented to the SIM to grant new access permissions. The access
+rights corresponding to a PIN are blocked if three consecutive,
+incorrect PINs are presented to the SIM. This can be unblocked by
+presenting, to the SIM, a {\em personal unblocking key}
+(PUK). However, after ten consecutive, incorrect PUKs,
+further access to certain files will be restricted.
+
+There are four types of access conditions for EFs:
+
+\begin{itemize}
+\item Always (ALW): The action can be performed with no restrictions.
+\item Never (NEV): The action can never be performed through the SIM/ME
+  interface. This action may be performed internally by the SIM.
+\item Administrator (ADM): Allocation of these levels and their
+  requirements for fulfilling access conditions is the responsibility of the
+  administrative authority.
+\item Card Holder Verification (CHV): The action is only possible if
+  the correct PIN or PUK has been entered during the current session.
+\end{itemize}
+
+\subsection{The system components}
+
+The GSM 11.11 system is a system programming interface to other systems/applications on the device. As such, the main component is this interface. In our specification, the components are split into three components:
+
+ \begin{enumerate}
+
+  \item the file access sub-component, which models the selection and reading/updating of files, and which we will call the \texttt{GSMFiles} component;
+  \item the security sub-component, which models the security features and how it interacts with the selection of files, and which we will call the \texttt{GSMSecurity} component; and
+  \item the higher-level component that pulls these two together, which we will call the \texttt{GSM} component.
+
+\end{enumerate}
+
+The module system in Sum allows us to split these into three separate modules. However, understanding how the module system works, especially with regards to schema inclusion, is not a straightforward task, and would only impart skills that are specific to Sum, rather than model-based specification in general. As such, we include the three components into a single module for simplicity.
+
+\subsection{Defining data sets and types}
+
+\subsubsection*{\texttt{GSMFiles}}
+
+The set of all files is modelled using a free type, and the file hierarchy is modelled as an abbreviation:
+
+\lstinputlisting[caption={Data types representing files in the GSM model},linerange={7-17}]{\rootdir/specification/code/gsm.sum}
+
+For the data inside the files, we model the records as sequences of sequences of bytes:
+
+\lstinputlisting[caption={Data types representing file data in the GSM model},linerange={19-27}]{\rootdir/specification/code/gsm.sum}
+
+\subsubsection*{\texttt{GSMSecurity}}
+
+For the security sub-component, we have to model the set of PINs, the types of file permissions (modelled as a free type), the status of the CHV files (also a free type), and the read and write permissions for individual files (abbreviations):
+
+\lstinputlisting[caption={Data types representing security data in the GSM model},linerange={56-82}]{\rootdir/specification/code/gsm.sum}
+
+\subsection{Defining the state}
+
+\subsubsection*{\texttt{GSMFiles}}
+
+The state of the \texttt{GSMFiles} models the current directory and file, and the data in each file:
+
+\lstinputlisting[caption={The state of the \texttt{GSMFiles} component},linerange={29-50}]{\rootdir/specification/code/gsm.sum}
+
+Note that the current file is modelled as a set. The state invariant specifies that the size of the set is less than \texttt{2}, meaning that the set can either be empty (no selected file) or contain one element (the current file).
+
+\subsubsection*{\texttt{GSMSecurity}}
+
+For the security component, we model the current file, the number of PIN and unblock attempts remaining, the current permissions, and the PIN:
+
+\lstinputlisting[caption={The state of the \texttt{GSMSecurity} component},linerange={88-101}]{\rootdir/specification/code/gsm.sum}
+
+The state invariant specifies that if the CHV is blocked, access to CHV files is denied.
+
+\subsubsection*{\texttt{GSM}}
+
+The state of the \texttt{GSM} component simply includes the states of its two sub-components:
+
+\lstinputlisting[caption={The state of the \texttt{GSM} component},linerange={103-110}]{\rootdir/specification/code/gsm.sum}
+
+This is an example of including schemas from other components to define the state, as discussed in Section~\ref{sec:specification:sum:schema-calculus}.
+
+\subsection{Initialisation}
+
+\lstinputlisting[caption={The init operation of the \texttt{GSMFiles} component},linerange={112-125}]{\rootdir/specification/code/gsm.sum}
+
+\lstinputlisting[caption={The init operation of the \texttt{GSMSecurity} component},linerange={127-140}]{\rootdir/specification/code/gsm.sum}
+
+\lstinputlisting[caption={The init operation of the \texttt{GSM} component},linerange={142-146}]{\rootdir/specification/code/gsm.sum}
+
+\subsection{Modelling normal behaviour}
+
+\subsubsection*{\texttt{GSMFiles}}
+
+We'll walk through only part of the behaviour, as the entire specification is too large for inclusion in these notes. For the file system, we'll focus on the selection of a file. The normal behaviour is broken into two operations: selecting a directory and selecting an elementary file. These two operations can be specified as follows:
+
+\lstinputlisting[caption={The ``normal'' behaviour for selecting a directory in the \texttt{GSMFiles} component},linerange={161-182}]{\rootdir/specification/code/gsm.sum}
+
+\lstinputlisting[caption={The ``normal'' behaviour for selecting a file in the \texttt{GSMFiles} component},linerange={184-200}]{\rootdir/specification/code/gsm.sum}
+
+We can then bring these two normal operations together using schema disjunction: the normal behaviour is that either directory is selected, or a file is selected:
+
+\lstinputlisting[caption={The ``normal'' behaviour for selecting a file or directory in \texttt{GSMFiles} component},linerange={202-205}]{\rootdir/specification/code/gsm.sum}
+
+There are additional operations for normal behaviour: \texttt{UPDATE\_FILE\_OK} and \texttt{READ\_FILE\_OK}. These update/read a record in/from an elementary file, if and only if the record is valid (the index of the record is not out of bounds).
+
+\subsubsection*{\texttt{GSMSecurity}}
+
+For the security component, we'll look at the behaviour of entering the PIN to get access to the CHV status files. The normal behaviour is that the CHV is not already blocked (we have not entered the wrong PIN \texttt{MAX\_CHV} number of times), and that the entered PIN is correct. If this happens, access to CHV files is granted, and the number of remaining attempts is reset to \texttt{MAX\_CHV}:
+
+\lstinputlisting[caption={The ``normal'' behaviour for verifying access to CHV in the \texttt{GSMSecurity} component},linerange={437-455}]{\rootdir/specification/code/gsm.sum}
+
+Note the use of function override. The states that value of the  \texttt{permission\_session} variable remains the same, except for the \texttt{chv} files, which is \emph{overridden} with the value \texttt{true}.
+
+There are three additional normal behaviour operations in the security component: \texttt{UPDATE\_PERMISSION\_OK}, which specifies the behaviour for when update permission is granted on the currently selected file; \texttt{READ\_PERMISSION\_OK}, which specifies the same for reading the currently selected file; and \texttt{UNBLOCK\_CHV\_OK}, which specifies the behaviour for when a correct PUK is presented to unblock a blocked CHV (and reset the current PIN).
+
+\subsection{Modelling exceptional behaviour}
+
+In the GSM model, and in other models generally, exceptional behaviour takes up a bulk of the specification.  There are several exceptional behaviour schemas in the GSM Sum specification, some of which are presented below.
+
+\subsubsection*{\texttt{GSMFiles}}
+
+For the file system component, we'll again focus on the file selection behaviour. When selecting a directory, there are two possible ways that the selection can fail: either the selected file is not a directory; or the selected file is a directory, but  is not valid (is not the master file or a child parent of the current directory). For selecting an elementary file, there are two possible failure modes: either the selected file is a directory; or the selected file is invalid (not in the current directory).
+
+We note that the first failure modes of both cases above are complementary; that is, one fails if the file is not a directory, and the other is the file is a directory. As such, we do not model this as an exceptional case: the exceptional case of one is the normal case of the other. Instead, we just model the invalid file selection:
+
+\lstinputlisting[caption={The exceptional behaviour for selecting a directory in the \texttt{GSMFiles} component},linerange={207-223}]{\rootdir/specification/code/gsm.sum}
+
+\lstinputlisting[caption={The exceptional behaviour for selecting a file in the \texttt{GSMFiles} component},linerange={225-238}]{\rootdir/specification/code/gsm.sum}
+
+We can then bring these two exceptional operations together using schema disjunction: the exceptional behaviour is that the selection of an elementary file or a directory has failed:
+
+\lstinputlisting[caption={The exceptional behaviour for selecting a file or directory in \texttt{GSMFiles} component},linerange={240-244}]{\rootdir/specification/code/gsm.sum}
+
+\subsubsection*{\texttt{GSMSecurity}}
+
+For unblocking the CHV, the security component must consider the following exceptional behaviour: trying to unblock the CHV when the maximum number of attempts has already been made; and trying to unblock the CHV with the wrong PIN:
+
+\lstinputlisting[caption={The exceptional behaviour for attempting to verify CHV access in the \texttt{GSMSecurity} component when the maximum number of attempts has already been made},linerange={457-467}]{\rootdir/specification/code/gsm.sum}
+
+\lstinputlisting[caption={The exceptional behaviour for attempting to verify CHV access in the \texttt{GSMSecurity} component using the wrong PIN},linerange={469-490}]{\rootdir/specification/code/gsm.sum}
+
+\subsection{Operation schema composition}
+
+In this step, we make the operations \emph{total} using schema composition. That is, using the schema calculus, we compose the normal and exceptional behaviour schemas so that all possible behaviour is covered. Note that this is not always required or even ideal. In some cases, we may want to specify normal behaviour and only part of the exceptional behaviour, because we do not believe there is a great risk of other parts of the exceptional behaviour occurring, so we will not incur the cost of handling them.
+
+In the GSM system, \emph{response codes} are used to provide feedback to the calling system for when an operation fails. Up until now, we have not modelled the response codes in the normal or exceptional behaviour. Instead, we model these are the higher level to improve abstraction.
+
+First, we declare the set of all response codes, taken directly from the GSM 11.11 standard:
+
+\lstinputlisting[caption={The error codes for the GSM system},linerange={148-150}]{\rootdir/specification/code/gsm.sum}
+
+The code \texttt{r9000} always means that the operation we successful, while the remaining codes are all error codes.
+
+Secondly, we declare the following schema, which is called in our schema compositions to provide response codes as outputs:
+
+\lstinputlisting[caption={The \texttt{RESPONSE} schema, used as part of schema compositions},linerange={152-159}]{\rootdir/specification/code/gsm.sum}
+
+Note that this schema simply takes the input and sends it as an output. This allows us to specify the response code as an input, but have it supplied as an output. The purpose of this becomes clearer in the next section.
+
+\subsubsection*{\texttt{GSMFiles}}
+
+For the file selection behaviour, we compose the normal behaviour of selecting a file with the invalid behaviour in a straightforward schema disjunction:
+
+\lstinputlisting[caption={The total behaviour for selecting a file in the \texttt{GSMFiles} component},linerange={246-252}]{\rootdir/specification/code/gsm.sum}
+
+This simply states that if the selection is valid, then allow the selection \emph{and} return the response code \texttt{r9000}. Otherwise, nothing should change, and the response code \texttt{r9404} is used to signify that the selection failed.
+
+\subsubsection*{\texttt{GSMSecurity}}
+
+For the verification of the CHV, there are two ways the operation can fail. Again, this is specified using schema disjunction:
+
+\lstinputlisting[caption={The total behaviour for verifying the CHV in the \texttt{GSMSecurity} component},linerange={492-500}]{\rootdir/specification/code/gsm.sum}
+
+Note that the response codes for the two exceptional cases are different, as specified by the GSM 11.11 standard.
+
+\subsection{Composing component specifications}
+
+The final step is to compose the two component specifications into the single GSM system. We have already done this for the state and init operation earlier. The operations described above work on this combined state, so the components are already integrated implicitly.
+
+However, for the read and update operations, the two components interact: a file can only be read/updated if the necessary read/update permissions allow it. To model this, we model the file selection and security checking in separate sets of operations, each connected to its specific component. Then, we compose the resulting operations together into a single disjunction:
+
+\lstinputlisting[caption={The total behaviour for reading a file in \texttt{GSM} system},linerange={335-349}]{\rootdir/specification/code/gsm.sum}
+
+The first part of the disjunction models the normal behaviour, while the remaining three model the exceptional behaviour. The \texttt{READ\_PERMISSION\_OK} operation only succeeds if the necessary permissions on the selected file are granted. The  \texttt{READ\_FILE\_NOT\_OK} operation actually does nothing: it specifies that if the reading fails for some reason, then the file system component should not provide the data in the file. The final two cases do not interact with the \texttt{GSMSecurity} component: if no file is selected or the selected record is out of bounds, then the security permissions are irrelevant. 
+
+% LocalWords:  lifecycle Abrial Sommerville VDM statecharts PDF LMS
+% LocalWords:  schemas nat powerset GivenType aboveskip sc FreeType
+% LocalWords:  ModuleName dec pred linerange OperationName pre init
+% LocalWords:  postconditions PrimaryColours forall emptyset structs
+% LocalWords:  LargeSchema LeftSchema RightSchema PostFill GSM EF DF
+% LocalWords:  EFs DFs mf df gsm ef dl dr iccid ddl ddr acm nia imsi
+% LocalWords:  PINs PUK PUKs ALW CHV CICS el issubset GSMFiles chv lp
+% LocalWords:  GSMSecurity SchemaName WinHEC Needham failproof FillOK
+% LocalWords:  OverFill NewVariable OldVariable pipedream logics
+% LocalWords:  FillTwice

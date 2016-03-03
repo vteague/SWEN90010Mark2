@@ -1,0 +1,56 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{\rootdir/packages}
+
+\begin{document}
+
+\lstset{language=Ada,aboveskip=3mm}
+\tutorialsolutionstitle{11}
+
+
+\section*{Exercises}
+
+\begin{enumerate}
+
+ \setcounter{enumi}{2}
+
+ \item The reason that this is proved without an explicit check on Q is because of the loop invariant. The loop invariant is \texttt{M = Q * N + R and R >= 0}. The value of \texttt{M} does not change, therefore we know that \texttt{M} cannot go out of bounds. Further, we know that \texttt{N > 0} (from the precondition), and \texttt{R >= 0} (from the loop invariant). So, if N, R, and M are all positive, it must be that Q is positive, so cannot be less than \texttt{Integer'First}. Further, if \texttt{M = Q * N + R}, then \texttt{Q = (M - R)/N}. Because R and N are both positive and \texttt{R < N} (from the branch condition), it must be that \texttt{Q < M}, so Q cannot be greater than \texttt{Integer'Last}.
+
+What is nice here is that this not-so-trivial reasoning is taken care of by the SPARK tools --- although the tools are not powerful enough to discharge \emph{all} verification conditions that are true (in fact, G\"odel showed that there are no complete and consistent set of axioms for mathematics, so no tools could possibly discharge all true verification conditions).
+
+ \item The issue here is that the \texttt{UseDivide} procedure does not protect the precondition of the \texttt{Divide} procedure. We can correct this in two ways: (1) add a precondition to  the \texttt{UseDivide} procedure:
+
+  \verb|    Pre => (N > 0 and M >= 0)|
+
+or (2) add code into the body of the \texttt{UseDivide} function to handle the cases in which the precondition is violated.
+
+
+ \item The contract can be written as:
+
+ \lstinputlisting[linerange={8-11}]{\rootdir/workshop-9/code/task4solution.ads}
+
+  The precondition specifies that the value at \texttt{AnIndex} is strictly less than \texttt{Integer'Last}, therefore, adding one to this cannot make the variable overflow. The implementation of the procedure remains the same, but the assumption that the precondition holds before executing the procedure means that the verification condition contains the precondition. From the \texttt{.why} file:
+
+\begin{lstlisting}
+((to_int(get(anarray, to_int1(anindex))) <  2147483647) 
+-> 
+ in_range((to_int(get(anarray, to_int1(anindex))) + 1))))
+\end{lstlisting}
+
+Here, 2147483647 is \texttt{Integer'Last}, thus, this is stating that if the element of \texttt{anarray} at index \texttt{anindex} is strictly less than the largest integer, then adding one to that element must be less then or equal to the largest integer.
+
+\item An implementation for the \texttt{Search} function is:
+
+\lstinputlisting[linerange={5-16}]{\rootdir/workshop-9/code/linear_search_solution.adb}
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  toolset Kazmierczak vcg idx sourcefile adb sparksimp Hoare pogs pogs siv
+% LocalWords:  gnatmake sparksimp AnArray AnIndex undischarged Hoare's arith yy
+% LocalWords:  conditionalswap siv cfg config factorials rlu odel Pre
+% LocalWords:  aboveskip linerange Integer'First Integer'Last anarray
+% LocalWords:  UseDivide anindex

@@ -1,0 +1,258 @@
+module GSMFiles is
+
+  //The files on the SIM
+  FILES ::= mf | df_gsm | ef_iccid | ef_lp | ef_imsi | ef_ad | ef_kc | 
+           ef_nia | ef_acm;
+
+  DF == {mf, df_gsm};   //the set of all directories
+  EF == {ef_iccid, ef_lp, ef_imsi, ef_ad, ef_kc, ef_nia, ef_acm};
+
+  //The hierarchy of the file system.
+  FILES_CHILDREN == {(mf, df_gsm), (mf, ef_iccid),(df_gsm, ef_lp),
+                        (df_gsm, ef_imsi),(df_gsm, ef_ad),
+                        (df_gsm, ef_nia), (df_gsm, ef_acm)};
+
+  //The data in each file is a sequence of records, 
+  //in which each record is MAXBYTES long.
+  BYTE == (-128..127);
+  MAX_BYTES == 8;
+  RECORD == {s : seq BYTE | #s < MAX_BYTES + 1};
+  DATA == seq RECORD;
+
+  //There is a maximum number of records in each EF
+  MAX_RECORDS == 4;
+
+  /////////////////////////////////////////////////////////////////////////
+  //STATE: consists of a current file, current directory, and data in the 
+  //       files. Directories do not contain data.
+  /////////////////////////////////////////////////////////////////////////
+  schema state is
+  dec
+    current_directory : DF;
+    current_file : power EF;
+    data : EF --> DATA
+  pred
+    //There is at most one current file
+    #current_file < 2;
+
+    //Each file has at most MAX_RECORDS number of records
+    forall f : dom(data) @ #data(f) < MAX_RECORDS + 1;
+
+    //If there is no current file, then the current file must be 
+    //in the current directory
+    current_file = {} or 
+      (exists cf : current_file @ (current_directory, cf) in FILES_CHILDREN)
+  end state;
+
+  /////////////////////////////////////////////////////////////////////////
+  //INIT: Initially, the current directory is the master directory, and 
+  //      there is no current file. All elementary files are empty.
+  /////////////////////////////////////////////////////////////////////////
+  schema init is
+  pred
+    current_file' = {};
+    current_directory' = mf;
+    data' = {(ef_iccid, <>), (ef_lp, <>), (ef_imsi, <>), (ef_ad, <>),
+                (ef_kc, <>), (ef_nia, <>),  (ef_acm, <>)}
+  end init;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_DF_OK: Models the selection of a directory if it is either  
+  //                   the master file, or a child/parent of the current 
+  //                   directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_DF_OK is
+  dec
+    ff? : FILES
+  pred   
+    //The select file must be a directory file
+    pre ff? in DF;
+
+    //The selected directory must be the master directory, a child of 
+    //the current directory, or a parent of the current directory
+    pre (ff? = mf or
+        (ff?, current_directory) in FILES_CHILDREN or
+        (current_directory, ff?) in FILES_CHILDREN);
+
+    current_directory' = ff?;
+    current_file' = {};
+    changes_only{current_directory, current_file}
+  end SELECT_FILE_DF_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_EF_OK: Models the selection of an elementary file if it is 
+  //                   in the current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_EF_OK is
+  dec
+    ff? : FILES
+  pred
+    //The selected file must be an elementary file
+    pre ff? in EF;
+
+    //The selected file must be in the current directory
+    pre (current_directory, ff?) in FILES_CHILDREN;     
+
+    current_file' = {ff?};
+    changes_only{current_file}
+  end SELECT_FILE_EF_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  // SELECT_FILE_OK: Models the selection of a DF or EF.
+  /////////////////////////////////////////////////////////////////////////
+  SELECT_FILE_OK == SELECT_FILE_DF_OK or SELECT_FILE_EF_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_DF_INVALID: Models the selection of a directory that is
+  //                        not the master file or a parent/child of the 
+  //                        current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_DF_INVALID is
+  dec
+    ff? : FILES
+  pred
+    //The select file must be a directory file
+    pre ff? in DF;
+
+    pre not( (ff? = mf or
+             (ff?, current_directory) in FILES_CHILDREN or
+             (current_directory, ff?) in FILES_CHILDREN));
+    changes_only {}
+  end SELECT_FILE_DF_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_DF_INVALID: Models the selection of a directory that is 
+  //                        not in the current directory.
+  /////////////////////////////////////////////////////////////////////////
+  op schema SELECT_FILE_EF_INVALID is
+  dec
+    ff? : FILES
+  pred
+   //The selected file must be an elementary file
+   pre ff? in EF;
+
+    (current_directory, ff?) not_in FILES_CHILDREN; 
+    changes_only {}
+  end SELECT_FILE_EF_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //SELECT_FILE_INVALID: Models the selection of an invalid file or 
+  //                     directory.
+  /////////////////////////////////////////////////////////////////////////
+  SELECT_FILE_INVALID == SELECT_FILE_DF_INVALID or SELECT_FILE_EF_INVALID;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_OK: Models the reading of a record if there is a current file
+  //              and the record exists in that file.
+  //              Returns the record at position rr?
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_OK is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    //There must be a selected file, and it must have a record at 
+    // position rr?
+    pre current_file /= {};
+    pre exists ff : current_file @ rr? in (1..#data(ff));
+
+    exists ff : current_file @ dd! = data(ff)(rr?);
+    changes_only {}
+  end READ_FILE_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_NOT_OK: Models the case that a read fails. Used in other 
+  //                  operations. Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_NOT_OK is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    dd! = <>;
+    changes_only {}
+  end READ_FILE_NOT_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_NO_SELECTED_FILE: Models the reading of a record when there
+  //                            is no current file.
+  //                            Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_NO_SELECTED_FILE is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    pre current_file = {};
+    dd! = <>;
+    changes_only{}
+  end READ_FILE_NO_SELECTED_FILE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //READ_FILE_OUT_OF_BOUNDS: Models the reading of a record that is out of 
+  //                         bounds.
+  //                         Returns an empty record.
+  /////////////////////////////////////////////////////////////////////////
+  op schema READ_FILE_OUT_OF_BOUNDS is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd! : seq BYTE
+  pred
+    pre current_file /= {};
+    pre exists ff : current_file @ rr? not_in (1..#data(ff));
+    dd! = <>;
+    changes_only {}
+  end READ_FILE_OUT_OF_BOUNDS;
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_OK: Models the update of a record if there is a current 
+  //                file and the index (rr?) is of an existing record, or
+  //                adds only to the end of the current file.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_OK is
+  dec
+    rr? :  1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file /= {};
+
+    //We can add a new record to the end of the file, or 
+    //update an existing one
+    pre exists ff : current_file @ rr? in (1 .. (#data(ff) + 1));
+    exists ff : current_file @ data' = data func_override
+				 {(ff |--> data(ff) func_override
+					{(rr? |--> dd?)})};
+    changes_only{data}
+  end UPDATE_FILE_OK;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_NO_SELECTED_FILE: Models the update of a record if there is
+  //                              no file currently selected. 
+  //                              Does not update the data.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_NO_SELECTED_FILE is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file = {};
+    changes_only{}
+  end UPDATE_FILE_NO_SELECTED_FILE;
+
+  /////////////////////////////////////////////////////////////////////////
+  //UPDATE_FILE_OUT_OF_BOUNDS: Models the update of a record that is out of 
+  //                           bounds.
+  //                           Does not update the data.
+  /////////////////////////////////////////////////////////////////////////
+  op schema UPDATE_FILE_OUT_OF_BOUNDS is
+  dec
+    rr? : 1 .. MAX_RECORDS;
+    dd? : seq BYTE
+  pred
+    pre current_file /= {};
+    pre exists ff : current_file @ rr? not_in (1 .. (#data(ff) + 1));
+    changes_only {}
+  end UPDATE_FILE_OUT_OF_BOUNDS
+
+end GSMFiles

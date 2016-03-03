@@ -1,0 +1,4 @@
+Stack                 spec is in    stack.ads
+Stack                 body is in    stack.adb
+ExpandedStack		spec is in	expandedstack.ads
+ExpandedStack		body is in	expandedstack.adb

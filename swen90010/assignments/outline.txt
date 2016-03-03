@@ -1,0 +1,28 @@
+Project outline:
+
+CARA pump system.
+
+Four components:
+
+- Blood-pressure monitor
+- Pump system
+- CARA decision making system
+- patient?
+
+System level:
+
+- three modes: wait, auto, manual -- switch between
+- start/stop monitor/pump
+- if auto or wait => increase/decrease target rate (by 5 mmHg)
+- if manual => update mmHg amount
+
+CARA decision making system:
+
+- if 2 successive readings missed => alarm
+- amount calculated from average of 5 sec intervals
+- titrate is maintained: default 70 mmHg
+- target flow rate for 70 mmHg is 4 L/hour
+
+Pump:
+
+- issue specified amount at L/Hour

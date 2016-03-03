@@ -1,0 +1,162 @@
+\documentclass[11pt,a4paper]{article}
+\input{../exam-header.tex}
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{afterpage}
+\usepackage{boxedminipage}
+\usepackage{enumerate}
+\usepackage{booktabs}
+\usepackage{todonotes}
+
+\excludeversion{solution}
+
+%%--------------------------------------------------------------------
+%%
+%%        Pages
+
+\newcommand{\totalquestions}{6}
+\newcommand{\totalpages}{\pageref{LastPage}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0cm}
+\pagestyle{fancy}
+%\beforepage{SWEN90010 --- High Integrity Systems Engineering}
+\afterpage{\cfoot{Page \thepage\ of \pageref{LastPage}}}
+%\renewcommand{\thepage}{Page \arabic{page} of \totalpages}
+\fancyhead[C]{\textsc{SWEN90010 --- High Integrity Systems Engineering}}
+
+%%--------------------------------------------------------------------
+%%
+%%        Textwidth
+
+\newlength{\subtextwidth}
+\setlength{\subtextwidth}{\textwidth}
+\addtolength{\subtextwidth}{-2ex}
+\newcommand{\fullwidthbox}[1]{\framebox[\textwidth]{\parbox{\subtextwidth}{#1}}}
+
+%%--------------------------------------------------------------------
+%%
+%%        Counting Parts
+
+\newcounter{epart}
+\newcommand{\epart}[1]{%[2]{
+        \stepcounter{epart}
+%       \vspace{1ex}
+%       \par
+%       \noindent
+        \clearpage
+        \section*{Part \Alph{epart}~--~#1} %\hfill
+                %{\large [{#1} marks, {#2} mins]}}
+      }
+
+%%--------------------------------------------------------------------
+%%
+%%        Counting questions
+
+%\newcounter{question}%[epart]
+\renewcommand{\question}[1]{
+        \stepcounter{question}
+        \subsection*{Question \thequestion \hfill
+          {\normalsize [{#1} \ifthenelse{\equal{#1}{1}}{mark}{marks}]}} }
+
+
+%%--------------------------------------------------------------------
+%%
+%%        The Exam!
+
+
+\begin{document}
+%%
+%%--------------------------------------------------------------------
+%%
+%%        The University Crest
+%%
+\vspace*{1cm}
+\begin{center}
+{\large\sc The University of Melbourne}\\
+{\large\sc Department of Computing and Information Systems}\\[0.75cm]
+{\Large\sc Examination}\\[0.5cm]
+{\large Semester 1, 2014}\\[1cm]
+{\Large\bf SWEN90010 High Integrity Systems Engineering}
+\end{center}
+%%
+%%--------------------------------------------------------------------
+%%
+%%        Instructions
+%%
+\vspace*{1cm}%
+{\bf Exam Duration:} 2 hours \hfill {Total marks for this paper:} 50\\[1ex]
+{\bf Reading Time:} 15 minutes \\[1ex]
+{\bf This paper has \pageref{LastPage}~pages.} \\[1cm]
+%%--------------------------------------------------------------------
+%%
+%%
+%% Note whether students are permitted to bring any items into the exam room and
+%% clearly describe them.  If no materials are allowed, indicate this
+%% also.
+%%
+\fullwidthbox{
+  {\bf Authorised materials:} \\
+  Students may not bring any material into the room.
+      } \\[1ex]
+%%--------------------------------------------------------------------
+%%
+%%  Provide information to assist invigilators set-up the exam room: details
+%%  about script books, machine readable answer sheets, handouts of mathematical
+%%  tables, etc.
+%%  Also not clearly whether the exam paper is to remain in the exam
+%%  room. 
+%%
+      \fullwidthbox{
+        {\bf Instructions to Invigilators:} \\
+        Each student should initially receive a script with \totalpages\ pages. \\
+        Students may NOT keep the exam paper after the examination.
+      } \\[1ex]
+%%
+%%--------------------------------------------------------------------
+%%
+%%  Provide whatever information considered appropriate such as instructions about
+%%  answering questions, writing on the exam paper, marking, etc.
+%%
+\fullwidthbox{
+        {\bf Instructions to Students:}
+        \begin{myitem}
+          
+        \item Attempt {\em all} questions.
+          
+        \item Answer questions only on the lined pages in a script
+          book. The blank pages can be used for rough working.
+          
+        \item Start your answer to each question on a new page.
+          
+        \item Be sure to clearly number your answers.
+
+       \end{myitem}
+        
+       The exam consists of \totalquestions~questions. The number of
+       marks for each question is shown at the start of the question.
+        Remember that rationale and justification is
+       important in answering questions BUT also be as concise as
+       possible with your answers. Point form is acceptable for more
+       descriptive answers.}
+     % \begin{center}
+     %   {\bf This paper will be reproduced and lodged with Baillieu
+     %     Library.}
+     % \end{center}
+     \begin{center}
+       {\bf This paper is not to be reproduced and lodged with
+         Baillieu Library.}
+     \end{center}
+
+\newpage
+
+~
+
+\newpage
+
+\input{Exam_Body}
+
+\end{document}
+
+
+% LocalWords:  Baillieu

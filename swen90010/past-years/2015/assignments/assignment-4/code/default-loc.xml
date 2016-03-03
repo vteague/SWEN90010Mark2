@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project >
+    <file_marker column=" 1" line=" 1" >
+      <vfs_file>/home/timothym/subjects/swen90010/git.repository/swen90010/assignments/assignment-4/code/closedloop.ads</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1" >
+      <vfs_file>/home/timothym/subjects/swen90010/git.repository/swen90010/assignments/assignment-4/code/closedloop.adb</vfs_file>
+    </file_marker>
+  </Project>
+  <Project >
+    <file_marker column=" 1" line=" 1">
+      <vfs_file >/home/timothym/subjects/swen90010/git.repository/swen90010/assignments/assignment-4/code/hrm.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 16" line=" 5">
+      <vfs_file  />
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1">
+      <vfs_file >/home/timothym/subjects/swen90010/git.repository/swen90010/assignments/assignment-4/code/hrm.ads</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

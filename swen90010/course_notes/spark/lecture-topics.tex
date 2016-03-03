@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{rotate}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{javabackground}{rgb}{0.9,0.9,0.9}
+\definecolor{javablack}{rgb}{0,0,0}
+
+
+\lstset{language=Ada,
+  backgroundcolor=\color{javabackground},
+  basicstyle=\ttfamily\fontsize{10}{12}\selectfont,
+  keywordstyle=\color{javablack}\bfseries,
+  aboveskip={1.5\baselineskip},
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=single,
+  numbersep=10pt,
+  stepnumber=1,
+  tabsize=8,
+  xleftmargin=0ex,
+  xrightmargin=0ex,
+  showspaces=false,
+  showstringspaces=false,
+  aboveskip=0.5ex
+}
+
+\def\rootdir{../}
+
+\begin{document}
+
+\section*{Lecture aims}
+
+ \begin{enumerate}
+
+ \item Introduce ``Correctness by construction''
+
+ \item Motivate the use of safe programming language subsets.
+
+ \item Present the SPARK language.
+
+ \item Show examples of annotations in SPARK.
+
+ \end{enumerate}
+
+\section*{Lecture plan}
+  
+\subsubsection*{Correctness by construction --- introduction}
+
+\begin{enumerate}
+
+  \item Show the quote from Tony Hoare below.
+
+  \item Introduce the idea of \emph{Correctness by construction} (from Altran Praxis): keeping things simple to make them easier to verify.
+
+  \item Principles of correctness by construction:
+
+  \begin{enumerate}
+
+    \item Expect requirements to change. 
+ 
+    \item Know why you're testing: finding faults, not showing correctness.
+
+    \item Eliminate errors before testing. Testing is the second most expensive way of finding errors. The most expensive is to let your customers find them for you.
+
+    \item Write software that is easy to verify. Testing takes up to 60\% of total effort. Implementation typically takes 10\%. Doubling  implementation effort is cost-effective if it reduces verification cost by as little as 20\%.
+
+    \item Develop incrementally. Make small changes, incrementally. After each change, verify that the updated system behaves according to its updated specification. 
+
+    \item Some aspects of software development are just plain hard.  The best tools and methods take care of the easy problems, allowing you to focus on the difficult problems.
+
+    \item Software is not useful by itself. The executable software is only part of the picture:   user manuals, business processes, design documentation, well-commented source code and test cases should not just be   added at the end.
+
+  \end{enumerate}
+
+  \item Today: introduce safe programming language subsets, which are simple parts of a language.
+
+\end{enumerate}
+
+\subsubsection*{Safe programming language subsets}
+
+\begin{enumerate}
+
+  \item Define safe programming language subset:  use structured programming to provide a small but powerful programming language that is easier to verify than non-safe languages.
+
+  \item Programming languages are inherently evolutionary. New features added without thought of impact on safety. Most features are intended to be programmer friendly, but not machine/maintainer/reader friendly.
+
+  \item Examples: SafeD (safe subset of D --- itself related to C++), MISRA C (safe subset of C), Joe-E (\emph{secure} subset of Java), and SPARK.
+
+  \item Show coding standard for NASA's Curiosity Mars Rover (below).
+
+\end{enumerate}
+
+\subsubsection*{SPARK}
+
+\begin{enumerate}
+
+  \item  $SPARK = safe(Ada) + annotations$.
+
+  \item SPARK: Take Ada, remove unsafe constructs to leave a simple structured programming language, and add new annotations to support static checking.
+
+  \item Annotations are extensions to Ada, so need to switch to ``SPARK mode''. However, all new versions of Ada compilers will compile the code --- extra tools process annotations.
+
+  \item Features left out of Ada: 
+  \begin{itemize}
+    \item Dynamic memory allocation
+    \item Tasks
+    \item Gotos
+    \item Exceptions
+    \item Generics
+    \item Access types (similar to references in other languages)
+    \item Recursion
+  \end{itemize}
+
+  Ada favours reader over programmer. SPARK carries this principle to further extremes. Why? Because the reader may be a software tool used to verify the program.
+
+  \item Q: Doesn't this make programmer harder?
+
+        A: Yes, but....  $\approx$ 50\% of effort is in verification and testing (more for certifiable systems) --- and 10\% in programming. So, if we make programming a bit more long winded, we only need minor improvements in verification to get that effort back again.
+
+  \item Note symmetry between NASA JPL's coding standard and SPARK.
+
+  \item SPARK annotations: formal comments. Improve documentation and allow consistency checks. Contain information about a program.
+
+  \item Two annotations today: ``global'' and ``derives''.
+
+  \item SPARK Examiner: checks conformance with SPARK (syntax, annotation consistency), and provides debugging information and warnings.
+
+  \item Go through examples from subject notes using SPARK Examiner.
+
+  \item Note that the last three examples are directly from Software Engineering Methods: 
+
+   \begin{enumerate}
+    \item Ineffective statement: du anomaly.
+    \item Ineffective initialisation: dd anomaly.
+    \item Reference to undefined value: ur anomaly.
+   \end{enumerate}
+
+\end{enumerate}
+
+\pagebreak
+
+\subsection*{Coding rules for NASA's Mars Rover \emph{Curiosity}}
+
+\begin{enumerate}
+
+ \item Language Compliance 
+  \begin{enumerate}
+   \item Do not stray outside the language definition. 
+  \item Compile with all warnings enabled; use static source code analysers. 
+  \end{enumerate}
+
+ \item Predictable Execution 
+ \begin{enumerate}
+  \item Use verifiable loop bounds for all loops meant to be terminating. 
+  \item Do not use direct or indirect recursion. 
+  \item Do not use dynamic memory allocation after task initialisation. 
+  \item Use IPC messages for task communication. 
+  \item Do not use task delays for task synchronisation. 
+  \item Explicitly transfer write-permission (ownership) for shared data objects. 
+  \item Place restrictions on the use of semaphores and locks. 
+  \item Use memory protection, safety margins, barrier patterns. 
+  \item Do not use goto, setjmp or longjmp. 
+  \item Do not use selective value assignments to elements of an enum list. 
+ \end{enumerate}
+
+ \item Defensive Coding 
+ \begin{enumerate}
+  \item Declare data objects at smallest possible level of scope. 
+  \item Check the return value of non-void functions, or explicitly cast to (void). 
+  \item Check the validity of values passed to functions. 
+  \item Use static and dynamic assertions as sanity checks. 
+  \item Use U32, I16, etc instead of predefined C data types such as int, short, etc. 
+  \item Make the order of evaluation in compound expressions explicit. 
+  \item Do not use expressions with side effects. 
+ \end{enumerate}
+
+ \item Code Clarity 
+ \begin{enumerate}
+  \item Make only very limited use of the C pre-processor. 
+  \item Do not define macros within a function or a block. 
+  \item Do not undefine or redefine macros. 
+  \item Place \texttt{\#else}, \texttt{\#elif}, and \texttt{\#endif} in the same file as the matching \texttt{\#if} or \texttt{\#ifdef}. 
+  \item Place no more than one statement or declaration per line of text. 
+  \item Use short functions with a limited number of parameters. 
+  \item Use no more than two levels of indirection per declaration. 
+  \item Use no more than two levels of dereferencing per object reference. 
+  \item Do not hide dereference operations inside macros or typedefs. 
+  \item Do not use non-constant function pointers. 
+  \item Do not cast function pointers into other types. 
+  \item Do not place code or declarations before an \texttt{\#include} directive. 
+ \end{enumerate}
+
+ \item MISRA \emph{shall} compliance 
+ \begin{enumerate}
+   \item All MISRA shall rules not already covered at Levels 1-4 (73 rules in total).
+ \end{enumerate}
+
+\end{enumerate}
+
+\vfill
+
+\begin{quote}
+``\emph{There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other is to make it so complicated that there are no obvious deficiencies.}'' --- \textnormal{Professor Tony Hoare, 1980 ACM Turing Award Lecture}
+\end{quote}
+
+\pagebreak
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/spark/code/incorrectreassignment.adb}
+
+\vspace{10mm}
+
+\lstinputlisting{\rootdir/spark/code/incorrectassignment.out}
+
+\vfill
+
+\pagebreak
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/spark/code/weirdswap.adb}
+
+\vspace{10mm}
+
+\lstinputlisting{\rootdir/spark/code/weirdswap.out}
+
+\vfill
+\pagebreak
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/spark/code/initialiselocal.adb}
+
+\vspace{10mm}
+
+\lstinputlisting{\rootdir/spark/code/initialiselocal.out}
+
+\vfill
+\end{document}  
+
+
+% LocalWords:  Hoare Altran Praxis SafeD MISRA NASA's Gotos JPL's du
+% LocalWords:  ur IPC goto setjmp longjmp enum Defensive elif endif
+% LocalWords:  ifdef dereferencing dereference typedefs ACM

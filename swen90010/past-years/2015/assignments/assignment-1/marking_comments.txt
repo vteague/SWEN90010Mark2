@@ -1,0 +1,35 @@
+Assignment 1 marking
+====================
+
+Design: This is difficult to assess objectively, but we're looking for a few things here:
+
+  1) A clearly separated ICD component that calculates the shock to deliver, but does NOT make any other decisions about e.g. authorisation, switching modes. In particular, there is no decision making regarding shocks in the ClosedLoop package.
+  2) A clearly separated ClosedLoop specification.
+  3) Authorisation is implemented in its own package and included in the ClosedLoop interface (Single Responsibility Principle)
+  4) Packages encapsulate their data type correctly.
+  5) In, out, and in out params are correctly used.
+  6) General 'loose coupling, high cohesion' principles.
+  
+
+Correctness: This criteria is essentially: "The code implements the requirements correctly". Some things to check:
+
+  1) Modes can be switched by authorised roles only
+  2) Only a cardiologist can change settings
+  3) Only a cardiologist or assistant can read settings.
+  4) Switching to "off" mode also switches off heart rate monitor and impulse generator
+  5) Correct calculation of tachycardia and fibrillation shocks
+  6) Last 50 impulses are stored and can be read.
+  
+Completeness: 1/1 if ALL requirements are implemented; part marks for less.
+
+Code formatting: Full marks if the code formatting guidelines are followed (or minor issues); part marks for partially following. Things to look for:
+
+  1) Magic numbers: submissions MUST use constants for stuff like initial upper bound value, the 15bpm for tachycardia treatment, rather than hard coding numbers.
+  2) Do a quick check for line numbers: "wc -l *.adb *.ads"; lines MUST be no more than 80 characters long.
+  3) Packages and procedures are commented. 
+  4) Code for detecting abnormalities and treatment is reasonably well commented (this is non trivial code)
+  5) Consistent indenting. 
+
+Tests: There are six tests (listed in criteria.txt). The policy is 0.5 mark lost for each failed test, with a lower bound of 0. That is, failing four out of six will result in 0.
+
+

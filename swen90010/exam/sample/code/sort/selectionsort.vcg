@@ -1,0 +1,1420 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 27-MAY-2013 13:49:21.63
+
+                        procedure Sort.SelectionSort
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 8:
+
+procedure_selectionsort_1.
+H1:    true .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+        ->
+C1:    1 >= index__first .
+C2:    1 <= index__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 9:
+
+procedure_selectionsort_2.
+H1:    true .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    1 >= index__first .
+H4:    1 <= index__last .
+H5:    1 >= index__first .
+H6:    1 <= index__last .
+        ->
+C1:    index__last - index__first + 1 - 1 >= system__min_int .
+C2:    index__last - index__first + 1 - 1 <= system__max_int .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 9:
+
+procedure_selectionsort_3.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+H22:   element(list, [i]) >= integer__first .
+H23:   element(list, [i]) <= integer__last .
+H24:   i >= index__first .
+H25:   i <= index__last .
+H26:   i >= index__first .
+H27:   i <= index__last .
+H28:   element(list, [i]) >= integer__first .
+H29:   element(list, [i]) <= integer__last .
+H30:   element(list, [i]) >= integer__first .
+H31:   element(list, [i]) <= integer__last .
+H32:   i >= index__first .
+H33:   i <= index__last .
+H34:   i >= index__first .
+H35:   i <= index__last .
+H36:   i + 1 >= index__first .
+H37:   i + 1 <= index__last .
+H38:   i + 1 >= index__first .
+H39:   i + 1 <= index__last .
+        ->
+C1:    index__last - index__first + 1 - 1 >= system__min_int .
+C2:    index__last - index__first + 1 - 1 <= system__max_int .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 9:
+
+procedure_selectionsort_4.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+H31:   element(list, [j]) >= integer__first .
+H32:   element(list, [j]) <= integer__last .
+H33:   j >= index__first .
+H34:   j <= index__last .
+H35:   i >= index__first .
+H36:   i <= index__last .
+H37:   element(list, [i]) >= integer__first .
+H38:   element(list, [i]) <= integer__last .
+H39:   element(list, [i]) >= integer__first .
+H40:   element(list, [i]) <= integer__last .
+H41:   j >= index__first .
+H42:   j <= index__last .
+H43:   i >= index__first .
+H44:   i <= index__last .
+H45:   i + 1 >= index__first .
+H46:   i + 1 <= index__last .
+H47:   i + 1 >= index__first .
+H48:   i + 1 <= index__last .
+        ->
+C1:    index__last - index__first + 1 - 1 >= system__min_int .
+C2:    index__last - index__first + 1 - 1 <= system__max_int .
+ 
+
+procedure_selectionsort_5.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+H27:   element(list, [minindex]) >= integer__first .
+H28:   element(list, [minindex]) <= integer__last .
+H29:   minindex >= index__first .
+H30:   minindex <= index__last .
+H31:   i >= index__first .
+H32:   i <= index__last .
+H33:   element(list, [i]) >= integer__first .
+H34:   element(list, [i]) <= integer__last .
+H35:   element(list, [i]) >= integer__first .
+H36:   element(list, [i]) <= integer__last .
+H37:   minindex >= index__first .
+H38:   minindex <= index__last .
+H39:   i >= index__first .
+H40:   i <= index__last .
+H41:   i + 1 >= index__first .
+H42:   i + 1 <= index__last .
+H43:   i + 1 >= index__first .
+H44:   i + 1 <= index__last .
+        ->
+C1:    index__last - index__first + 1 - 1 >= system__min_int .
+C2:    index__last - index__first + 1 - 1 <= system__max_int .
+ 
+
+For path(s) from start to assertion of line 10:
+
+procedure_selectionsort_6.
+H1:    true .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    1 >= index__first .
+H4:    1 <= index__last .
+H5:    1 >= index__first .
+H6:    1 <= index__last .
+H7:    index__last - index__first + 1 - 1 >= system__min_int .
+H8:    index__last - index__first + 1 - 1 <= system__max_int .
+H9:    1 < index__last - index__first + 1 - 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= 1 - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= 1 - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+ 
+
+For path(s) from assertion of line 10 to assertion of line 10:
+
+procedure_selectionsort_7.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+H22:   element(list, [i]) >= integer__first .
+H23:   element(list, [i]) <= integer__last .
+H24:   i >= index__first .
+H25:   i <= index__last .
+H26:   i >= index__first .
+H27:   i <= index__last .
+H28:   element(list, [i]) >= integer__first .
+H29:   element(list, [i]) <= integer__last .
+H30:   element(list, [i]) >= integer__first .
+H31:   element(list, [i]) <= integer__last .
+H32:   i >= index__first .
+H33:   i <= index__last .
+H34:   i >= index__first .
+H35:   i <= index__last .
+H36:   i + 1 >= index__first .
+H37:   i + 1 <= index__last .
+H38:   i + 1 >= index__first .
+H39:   i + 1 <= index__last .
+H40:   index__last - index__first + 1 - 1 >= system__min_int .
+H41:   index__last - index__first + 1 - 1 <= system__max_int .
+H42:   i + 1 < index__last - index__first + 1 - 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i + 1 - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i + 1 - 1)) -> ((
+           m_ <= n_) -> (element(update(update(list, [i], element(
+           list, [i])), [i], element(list, [i])), [m_]) <= element(update(update(
+           list, [i], element(list, [i])), [i], element(
+           list, [i])), [n_])))))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(update(update(
+           list, [i], element(list, [i])), [i], element(
+           list, [i])), [i___1]) >= integer__first) and (element(update(update(
+           list, [i], element(list, [i])), [i], element(
+           list, [i])), [i___1]) <= integer__last))) .
+ 
+
+For path(s) from assertion of line 17 to assertion of line 10:
+
+procedure_selectionsort_8.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+H31:   element(list, [j]) >= integer__first .
+H32:   element(list, [j]) <= integer__last .
+H33:   j >= index__first .
+H34:   j <= index__last .
+H35:   i >= index__first .
+H36:   i <= index__last .
+H37:   element(list, [i]) >= integer__first .
+H38:   element(list, [i]) <= integer__last .
+H39:   element(list, [i]) >= integer__first .
+H40:   element(list, [i]) <= integer__last .
+H41:   j >= index__first .
+H42:   j <= index__last .
+H43:   i >= index__first .
+H44:   i <= index__last .
+H45:   i + 1 >= index__first .
+H46:   i + 1 <= index__last .
+H47:   i + 1 >= index__first .
+H48:   i + 1 <= index__last .
+H49:   index__last - index__first + 1 - 1 >= system__min_int .
+H50:   index__last - index__first + 1 - 1 <= system__max_int .
+H51:   i + 1 < index__last - index__first + 1 - 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i + 1 - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i + 1 - 1)) -> ((
+           m_ <= n_) -> (element(update(update(list, [i], element(
+           list, [j])), [j], element(list, [i])), [m_]) <= element(update(update(
+           list, [i], element(list, [j])), [j], element(
+           list, [i])), [n_])))))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(update(update(
+           list, [i], element(list, [j])), [j], element(
+           list, [i])), [i___1]) >= integer__first) and (element(update(update(
+           list, [i], element(list, [j])), [j], element(
+           list, [i])), [i___1]) <= integer__last))) .
+ 
+
+procedure_selectionsort_9.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+H27:   element(list, [minindex]) >= integer__first .
+H28:   element(list, [minindex]) <= integer__last .
+H29:   minindex >= index__first .
+H30:   minindex <= index__last .
+H31:   i >= index__first .
+H32:   i <= index__last .
+H33:   element(list, [i]) >= integer__first .
+H34:   element(list, [i]) <= integer__last .
+H35:   element(list, [i]) >= integer__first .
+H36:   element(list, [i]) <= integer__last .
+H37:   minindex >= index__first .
+H38:   minindex <= index__last .
+H39:   i >= index__first .
+H40:   i <= index__last .
+H41:   i + 1 >= index__first .
+H42:   i + 1 <= index__last .
+H43:   i + 1 >= index__first .
+H44:   i + 1 <= index__last .
+H45:   index__last - index__first + 1 - 1 >= system__min_int .
+H46:   index__last - index__first + 1 - 1 <= system__max_int .
+H47:   i + 1 < index__last - index__first + 1 - 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i + 1 - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i + 1 - 1)) -> ((
+           m_ <= n_) -> (element(update(update(list, [i], element(
+           list, [minindex])), [minindex], element(list, [i])), [
+           m_]) <= element(update(update(list, [i], element(
+           list, [minindex])), [minindex], element(list, [i])), [
+           n_])))))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(update(update(
+           list, [i], element(list, [minindex])), [minindex], element(
+           list, [i])), [i___1]) >= integer__first) and (element(update(update(
+           list, [i], element(list, [minindex])), [minindex], element(
+           list, [i])), [i___1]) <= integer__last))) .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 14:
+
+procedure_selectionsort_10.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+        ->
+C1:    i + 1 >= index__first .
+C2:    i + 1 <= index__last .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 15:
+
+procedure_selectionsort_11.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+        ->
+C1:    i >= index__first .
+C2:    i <= index__last .
+ 
+
+For path(s) from assertion of line 10 to assertion of line 17:
+
+procedure_selectionsort_12.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   i + 1 < index__last - index__first + 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= i + 1)) -> (element(
+           list, [m_]) >= element(list, [i]))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+ 
+
+For path(s) from assertion of line 17 to assertion of line 17:
+
+procedure_selectionsort_13.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   j + 1 < index__last - index__first + 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j + 1)) -> (element(
+           list, [m_]) >= element(list, [j]))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+ 
+
+procedure_selectionsort_14.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   j + 1 < index__last - index__first + 1 .
+        ->
+C1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j + 1)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+C2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 19:
+
+procedure_selectionsort_15.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+        ->
+C1:    minindex >= index__first .
+C2:    minindex <= index__last .
+C3:    j >= index__first .
+C4:    j <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 20:
+
+procedure_selectionsort_16.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+        ->
+C1:    j >= index__first .
+C2:    j <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 23:
+
+procedure_selectionsort_17.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+        ->
+C1:    j + 1 >= index__first .
+C2:    j + 1 <= index__last .
+ 
+
+procedure_selectionsort_18.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+        ->
+C1:    j + 1 >= index__first .
+C2:    j + 1 <= index__last .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 26:
+
+procedure_selectionsort_19.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    i >= index__first .
+C4:    i <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 26:
+
+procedure_selectionsort_20.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    i >= index__first .
+C4:    i <= index__last .
+ 
+
+procedure_selectionsort_21.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    i >= index__first .
+C4:    i <= index__last .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 27:
+
+procedure_selectionsort_22.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    i >= index__first .
+C4:    i <= index__last .
+C5:    i >= index__first .
+C6:    i <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 27:
+
+procedure_selectionsort_23.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+        ->
+C1:    element(list, [j]) >= integer__first .
+C2:    element(list, [j]) <= integer__last .
+C3:    j >= index__first .
+C4:    j <= index__last .
+C5:    i >= index__first .
+C6:    i <= index__last .
+ 
+
+procedure_selectionsort_24.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+        ->
+C1:    element(list, [minindex]) >= integer__first .
+C2:    element(list, [minindex]) <= integer__last .
+C3:    minindex >= index__first .
+C4:    minindex <= index__last .
+C5:    i >= index__first .
+C6:    i <= index__last .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 28:
+
+procedure_selectionsort_25.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+H22:   element(list, [i]) >= integer__first .
+H23:   element(list, [i]) <= integer__last .
+H24:   i >= index__first .
+H25:   i <= index__last .
+H26:   i >= index__first .
+H27:   i <= index__last .
+H28:   element(list, [i]) >= integer__first .
+H29:   element(list, [i]) <= integer__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    i >= index__first .
+C4:    i <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 28:
+
+procedure_selectionsort_26.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+H31:   element(list, [j]) >= integer__first .
+H32:   element(list, [j]) <= integer__last .
+H33:   j >= index__first .
+H34:   j <= index__last .
+H35:   i >= index__first .
+H36:   i <= index__last .
+H37:   element(list, [i]) >= integer__first .
+H38:   element(list, [i]) <= integer__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    j >= index__first .
+C4:    j <= index__last .
+ 
+
+procedure_selectionsort_27.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+H27:   element(list, [minindex]) >= integer__first .
+H28:   element(list, [minindex]) <= integer__last .
+H29:   minindex >= index__first .
+H30:   minindex <= index__last .
+H31:   i >= index__first .
+H32:   i <= index__last .
+H33:   element(list, [i]) >= integer__first .
+H34:   element(list, [i]) <= integer__last .
+        ->
+C1:    element(list, [i]) >= integer__first .
+C2:    element(list, [i]) <= integer__last .
+C3:    minindex >= index__first .
+C4:    minindex <= index__last .
+ 
+
+For path(s) from assertion of line 10 to run-time check associated with statement of line 30:
+
+procedure_selectionsort_28.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+H22:   element(list, [i]) >= integer__first .
+H23:   element(list, [i]) <= integer__last .
+H24:   i >= index__first .
+H25:   i <= index__last .
+H26:   i >= index__first .
+H27:   i <= index__last .
+H28:   element(list, [i]) >= integer__first .
+H29:   element(list, [i]) <= integer__last .
+H30:   element(list, [i]) >= integer__first .
+H31:   element(list, [i]) <= integer__last .
+H32:   i >= index__first .
+H33:   i <= index__last .
+H34:   i >= index__first .
+H35:   i <= index__last .
+        ->
+C1:    i + 1 >= index__first .
+C2:    i + 1 <= index__last .
+ 
+
+For path(s) from assertion of line 17 to run-time check associated with statement of line 30:
+
+procedure_selectionsort_29.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+H31:   element(list, [j]) >= integer__first .
+H32:   element(list, [j]) <= integer__last .
+H33:   j >= index__first .
+H34:   j <= index__last .
+H35:   i >= index__first .
+H36:   i <= index__last .
+H37:   element(list, [i]) >= integer__first .
+H38:   element(list, [i]) <= integer__last .
+H39:   element(list, [i]) >= integer__first .
+H40:   element(list, [i]) <= integer__last .
+H41:   j >= index__first .
+H42:   j <= index__last .
+H43:   i >= index__first .
+H44:   i <= index__last .
+        ->
+C1:    i + 1 >= index__first .
+C2:    i + 1 <= index__last .
+ 
+
+procedure_selectionsort_30.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+H27:   element(list, [minindex]) >= integer__first .
+H28:   element(list, [minindex]) <= integer__last .
+H29:   minindex >= index__first .
+H30:   minindex <= index__last .
+H31:   i >= index__first .
+H32:   i <= index__last .
+H33:   element(list, [i]) >= integer__first .
+H34:   element(list, [i]) <= integer__last .
+H35:   element(list, [i]) >= integer__first .
+H36:   element(list, [i]) <= integer__last .
+H37:   minindex >= index__first .
+H38:   minindex <= index__last .
+H39:   i >= index__first .
+H40:   i <= index__last .
+        ->
+C1:    i + 1 >= index__first .
+C2:    i + 1 <= index__last .
+ 
+
+For path(s) from start to finish:
+
+procedure_selectionsort_31.
+H1:    true .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    1 >= index__first .
+H4:    1 <= index__last .
+H5:    1 >= index__first .
+H6:    1 <= index__last .
+H7:    index__last - index__first + 1 - 1 >= system__min_int .
+H8:    index__last - index__first + 1 - 1 <= system__max_int .
+H9:    not (1 < index__last - index__first + 1 - 1) .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) -> (for_all(j_: integer, ((j_ >= 1) and (
+           j_ <= index__last - index__first + 1)) -> ((i_ <= 
+           j_) -> (element(list, [i_]) <= element(list, [j_])))))) .
+ 
+
+For path(s) from assertion of line 10 to finish:
+
+procedure_selectionsort_32.
+H1:    for_all(m_: integer, ((m_ >= 1) and (m_ <= i - 1)) -> (for_all(
+           n_: integer, ((n_ >= 1) and (n_ <= i - 1)) -> ((
+           m_ <= n_) -> (element(list, [m_]) <= element(
+           list, [n_])))))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    i >= index__first .
+H4:    i <= index__last .
+H5:    i + 1 >= index__first .
+H6:    i + 1 <= index__last .
+H7:    i >= index__first .
+H8:    i <= index__last .
+H9:    i >= index__first .
+H10:   i <= index__last .
+H11:   i + 1 >= index__first .
+H12:   i + 1 <= index__last .
+H13:   not (i + 1 < index__last - index__first + 1) .
+H14:   i >= index__first .
+H15:   i <= index__last .
+H16:   element(list, [i]) >= integer__first .
+H17:   element(list, [i]) <= integer__last .
+H18:   i >= index__first .
+H19:   i <= index__last .
+H20:   i >= index__first .
+H21:   i <= index__last .
+H22:   element(list, [i]) >= integer__first .
+H23:   element(list, [i]) <= integer__last .
+H24:   i >= index__first .
+H25:   i <= index__last .
+H26:   i >= index__first .
+H27:   i <= index__last .
+H28:   element(list, [i]) >= integer__first .
+H29:   element(list, [i]) <= integer__last .
+H30:   element(list, [i]) >= integer__first .
+H31:   element(list, [i]) <= integer__last .
+H32:   i >= index__first .
+H33:   i <= index__last .
+H34:   i >= index__first .
+H35:   i <= index__last .
+H36:   i + 1 >= index__first .
+H37:   i + 1 <= index__last .
+H38:   i + 1 >= index__first .
+H39:   i + 1 <= index__last .
+H40:   index__last - index__first + 1 - 1 >= system__min_int .
+H41:   index__last - index__first + 1 - 1 <= system__max_int .
+H42:   not (i + 1 < index__last - index__first + 1 - 1) .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) -> (for_all(j_: integer, ((j_ >= 1) and (
+           j_ <= index__last - index__first + 1)) -> ((i_ <= 
+           j_) -> (element(update(update(list, [i], element(
+           list, [i])), [i], element(list, [i])), [i_]) <= element(update(update(
+           list, [i], element(list, [i])), [i], element(
+           list, [i])), [j_])))))) .
+ 
+
+For path(s) from assertion of line 17 to finish:
+
+procedure_selectionsort_33.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   element(list, [j]) < element(list, [minindex]) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j >= index__first .
+H15:   j <= index__last .
+H16:   j >= index__first .
+H17:   j <= index__last .
+H18:   j + 1 >= index__first .
+H19:   j + 1 <= index__last .
+H20:   j + 1 >= index__first .
+H21:   j + 1 <= index__last .
+H22:   not (j + 1 < index__last - index__first + 1) .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   element(list, [i]) >= integer__first .
+H26:   element(list, [i]) <= integer__last .
+H27:   i >= index__first .
+H28:   i <= index__last .
+H29:   j >= index__first .
+H30:   j <= index__last .
+H31:   element(list, [j]) >= integer__first .
+H32:   element(list, [j]) <= integer__last .
+H33:   j >= index__first .
+H34:   j <= index__last .
+H35:   i >= index__first .
+H36:   i <= index__last .
+H37:   element(list, [i]) >= integer__first .
+H38:   element(list, [i]) <= integer__last .
+H39:   element(list, [i]) >= integer__first .
+H40:   element(list, [i]) <= integer__last .
+H41:   j >= index__first .
+H42:   j <= index__last .
+H43:   i >= index__first .
+H44:   i <= index__last .
+H45:   i + 1 >= index__first .
+H46:   i + 1 <= index__last .
+H47:   i + 1 >= index__first .
+H48:   i + 1 <= index__last .
+H49:   index__last - index__first + 1 - 1 >= system__min_int .
+H50:   index__last - index__first + 1 - 1 <= system__max_int .
+H51:   not (i + 1 < index__last - index__first + 1 - 1) .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) -> (for_all(j_: integer, ((j_ >= 1) and (
+           j_ <= index__last - index__first + 1)) -> ((i_ <= 
+           j_) -> (element(update(update(list, [i], element(
+           list, [j])), [j], element(list, [i])), [i_]) <= element(update(update(
+           list, [i], element(list, [j])), [j], element(
+           list, [i])), [j_])))))) .
+ 
+
+procedure_selectionsort_34.
+H1:    for_all(m_: integer, ((m_ >= i + 1) and (m_ <= j)) -> (element(
+           list, [m_]) >= element(list, [minindex]))) .
+H2:    for_all(i___1: integer, ((i___1 >= index__first) and (
+           i___1 <= index__last)) -> ((element(list, [i___1]) >= 
+           integer__first) and (element(list, [i___1]) <= 
+           integer__last))) .
+H3:    j >= index__first .
+H4:    j <= index__last .
+H5:    minindex >= index__first .
+H6:    minindex <= index__last .
+H7:    minindex >= index__first .
+H8:    minindex <= index__last .
+H9:    j >= index__first .
+H10:   j <= index__last .
+H11:   not (element(list, [j]) < element(list, [minindex])) .
+H12:   j >= index__first .
+H13:   j <= index__last .
+H14:   j + 1 >= index__first .
+H15:   j + 1 <= index__last .
+H16:   j + 1 >= index__first .
+H17:   j + 1 <= index__last .
+H18:   not (j + 1 < index__last - index__first + 1) .
+H19:   i >= index__first .
+H20:   i <= index__last .
+H21:   element(list, [i]) >= integer__first .
+H22:   element(list, [i]) <= integer__last .
+H23:   i >= index__first .
+H24:   i <= index__last .
+H25:   minindex >= index__first .
+H26:   minindex <= index__last .
+H27:   element(list, [minindex]) >= integer__first .
+H28:   element(list, [minindex]) <= integer__last .
+H29:   minindex >= index__first .
+H30:   minindex <= index__last .
+H31:   i >= index__first .
+H32:   i <= index__last .
+H33:   element(list, [i]) >= integer__first .
+H34:   element(list, [i]) <= integer__last .
+H35:   element(list, [i]) >= integer__first .
+H36:   element(list, [i]) <= integer__last .
+H37:   minindex >= index__first .
+H38:   minindex <= index__last .
+H39:   i >= index__first .
+H40:   i <= index__last .
+H41:   i + 1 >= index__first .
+H42:   i + 1 <= index__last .
+H43:   i + 1 >= index__first .
+H44:   i + 1 <= index__last .
+H45:   index__last - index__first + 1 - 1 >= system__min_int .
+H46:   index__last - index__first + 1 - 1 <= system__max_int .
+H47:   not (i + 1 < index__last - index__first + 1 - 1) .
+        ->
+C1:    for_all(i_: integer, ((i_ >= 1) and (i_ <= index__last - 
+           index__first + 1)) -> (for_all(j_: integer, ((j_ >= 1) and (
+           j_ <= index__last - index__first + 1)) -> ((i_ <= 
+           j_) -> (element(update(update(list, [i], element(
+           list, [minindex])), [minindex], element(list, [i])), [
+           i_]) <= element(update(update(list, [i], element(
+           list, [minindex])), [minindex], element(list, [i])), [
+           j_])))))) .
+ 
+

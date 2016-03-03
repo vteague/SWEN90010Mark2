@@ -1,0 +1,42 @@
+SPARK contracts [4 marks]
+
+- Correctness & completeness [3 marks]
+
+  3 marks: for correct and complete contracts that model the intended behaviour
+  2 marks: for minor deviations such as missing cases, incorrect modelling, or unsuitable modelling
+  1 mark: Largely incorrect or incomplete contracts
+  0 marks: No contracts or contracts that make little sense in the domain
+
+- Consistency [1 mark]
+
+  1 mark: for contracts that match the Alloy model (either their own assignment 3 or the sample solution). Part marks for minor discrepancies.
+
+SPARK Implementation [3 marks]
+
+- Correctness [1 mark]
+- SPARKness [1 mark]
+- Clarity and code formatting [1 mark]
+
+Discussion [3 marks]
+
+  The students should be considering all of the aspects that they have covered over the final three assignments: 
+
+   + safety and security analysis (assignment 2) improves the requirements/design by analysing what is missing from the assignment 1 user requirements from a safety/security perspective and adds additional behaviour
+
+   + modelling (assignment 3) improves the understanding and the correctness of the system by providing a precise model, and formally checking the properties of the model against (some of) the properties identified in assignment 1 and assignment 2 itself.
+
+   + fault tolerant design (assignment 3) improves the correctness of the system by allowing it to detect/tolerate faults in the software and hardware
+
+   + formal proof in SPARK (assignment 4) assures that the implementation corresponds to the modelled behaviour, and the use of the SPARK language eliminates certain classes of runtime errors (e.g. buffer overflows).
+
+   + brought together, the sequence of assignments help to establish an implementation that is safe (safer) and more secure than assignment 1, because  the SPARK implementation itself can be argued to have several safety and security properties as a result of the work done in assignments 2 and 3. That is, in the HAZOP, we identified certain issues that could arise. In assignment 3, we modelled our system and then models these issues as assertions, subsequently showing the assertions hold on the model. Then, we translate the model to SPARK contracts and prove that our implementation fulfills the contracts. As a result, the SPARK code satisfies the assertions checked in assignment 3 despite having never been checked for these assertions itself!
+
+The mark breakdown is:
+ 
+  - Completeness [1 mark]: All relevant parts above have been discussed. Part marks for incomplete discussion.
+
+  - Understanding [2 mark]: Here, the submissions should demonstrate an understanding of the relevant theory (using arguments such as those above), including the limitations of the approaches used. 
+
+     + 1 mark: for a convincing argument of the different contributions to the activities done in the three assignments. Part marks for a weak or incomplete argument.
+
+     + 1 mark: for linking the three assignments together; i.e. that the implementation obeys the assertions outlined in the Alloy model in assignment 3, despite these not being proved on the code base.

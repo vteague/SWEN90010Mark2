@@ -1,0 +1,26 @@
+Assignment 1 marks
+==================
+
+Name: 
+
+Design: /2
+
+Correctness: /2
+
+
+Completeness: /1
+
+Clarity: /1
+
+Code formatting: /2
+
+
+Tests: /2
+
+  Patient receives no shock in off mode: PASS/NOT PASS (comment if does not pass)
+  Modes can be switched from ClosedLoop interface:
+  Only a cardiologist can increase upper bound:
+  Tachycardia treatment is delivered when heart rate is above upper bound:
+  Defrib is delivered when heart is in fibrillation:
+
+Total: /10

@@ -1,0 +1,222 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+\lstset{language=}
+\tutorialtitle{4}
+
+\section*{Introduction}
+
+This workshop is about set theory and predicate logic, and its application to system specification. We'll be using a tool called Possum, which attempts to evaluate set theory expressions and first-order logic predicates.  Due to the infinite nature of sets and the undecidability of first-order predicate logic, not all expressions and predicates can be evaluated. However, we can use Possum as a way to checking most things, and we can use some finite sets in place of infinite sets just to check our thinking is correct.
+
+The aim of the workshop is to introduce you to Possum, and to strengthen your understanding of set theory and predicate logic using Possum.
+
+
+\section*{Some introductory tasks}
+
+\begin{enumerate}
+
+ \item The first thing you have to do is start Possum. Log in to \texttt{timber.csse.unimelb.edu.au} and type \texttt{Possum} at the prompt.
+
+ As Possum starts, a Possum Interpreter window should pop up containing a command-line prompt.
+
+ \item \emph{Expression enumeration}.
+
+  Possum simply enumerates and grounds expressions. Try the following  expressions at the prompt:
+
+   \begin{enumerate}
+    \item An arithmetic expression: \texttt{2 + 3}  (key Ctrl-Return to evaluate)
+    \item Set enumerations are put into canonical form: \texttt{\{2,3,1\}}
+    \item Set comprehensions are enumerated: \texttt{\{x : (0..100) | x mod 2 = 0\}}
+    \item Cartesian products are enumerated: \texttt{(0..10) cross (0..10)} 
+    \item Set operators can be used: \texttt{\{1,2,3\} union \{7,8,9\}}
+    \item Another set operator: \texttt{\{1,2,3\} diff \{2,3,4\}}  (The \texttt{diff} operator is set difference).
+    \item Expressions can be named and referenced later: \texttt{EVEN == \{n : (0..100) | n mod 2 = 0\}} (Ctrl-Return) and then type \texttt{EVEN}.
+    \item  The name \texttt{nat} represents the set of natural numbers. What do you think will happen if you try to evaluate \texttt{nat} at the Possum prompt? Try it and find out! (HINT: The menu ``Possum'' at the top left has an ``Abort'' option. Alternatively, use the ``Stop'' button at the top right, or Ctrl-C.).
+   \end{enumerate} 
+
+ \item \emph{From infinite sets to finite sets}.
+
+  In that final task, you probably aborted after a while. However, had you left it running, eventually you would have gotten an answer. Even though the set of natural numbers is infinite, Possum does not deal with infinite sets.  Instead, it has a maximum integer value ($2^{31}$). As far as Possum is concerned, the set \texttt{int}  is equivalent to $-MAXINT .. MAXINT$, and the set  and the set \texttt{nat} is equivalent to $0 .. MAXINT$, where $MAXINT$ is the value of this parameter.
+
+The value of $MAXINT$ can be changed by going to the menu \emph{Dialogs} $\rightarrow$ \emph{Parameters}, and clicking on the maximum integer number. Alternatively, \texttt{param maxint  65536} at the prompt to change this to $2^{16}$.
+
+  Change the maximum integer to 65536, and evaluate \texttt{nat} again. 
+
+  The larger the maximum integer parameter, the longer the expression will take to evaluate.
+
+ \item \emph{Predicate evaluation}.
+
+   Possum attempts to evaluate predicates by grounding variables and simplifying. Try the following predicates at the prompt:
+
+ \begin{enumerate}
+   \item A simply tautology: \texttt{1 = 1}.
+   \item A simple contradiction: \texttt{1 /= 1}
+   \item Set membership (an atomic predicate): \texttt{2 in EVEN} (make sure you have defined \texttt{EVEN} from the previous task!)
+   \item Conjunction: \texttt{2 in EVEN and 3 in EVEN} (hit Ctrl-Up to view and edit previous commands).
+   \item Disjunction: \texttt{2 in EVEN or 3 in EVEN}
+   \item Implication: \texttt{2 in EVEN => 2 mod 2 = 0}
+   \item Universal quantification: \texttt{forall n : EVEN @ n mod 2 = 0}
+   \item Existential quantification: \texttt{exists n : EVEN @ n mod 2 /= 0}
+   \item Recall what happened when  you evaluated the expression \texttt{nat}. What do you think will happen if you evaluate the following predicate over the infinite set \texttt{nat}?: 
+
+   \quad\quad \texttt{exists n : nat @ n in EVEN}
+
+ Try it and find out!
+  \end{enumerate}
+
+ \item \emph{Checkers and chests}.
+
+  Type \texttt{reset} at the prompt to reset Possum. This will remove the name \texttt{EVEN} that you declared earlier, and will reset the maximum integer value.
+
+ Re-declare the name \texttt{EVEN}, but this time over a bigger domain: \texttt{EVEN == \{n : nat | n mod 2 = 0\}}.
+
+  Type \texttt{EVEN} at the prompt to get the enumerated expression (don't forget you can abort evaluations!)
+
+  Next, try to evaluate the following predicate: \texttt{5000000 in EVEN}.
+
+  Why do you think it is that the predicate evaluates almost instantly, yet it would take a long time to generate the set \texttt{EVEN} just to check if 5000000 was in the set?
+
+  The answer is in \emph{checkers} and \emph{chests}: terms used by the Possum designers to describe how terms are simplified.
+
+  For the set \texttt{EVEN}, it enumerates all possible values, of which there is a lot. Because Possum must generate all of these values, this type of term  is called a \emph{chest}. 
+
+ For the predicate \texttt{5000000 in EVEN}, we know that for 5000000 to be in the set even, it must be that \texttt{5000000 mod 2 = 0}. Therefore, instead of generating the set \texttt{EVEN} and testing if 5000000 is in this set, Possum just transforms the predicate \texttt{5000000 in EVEN} to \texttt{5000000 mod 2 = 0}, which it can evaluate much faster. Because this is just checking that something holds, this type of expression is called a \texttt{checker}.
+
+  When using Possum to check specifications, we can use the idea of checkers and chest to write queries that can be evaluated quickly. Possum is already pretty good at determining when to do checks vs.\ when to do checkers, but the user can use the context of their queries to help here.
+
+\end{enumerate}
+
+\section*{Problem-solving tasks}
+
+Possum uses an ASCII notation, rather than symbolic notation. The appendix at the end of this workshop sheet (reproduced from the appendix in the notes) outlines the ASCII notation for the most common operators.
+
+\begin{enumerate}
+
+ \item Declare a name \texttt{NON\_PRIMES} that is the set of all non-prime numbers between 2 and 100. 
+
+  HINT: A number, $n$, is non-prime if \emph{there exists} two numbers, $s$ and $t$, such that $s \times t = n$.
+
+ \item Declare a name \texttt{PRIMES} that is the set of all prime numbers between 2 and 100.
+
+ \item Write a predicate that specifies that \texttt{PRIMES} has no even numbers greater than 2, and evaluate this.
+
+ \item Recall from the notes that \emph{axioms} are static definitions of variables. In Possum, axioms can be used to define new operators. Recall the following definition of the \texttt{square} function from the notes:
+
+\begin{lstlisting}
+axiom is
+dec
+  square : nat --> nat
+pred
+  forall n : nat @ square(n) = n*n
+end
+\end{lstlisting}
+
+The expression \texttt{square(10)} can be evaluated by Possum. Try evaluating this.
+
+Next, constrain the maximum integer parameter to something small, such as 1000. Then, enter in the above axiom definition again (Possum will replace the previous version of \texttt{square} with the new definition). Now, evaluate the expression \texttt{square}. Notice that the definition is really a set of pairs, in which the first element in the pair is the input and the second element is the output.
+
+ \item The set \texttt{seq X} is the set of all finite sequences containing members of the set \texttt{X}. This is a pre-defined operator in Possum. 
+
+ The formal definition used by Possum is the following:
+
+ \quad\quad \texttt{seq X == \{ n : (1 .. \#X) -|-> X \}}
+
+ Thus, a sequence is a set of pairs, in which the second element of the pair represents the item in the sequence, and the first represents its position in the sequence. In Possum, we can use sequence notation, such as \texttt{<1, 3, 5>} to represent sequences, but this is shorthand for the set \texttt{\{(1,1), (2,3), (3,5)\}}. 
+
+This can be tested by playing around with expressions of these types. Try evaluating the following three predicates in Possum:
+
+ \quad\quad \texttt{<9,8> in seq \{7,8,9\}}
+
+ \quad\quad \texttt{\{(1,9), (2,8)\} in seq \{7,8,9\}}
+
+ \quad\quad \texttt{<9,8> = \{(1,9), (2,8)\}}
+
+ We can declare a variable that is a sequence of integers using \texttt{v : seq int}.
+
+ Using an axiom, write a function that takes a sequence of integers as an input, and returns true if and only if there are no duplicates in that sequence. HINT: The set \texttt{bool} contains the expressions \texttt{true} and \texttt{false}.
+
+\end{enumerate}
+
+\pagebreak
+
+\section*{Connecting with X11 via Mac OSX}
+
+Recent versions of Mac OSX no longer support X11, so this should be installed from a third party-open source package named XQuartz.
+
+\url{http://support.apple.com/kb/HT5293?viewlocale=en_US&locale=en_US}
+
+\url{https://xquartz.macosforge.org/landing/}
+
+After installation, go to Launchpad and run XQuarts which will open an "xterm" terminal.
+
+Then you can run:
+
+ \quad \texttt{ssh -X} \emph{username}\texttt{@timber.csse.unimelb.edu.au}
+
+ The option \texttt{-X} tells timber to export the X11 related content to be displayed locally.
+
+
+\pagebreak
+
+\section*{ASCII notation in Possum}
+
+\subsection*{Set notation}
+
+\begin{lstlisting}
+  { 1, 2, 3, 4, 5 }     //set enumeration
+  { x : X | P(x)}       //set comprehension
+  { x, y : X | P(x,y)}  //set comprehension (multiple variables)
+  1 .. 10               //integer range
+  x in X                //set membership
+  #X                    //size (cardinality) of a set
+
+  X union Y             //set union
+  X diff Y              //set difference
+  X inter Y             //set intersection
+  X subset Y            //subset
+  X p_subset Y          //proper subset
+
+  power X               //power set
+  X cross Y             //Cartesian product
+  (x,y) (x,y,z)         //pairs, triples
+  X <--> Y              //relation
+  X --> Y               //total function
+  X -|-> Y              //partial function
+  dom(X)                //domain of a relation/function
+  ran(X)                //range of a relation/function
+\end{lstlisting}
+
+\subsection*{Logic}
+
+\begin{lstlisting}
+  P and Q                   //conjunction
+  P or Q                    //disjunction
+  P => Q                    //implication
+  P <=> Q                   //equivalence
+  not(P)                    //negation
+  exists x : X @ P(x)       //existential quantification
+  exists x, y : X @ P(x,y)  //existential quantification (multiple variables)
+  forall x : X @ P(x)       //universal quantification
+  forall x, y : X @ P(x, y) //universal quantification (multiple variables)
+\end{lstlisting}
+
+\subsection*{Arithmetic}
+
+\begin{lstlisting}
+   +, -, div, *        //plus, minus, division, multiplication
+   x**y                //exponent
+   <, <=, >, >=        //less than (or equal to), greater than (or equal to)
+   =, /=               //equals, not equals
+\end{lstlisting}
+
+\end{document}
+
+% LocalWords:  Ctrl nat MAXINT Dialogs param maxint forall dec pred
+% LocalWords:  bool dom

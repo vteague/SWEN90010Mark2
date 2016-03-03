@@ -1,0 +1,446 @@
+\chapter{Safe programming language subsets}
+\label{chapter:spark}
+
+\lstset{aboveskip=3mm}
+
+In this chapter, we introduce the concept of \emph{safe programming language subsets}. These are subsets of programming languages in which unsafe parts of the language are not permitted. They are intended to make it impossible to implement certain types of faults in software.
+
+The particular language that we will look at is SPARK -- a subset of Ada. SPARK is intended to be a simple language that allows structured programs to be written, while preventing many types of serious faults that can affect the system, and are difficult to detect. It does that by constraining the syntax and the semantics of the language to be straightforward to reason about by both humans and machines.
+
+
+\section{Principles of correctness by construction}
+
+\begin{quote}
+``\emph{There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other is to make it so complicated that there are no obvious deficiencies.}'' --- \textnormal{Professor Tony Hoare, 1980 ACM Turing Award Lecture}
+\end{quote}
+
+{\em Correctness by construction} is an approach to developing software at Altran Praxis, a small company in the U.K.\ that specialises in safety- and security-critical software. Altran Praxis are the company that defined SPARK and continue to provide high quality tool support for it.
+
+There are seven key principles adhered to at Praxis:
+
+\begin{enumerate}
+
+ \item Expect requirements to change. 
+ 
+ \item Know why you're testing: finding faults, not showing correctness.
+
+ \item Eliminate errors before testing. Testing is the second most expensive way of finding errors. The most expensive is to let your customers find them for you.
+
+ \item Write software that is easy to verify. Testing takes up to 60\% of total effort. Implementation typically takes 10\%. Doubling  implementation effort is cost-effective if it reduces verification cost by as little as 20\%.
+
+ \item Develop incrementally. Make small changes, incrementally. After each change, verify that the updated system behaves according to its updated specification. 
+
+ \item Some aspects of software development are just plain hard.  The best tools and methods take care of the easy problems, allowing you to focus on the difficult problems.
+
+ \item Software is not useful by itself. The executable software is only part of the picture:   user manuals, business processes, design documentation, well-commented source code and test cases should not just be   added at the end.
+
+\end{enumerate}
+
+\subsubsection*{Learning outcomes}
+
+Throughout the next few chapters, we will explore just {\em some} of the principles above, and how Praxis (and others) go about adhering to them. 
+
+The learning outcomes of the next four chapters are:
+
+\begin{enumerate}
+
+ \item Motivate the use of safe programming language subsets.
+
+ \item To understand the motivation of design by contract.
+
+ \item To specify formal contracts for small- and medium-scale packages in Ada.
+
+ \item Prove the correctness of a program against its contract.
+
+ \item Apply SPARK Ada static analysis tools for semi-automated proof of contract satisfaction.
+
+ \item Systematically construct tests from specifications and contracts.
+
+\end{enumerate}
+
+In this chapter, we look at the first item above: safe programming language subsets.
+
+\section{Safe programming language subsets}
+
+The evolutionary nature of programming languages implies that there are many problems with our everyday programming languages. For example, C and Ada, the two most widely used programming languages in embedded software, have no agreed semantics. Furthermore, they both permit programs that have no defined behaviour. These two languages are two of the most well understand and strict languages in common use today. Other languages, such as Python, Ruby, and Java, have far greater problems.
+
+{\em Structured programming} is where the procedural logic of a program is a structure composed of sub-structures in a limited number of ways; most commonly, constructed of sequencing, selection, and iteration.
+
+Safe programming language subsets use structured programming to provide a small but powerful programming language that is easier to verify than non-safe languages.
+
+\subsubsection*{Some programming language subsets}
+
+Some well-known safe programming language subsets include:
+
+\begin{itemize}
+
+ \item {\em SafeD}, a  safe subset of {\em D}, which is itself related to C++.
+
+ \item {\em MISRA C}, a safe subset of C.
+
+ \item {\em Joe-E},  a {\em secure} subset of Java.
+
+ \item {\em SPARK}, a safe subset of Ada, but with {\em annotations} for additional static checking.
+
+\end{itemize}
+
+In this subject, we will focus on SPARK, as it is the most widely used safe programming language subset, and also has the most mature tools supporting it.
+
+\begin{example}
+
+The following is an example of a safe programming subset of C, defined by a strict coding standard. The coding standard \cite{jpl-nasa-coding-standard09} was defined by engineers at NASA's Jet Propulsion Laboratory, for use on NASA's Mars Rover \emph{Curiosity}. 
+
+In fact, the standard is a subset of MISRA C, a safe subset of C defined the Motor Industry Software Reliability Association (MISRA), which defines standards for the automotive industry.
+
+For NASA's Curiosity, the following rules had to been abided by:
+
+\begin{enumerate}
+
+ \item Language Compliance 
+  \begin{enumerate}
+   \item Do not stray outside the language definition. 
+  \item Compile with all warnings enabled; use static source code analysers. 
+  \end{enumerate}
+
+ \item Predictable Execution 
+ \begin{enumerate}
+  \item Use verifiable loop bounds for all loops meant to be terminating. 
+  \item Do not use direct or indirect recursion. 
+  \item Do not use dynamic memory allocation after task initialisation. 
+  \item Use IPC messages for task communication. 
+  \item Do not use task delays for task synchronisation. 
+  \item Explicitly transfer write-permission (ownership) for shared data objects. 
+  \item Place restrictions on the use of semaphores and locks. 
+  \item Use memory protection, safety margins, barrier patterns. 
+  \item Do not use goto, setjmp or longjmp. 
+  \item Do not use selective value assignments to elements of an enum list. 
+ \end{enumerate}
+
+ \item Defensive Coding 
+ \begin{enumerate}
+  \item Declare data objects at smallest possible level of scope. 
+  \item Check the return value of non-void functions, or explicitly cast to (void). 
+  \item Check the validity of values passed to functions. 
+  \item Use static and dynamic assertions as sanity checks. 
+  \item Use U32, I16, etc instead of predefined C data types such as int, short, etc. 
+  \item Make the order of evaluation in compound expressions explicit. 
+  \item Do not use expressions with side effects. 
+ \end{enumerate}
+
+ \item Code Clarity 
+ \begin{enumerate}
+  \item Make only very limited use of the C pre-processor. 
+  \item Do not define macros within a function or a block. 
+  \item Do not undefine or redefine macros. 
+  \item Place \texttt{\#else}, \texttt{\#elif}, and \texttt{\#endif} in the same file as the matching \texttt{\#if} or \texttt{\#ifdef}. 
+  \item Place no more than one statement or declaration per line of text. 
+  \item Use short functions with a limited number of parameters. 
+  \item Use no more than two levels of indirection per declaration. 
+  \item Use no more than two levels of dereferencing per object reference. 
+  \item Do not hide dereference operations inside macros or typedefs. 
+  \item Do not use non-constant function pointers. 
+  \item Do not cast function pointers into other types. 
+  \item Do not place code or declarations before an \texttt{\#include} directive. 
+ \end{enumerate}
+
+ \item MISRA \emph{shall} compliance 
+ \begin{enumerate}
+   \item All MISRA shall rules not already covered at Levels 1-4 (73 rules in total).
+ \end{enumerate}
+
+ \item MISRA \emph{should} compliance 
+ \begin{enumerate}
+  \item All MISRA should rules not already covered at Levels 1-4 (16 rules in total).
+ \end{enumerate}
+\end{enumerate}
+
+The rules above are not sufficiently detailed to be understood, but the standard itself \cite{jpl-nasa-coding-standard09} (available at \url{http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf}) presents a set of well-defined rules, as well as justifications for each rule.
+
+\end{example}
+
+\section{SPARK}
+
+SPARK is a subset of Ada, in that any correct SPARK program is also a correct Ada program. However, this is misleading, because SPARK also extends Ada via the use of \emph{annotations}. Annotations are a major part of the language. Thus, $SPARK = safe(Ada) + annotations$.
+
+\subsection{SPARK Structure}
+
+The steps used to construct SPARK is:
+
+\begin{itemize}
+
+ \item Take Ada, which is a safe language relative to most others.
+
+ \item Remove unsafe features to get a powerful subset that is still Turing compatible.
+
+ \item Define a set of annotations to support static checking.
+
+\end{itemize}
+
+To enable SPARK annotations, we must tell tools that we are using SPARK mode, using syntax such as:
+
+\lstinputlisting[linerange={1-3}]{\rootdir/spark/code/incorrectreassignment.ads}
+
+SPARK mode can be enabled for packages, individual procedures/functions, or at the project level. By having a standard SPARK mode, this allows any SPARK program to be compiled using a standard Ada compiler. In fact, there is no SPARK compiler --- just a set of tools for checking conformance to the SPARK language. If these tools confirm that an Ada program is also a valid SPARK program, then an Ada compiler is used to compile the program.
+
+Chapter~\ref{chapter:design-by-contract} presents the use of two types of SPARK annotations: preconditions and postconditions. These are the only annotations we will use in this subject, however, several other useful annotations exist that can be used to cross-check source code.
+
+\subsection{What is left out of Ada?}
+
+SPARK removes many of the features of Ada that are unconsidered either unsafe, or difficult to verify. These include language features such as:
+
+\begin{itemize}
+  \item Dynamic memory allocation
+  \item Tasks
+  \item Gotos
+  \item Exceptions
+  \item Generics
+  \item Access types (similar to references in other languages)
+  \item Recursion
+\end{itemize}
+
+Ada favours the reader heavily over the writer in its design. The reason is that the verification is more difficult and more important than the coding. SPARK carries this principle to further extremes. Why? Because the reader may be a software tool used to verify the program.
+
+Furthermore, writing code takes a fraction of the time it takes to verify, especially in certifiable software.
+
+\subsubsection*{Why no dynamic memory allocation?}
+
+One of the key constraints in SPARK is that memory cannot be allocated dynamically. That is, all arrays etc.\ must be statically allocated.
+
+The reason for this is for certifiability: if \emph{all} memory is allocated at design time, then we can calculate the maximum amount of memory required to run the program, and ensure that we have enough memory for the program to execute.
+
+If SPARK allowed dynamic memory allocation, there is a possibility that the program could attempt to allocate more memory than is available on the physical platform, which can have catastrophic consequences.
+
+In addition to memory management, static memory allocation makes it straightforward to reason about range correctness; e.g.\ we can prove that there is no possibility of an array being indexed out of bounds.
+
+\subsubsection*{Why no tasks?}
+
+Tasks are forbidden because tasking programs are inherently more complex than simple sequential programs:
+
+\begin{enumerate}
+
+ \item The state of a tasking program is a much more complex object than of a non-tasking program.
+
+ \item Task interactions are complex. In particular, verifying tasking programs that share memory is exceedingly difficult because we can no longer verify a module as a stand-alone state machine --- it's internal data may not be hidden.
+
+\end{enumerate}
+
+While SPARK does not allow tasks, \emph{RavenSPARK 95}, a superset of SPARK, does allow tasks (although with strong restrictions), and also supports verification of these.
+
+\subsubsection*{Why no gotos?}
+
+Gotos are not really needed in most programming: at best they are only a minor convenience; but they complicate formal analysis.
+
+
+When using gotos, the effect of a sequence of code can no longer be represented as the composition of the effects of its sequential components. In other words, they violate the principle of \emph{structured programming}.
+ 
+
+\subsubsection*{Why no exceptions?}
+
+Because exceptions make the control flow of a program much more complex. Similar to goto statements, they violate the principle of structured programming.
+
+Further to this, is the issue of what happens when an exception occurs. {\em Certifiable} programs cannot have unexpected exceptions being thrown. For example, software responsible for controlling part of an aircraft cannot throw an exception and exist.
+
+This implies that all exceptions must be handled using exception handlers. However, exception handlers lead to deactivated code which is problematic for certification.
+
+To work around the idea of not using exceptions, return values from sub-programs should be used to signal exceptional cases, which can then be handled safely.
+
+
+\subsubsection*{Why no generics?}
+
+Generics are a shorthand for repeated instantiations, so do not provide any fundamental expressive power. But proving properties is more complex because we have to quantify over types. That is, we must prove that the properties we want verified hold for all instantiations, rather than just one.
+
+If we have to prove separate instantiations for certifiable software, it is generally faster and easier to just write all of the instantiations than it is to use generics. So, this creates a more lengthy task at the programming level, but this is clawed back by making verification more straightforward.
+
+
+\subsubsection*{Why no access types?}
+
+Access types only make sense in connection with dynamic storage allocation, but dynamic allocation is forbidden.
+
+\subsubsection{Why no recursion?}
+
+Recursive programs are difficult to reason about. In terms of programs, all non-recursive programs can be mapped to {\em regular} expressions, while some recursive programs cannot. This is somewhat of a violation of the principles of structured programming (but not really).
+
+But more importantly, in the absence of recursion, the maximum stack depth required for a program can be statically determined at design time. Once recursion is introduced, variables can be declared at each call, meaning the memory management must be dynamic -- something that is not permitted in SPARK.
+
+\subsubsection*{Other things left out}
+
+Some other language features that are omitted in SPARK:
+
+\begin{enumerate}
+
+ \item Operation overloading: the number of possible combinations of bindings when operations are overloaded/overridden can be challenging to reason about, and can cause unexpected behaviour.
+
+ \item Functions with side effects: any sub-program that needs to modify its input or a global must be a procedure. Functions can only read global variables or parameters.
+
+ \item Implicit subtypes; e.g. \texttt{X : Integer range 1..10;} are not allowed. We instead must declare separate subtype:
+
+\begin{verbatim}
+  subtype XRange is Integer range 1..10;
+  X : XRange;
+\end{verbatim}
+
+ This is to prevent designers/programmers from specifying the same implicit subtypes for multiple variables. It is difficult to determine whether these implicit subtypes are intended to represent the same logical concept, or different concepts. Allowing implicit subtypes also presents a maintenance issue: if the range changes, which implicit subtypes need to be changed?
+
+\end{enumerate}
+ 
+
+\subsection{Why bother with SPARK or other safe programming language subsets?}
+
+A question to ask is: why bother with safe programming language subsets? Doesn't SPARK make programmers ``less productive'' by forcing them to declare new subtype ranges, etc.?
+
+The answer is: ``\emph{yes, it probably does, but ...}''. 
+
+It may be true that it takes a bit longer to write one feature of a system, \emph{but}, that time is more than gained back in the verification, and even debugging, of the program. Using the SPARK toolset (which we will use in workshops), we can eliminate a number of possible faults without having to even execute the software.
+
+Testing typically takes about 50\% of total effort in a software product. For a certifiable system, verification (including testing) takes up even more. By taking some extra time during programming, we can cut down the verification time significantly. Further to this, we can \emph{certifiably} verify our system.
+
+If we look at the features of SPARK and compare them to the C programming standard used on NASA's Mars Rover \emph{Curiosity}, we can see that many of the Ada features not present in SPARK are those same features not permitted in that coding standard. Thus, SPARK is a formal definition of a language that forbids many programming language features that are considered unsafe or problematic, with a set of mature tools that are able to prove many other problematic faults are not in a program.
+
+
+\section{SPARK Examiner}
+
+In this section, we present the \emph{SPARK examiner} tool, which uses the annotations to prove that certain properties are (or are not) present in a program.
+
+\subsection{Annotations}
+
+Annotations are Ada comments, starting with \texttt{--\#}. Like comments, they specify some form of expected/intended behaviour of a program, however, they are \emph{formal} comments and are strict elements of the SPARK syntax. By ``formal'', we mean that the comments have a strict syntax and semantics. The syntax and semantics are designed to be both human and machine readable.
+
+As well as making code clearer at the specification level, annotations help with verification by:
+
+\begin{enumerate}
+
+ \item introducing redundancy (annotations + code), which can be checked for consistency using static analysis; and
+
+ \item allowing error checks to be made.
+
+\end{enumerate}
+
+In this chapter, the two types of annotations we will look at are to do with variable declaration and information flow. These are the only two annotations that are compulsory in a SPARK program. These annotations are attached to sub-programs. The two annotations each use their own reserved keywords:
+
+\begin{itemize}
+ \item \texttt{global}: this specifies which global variables (those declared outside of the procedure) are used in a function.
+ \item \texttt{derives}: specifies which variables are used to derive the value of other variables.
+\end{itemize}
+
+The annotations describe information about the program. Using the program code, we can infer the same information about which variables change and how their value is determined, and cross check this against the annotations. SPARK Examiner is a tool that supports this for SPARK.
+
+\subsection{SPARK Examiner}
+
+
+SPARK examiner is a tool for statically analysing SPARK programs. It does the following:
+
+\begin{itemize}
+
+ \item checks syntactic validity of a program;
+
+ \item checks annotations for consistency and correctness; 
+
+ \item generates useful warnings for debugging; and
+
+ \item generates auxiliary information helpful in analysis and certification.
+
+\end{itemize}
+
+One of its primary purposes is to check that a program is a valid SPARK program (as opposed to just an Ada program).  SPARK examiner is run prior to compilation. If it produces no warnings or errors, then the program can be compiled by an Ada compiler.
+
+We will investigate SPARK Examiner in greater detail both in later chapters and in workshops. The following provides some examples of how the SPARK Examiner can check internal consistency of a SPARK program.
+
+\begin{comment}
+
+\begin{example}
+
+The following is a simple example of a (non-valid) SPARK program and its annotations. All \texttt{global} and \texttt{derives} annotations are made in the package interface, and are cross-checked with the implementation in the package body.
+
+The program swaps the value of two numbers, using a global variable as the ``temporary'' store value. The example assumes a variable \texttt{T} is declared outside of the scope of this procedure.
+
+\lstinputlisting[linerange={5-7}, caption={\textbf{globalvariable.ads}}]{\rootdir/spark/code/globalvariable.ads}
+
+\lstinputlisting[linerange={3-8}, caption={\textbf{globalvariable.adb}}]{\rootdir/spark/code/globalvariable.adb}
+
+There are two annotations here:
+
+\begin{enumerate}
+
+ \item The \texttt{global} annotation says that global variable \texttt{T} is used in this procedure.
+
+ \item The \texttt{derives} annotation says that the value of variable \texttt{X} is derived from \texttt{Y}, and the value of \texttt{Y} is derived from \texttt{X}.
+
+\end{enumerate}
+
+This program is \emph{not} a valid SPARK program, because \texttt{Swap} modifies the global variable \texttt{T}, but the annotation does not permit this. SPARK examiner produces the error message ``the global variable T is neither imported nor  exported''. 
+
+Instead, the 2nd line should be replaced with \texttt{--\# global out T;}. Like Ada procedure variables, annotations should include information about whether variables are \texttt{in} or \texttt{out} variables.
+
+In addition to this incorrect annotation, \texttt{T from X} should be added to the {\tt derives} list, because the value of \texttt{T} is derived from \texttt{X}.
+
+Running SPARK Examiner over this program will reveal both of these inconsistencies.
+
+\end{example}
+
+\end{comment}
+
+\begin{example}
+\label{ex:SPARK:incorrect-derives}
+The following code listing shows a second attempt at implementing the \texttt{Swap} procedure. In this example, a local variable \texttt{T} is used as the temporary value holder instead of a global variable. 
+
+\lstinputlisting[caption={\textbf{incorrectassignment.ads}}, linerange={5-6}]{\rootdir/spark/code/incorrectreassignment.ads}
+
+\lstinputlisting[caption={\textbf{incorrectassignment.adb}}, linerange={5-11}]{\rootdir/spark/code/incorrectreassignment.adb}
+
+
+There is a fault in this program: the final line assigns \texttt{X} to \texttt{Y}, instead of assigning \texttt{T} to \texttt{Y}, so the values do not get swapped correctly. Running this through SPARK examiner would result in the following five problems being identified:
+
+\begin{enumerate}
+
+ \item {\tt T := X} is an ``ineffective statement'': the assigned value of \texttt{T} is never used.
+
+ \item Importation of initial value of {\tt X} ineffective: the initial value of \texttt{X} is never used, so declaring it as an \texttt{in} parameter is not consistent with the program.
+
+ \item The variable T is neither referenced nor exported: \texttt{T} is declared and is given a value, but that value is never used, and \texttt{T} is not an output variable.
+
+ \item Imported value of \texttt{X} not used in deriving the value of \texttt{Y}: SPARK examiner reasons that the value of \texttt{X} is not used in deriving \texttt{Y}. Despite the final assignment stating doing exactly this, SPARK examiner is sophisticated enough to reason that the value of \texttt{X} is assigned the line before this, so the \emph{imported} value of \texttt{X} is not used to derived \texttt{Y}, which is inconsistent with the \texttt{derives} annotation.
+
+ \item Imported value of {\tt Y} may be used in the derivation of {\tt Y}: as a result of the fault, the value of \texttt{Y} is derived from itself, which is inconsistent with the \texttt{derives} annotation.
+
+\end{enumerate}
+\end{example}
+
+The above example illustrates several checks that are performed by SPARK examiner. All five errors can be attributed to the same single fault in the final assignment statement. 
+ 
+
+\begin{exercise}
+
+The following code listing presents a non-sensical example of the ``swap'' program, in which the assignment of the value of \texttt{X} to the variable \texttt{X} only occurs if \texttt{X < Y}. This is not sensible behaviour, but is included just to demonstrate the features of SPARK examiner.
+
+\lstinputlisting[caption={\textbf{weirdswap.ads}}, linerange={5-6}]{\rootdir/spark/code/weirdswap.ads}
+
+\lstinputlisting[caption={\textbf{weirdswap.adb}}, linerange={5-13}]{\rootdir/spark/code/weirdswap.adb}
+
+What is the issue with this procedure? 
+
+\end{exercise}
+
+
+\begin{exercise}
+ 
+The following example of the \texttt{Swap} is more sensible than the last, but the additional code (initialising the variable \texttt{T}) will generate a warning for the SPARK examiner.
+
+\lstinputlisting[caption={\textbf{initialiselocal.ads}}, linerange={5-6}]{\rootdir/spark/code/initialiselocal.ads}
+
+\lstinputlisting[caption={\textbf{initialiselocal.adb}}, linerange={5-11}]{\rootdir/spark/code/initialiselocal.adb}
+
+
+What is the issue with this procedure?
+\end{exercise}
+
+\begin{exercise}
+
+The two exercises above and Example~\ref{ex:SPARK:incorrect-derives} each contain specific (and different) types of faults. Do the three issues on these last three programs seem familiar? HINT: You may need to think back to SWEN90006.
+
+\end{exercise}
+
+% LocalWords:  aboveskip Hoare ACM Altran Praxis SafeD MISRA NASA's
+% LocalWords:  abided IPC goto setjmp longjmp enum Defensive elif nd
+% LocalWords:  endif ifdef dereferencing dereference typedefs Gotos
+% LocalWords:  certifiability RavenSPARK gotos toolset sensical
+% LocalWords:  WeirdSwap

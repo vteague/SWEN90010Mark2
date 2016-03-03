@@ -1,0 +1,96 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+\lstset{language=,aboveskip=3mm}
+\tutorialsolutionstitle{7}
+
+\section*{Solutions to tasks}
+
+\begin{enumerate}
+
+\setcounter{enumi}{1}
+
+\item For 10 readings of a single sensor, the statistics are:
+
+\begin{lstlisting}
+Mean =  059.7129707330 
+Standard deviation =  001.1746177670 
+CI = [ 058.9849357600  060.4410057060 ]
+\end{lstlisting}
+
+
+ \item For 100 readings:
+
+\begin{lstlisting}
+Mean =  060.4635887140 
+Standard deviation =  010.5414819710 
+CI = [ 058.3974571220  062.5297203060 ]
+\end{lstlisting}
+
+For 1000 readings:
+
+\begin{lstlisting}
+Mean =  060.5256233210 
+Standard deviation =  011.3287115090 
+CI = [ 059.8234634390  061.2277832030 ]
+\end{lstlisting}
+
+For 10,000 readings
+
+\begin{lstlisting}
+Mean =  060.1422691340 
+Standard deviation =  011.5085096350 
+CI = [ 059.9167022700  060.3678359980 ]
+\end{lstlisting}
+
+The mean and standard deviation remain about the same. The variation seen in these is mostly causes by the randomness of the sensor implementation.
+
+However, the confidence interval becomes smaller as the number of readings increases. That is, we are able to offer a more accurate assessment of the true mean of the population.
+
+\item The implementation for this can be found in the subject repository. The file is \texttt{solution.adb}.
+
+\item For 10 readings and 3 sensors:
+
+\begin{lstlisting}
+Mean Median =  060.3576774590 
+Standard deviation Median =  000.8990151280 
+CI Median = [ 059.8004608150  060.9148941040 ]
+\end{lstlisting}
+
+If we compare this to the single sensor readings from task 2, for the 3 sensor version, the mean is slightly closer to the true mean (which we know is 60), the standard deviation is slightly lower, and the confidence interval is slightly tighter.
+
+ \item For 10 readings and 10 sensors:
+
+\begin{lstlisting}
+Mean Median =  060.2588729850 
+Standard deviation Median =  000.3446846000 
+CI Median = [ 060.0452346800  060.4725112910 ]
+\end{lstlisting}
+
+For 10 readings and 1000 sensors:
+
+\begin{lstlisting}
+Mean Median =  060.0100021360 
+Standard deviation Median =  000.0422198540 
+CI Median = [ 059.9838333120  060.0361709590 ]
+\end{lstlisting}
+
+As the number of sensors increase, the sample mean becomes closer to the true mean, the standard deviation is lower, and the confidence interval is much tighter.
+
+What is interesting about this is we are still only recording statistics from 10 readings! While there are 1000 sensors in the last iteration, we are only taking the value of one sensor for each reading: the median sensor. The difference between the readings from task 2 is that we are not taking readings from the same sensor each time: the median value can be from different sensors at each loop.
+
+From this, we can see that adding redundant sensors and using a simple voting algorithm does not just mean that if a sensor fails that the system can tolerate this failure. It also means that we end up with more accurate results --- despite only using a single reading to act each time.
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  aboveskip testsensor adb ReadingArray NUM

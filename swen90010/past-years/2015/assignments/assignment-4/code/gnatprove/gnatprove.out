@@ -1,0 +1,17 @@
+Analyzed 1 units
+in unit closedloop, 7 subprograms and packages out of 7 analyzed
+  ClosedLoop at closedloop.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  ClosedLoop.ChangeSettings at closedloop.ads:42 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
+   suppressed messages:
+    closedloop.ads:42:51: Parameter is used by the precondition
+  ClosedLoop.Is_Cardiologist at closedloop.ads:26 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  ClosedLoop.Is_Practitioner at closedloop.ads:23 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  ClosedLoop.ReadLast50Shocks at closedloop.ads:33 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
+   suppressed messages:
+    closedloop.ads:33:49: Parameter is used by the precondition
+  ClosedLoop.ReadSettings at closedloop.ads:37 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
+   suppressed messages:
+    closedloop.ads:37:45: Parameter is used by the precondition
+  ClosedLoop.SwitchMode at closedloop.ads:29 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
+   suppressed messages:
+    closedloop.ads:29:47: Parameter is used by the precondition

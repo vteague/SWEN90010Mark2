@@ -1,0 +1,67 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+\input{../packages}
+
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+
+\tutorialtitle{2}
+
+\section*{Introduction}
+\label{section:introduction}
+
+The aim of this workshop is to extend your understanding of Ada and
+especially:
+
+\begin{itemize}
+  \item Ada packages; and 
+  \item Ada records.
+\end{itemize}
+
+The intention is to work on a couple of small programs with records and how they can be used with packages. In doing so, you should get familiar with the way that Ada handles certain constructs. The tasks for the workshop are short. The remainder of the workshop can be used to start on the first assignment.
+
+\section*{Ada packages}
+
+Recall that a package in Ada is a module. A package consists of two parts:
+\begin{enumerate}
+ \item A \emph{specification} (the \texttt{.ads} file), which specifies publicly available constructs, including type definitions, data definitions, and sub-programs.
+ \item A \emph{body} (the \texttt{.adb} file), which implements the specification.  This is the encapsulated part of the package.
+\end{enumerate} 
+
+Ada specifications can declare types without defining them. That is, they declare type names, but not what the types are. For example:
+
+\quad\quad \texttt{type DateType is private;}.
+
+The details of the type are then defined in the \emph{private} part of the package specification. Any calling program that uses a private type cannot see the internals of the type. It is up to the designer of the package to provide the necessary subprograms (getters and setters) to modify and read data from the private type. This is one way that encapsulation can be achieved with Ada.
+
+\section*{Record types}
+
+Recall from the notes that in Ada, \emph{records} can be used to group related information. The supporting source code for this workshop (available on the LMS) contains two packages that use record types: \texttt{Date} and \texttt{Time}.
+
+Note that the types \texttt{DateType} and \texttt{TimeType} are both declared as \texttt{private}, which means that other packages cannot access the attributes of the records directly, and that getter and setter methods are used to read and modify the attributes respectively. The \texttt{TimeType} itself contains a nested \texttt{DateType} record.
+
+The packages \texttt{TestDate} and \texttt{TestTime} provide examples of how to create variables of type \texttt{DateType} and \texttt{TimeType} respectively, and how to call subprograms for changing and reading the data in these types. This is analogous to creating instances of objects and calling methods, except that the subprograms are not bound to the record instances: they are statically bound.
+
+\section*{Your Tasks}
+
+\begin{enumerate}
+
+\item Compile and run the procedures in \texttt{TestDate} and \texttt{TestTime}. Note that the \texttt{TestTime} procedure should fail: the code for the \texttt{Time} package is incorrect.
+
+\item This task is straightforward \emph{if} one understands how to call sub-programs.
+
+The test in \texttt{TestTime} fails because the \texttt{Increment} procedure in the \texttt{Time} package fails to increment the date at the end of the day.
+
+Your task is to correct the \texttt{Time.Increment} procedure by incrementing the date correctly. To do this, you will need to understand how to call subprograms on records. 
+
+\item Once you have finished tasks 1 and 2, start working on assignment 1 --- or continue working on assignment 1 if you have already started. 
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  adb DateType getters TimeType TestDate TestTime

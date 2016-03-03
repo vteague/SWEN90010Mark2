@@ -1,0 +1,348 @@
+\documentclass{article}
+
+%---------------------------------------------------------------------
+%    Packages
+%
+
+\usepackage{times}
+\usepackage{xspace}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{hyperref}
+
+\newenvironment{omitable}[1]{}
+
+\def\etal{{\em et al.}\xspace}
+
+%----------------------------------------------------------------------
+%    The Document
+%
+
+\title{SWEN90010 --- High Integrity Systems Engineering\\
+ Subject Profile}
+\date{Semester 1, 2015}
+
+\begin{document}
+
+\maketitle
+
+
+\section*{Aims}
+
+High integrity systems are systems are systems upon which we must depend on to operate with high levels of security, safety, reliability and performance. The engineering methods required to develop high integrity systems go well beyond the minimum standards for less critical software.  
+
+The aim of this subject is to explore the principles, techniques and tools that are used to analyse, design and implement high integrity
+systems.
+
+Topics will be drawn from: an introduction to high integrity systems; formal modelling; the analysis of high integrity systems using proof tools; reliability and fault tolerance; security; safety; and validation and testing methods for high integrity systems. Assignments and projects will be done using Ada.
+
+
+\section*{Prerequisite subjects}
+
+The subject prerequisites is:
+
+\begin{enumerate}
+
+ \item SWEN90006: Software engineering methods
+
+\hspace{-10mm} \noindent but knowledge of:
+
+ \item SWEN40004: Modelling complex software systems; and
+
+ \item SWEN90006/8 or ISYS90050: Project management
+
+\end{enumerate}
+
+\noindent is also highly desirable. 
+
+\section*{Preconditions}
+
+The reason for giving preconditions is that the specify the knowledge assumed at the start of the subject and consequently the knowledge and skills upon which the subject builds. Preconditions also allow students from a Universities other than The University of Melbourne and who do not have the formal prerequisites listed above to judge whether or not they have the knowledge required for the subject. 
+Specifically the subject assumes:
+
+\begin{enumerate}
+
+ \item Knowledge and experience of software engineering processes and    practices, the risks associated with software and system    development, quality and quality assurance, software process, and    software project management.
+
+  \item Knowledge and experience of requirements elicitation and     analysis techniques, requirements modelling and specification,     use-case modelling, and UML or similar modelling notations.
+
+  \item Knowledge and experience of software architectures,     architectural styles and design patterns, design with UML or     similar graphical notation, developing code to meet architectural     and detailed designs.
+
+  \item Knowledge and experience of discrete mathematics, including     predicate logic, automata, and formal proof.
+
+\end{enumerate}
+
+
+\section*{Postconditions}
+
+At the end of the subject students will be expected to:
+
+\begin{enumerate}
+
+ \item Demonstrate an understanding of the issues facing high    integrity systems developers.
+
+ \item Demonstrate the ability to analyse securtiy-critical, safety-critical, and highly reliable systems and to synthesise    requirements and operating parameters from their analysis.
+
+ \item Demonstrate the ability to choose and make trade-offs between    different software and systems architectures to achieve multiple    objectives.
+
+ \item Develop algorithms and code to meet high integrity    requirements.
+
+  \item Demonstrate the ability to assure high integrity systems.
+
+\end{enumerate}
+
+\section*{Generic Skills}
+
+The subject is a technical subject. The aim is to explore the various
+approaches to building software with specific attributes into a
+system.
+
+The subject will also aim to to develop a number of {\em generic
+skills}.
+
+\begin{itemize}
+
+  \item We encourage {\em independent research} in order to develop
+    your ability to learn independently, assess what you learn, and
+    apply what you learn.
+  
+  \item You will be developing experience at empirical software
+    engineering, and the interpretation and assessment of quantitative
+    and qualitative data.
+  
+  \item Finally, and perhaps most importantly, you will be encouraged
+    to develop critical analysis skills that will complement and round
+    what you have learned so far in your degree.
+
+\end{itemize}
+
+\section*{Subject Outline}
+
+\begin{enumerate}[{Part} I:]
+
+ \item Introduction to high integrity systems.
+
+ \item Safety- and security-critical systems.
+
+   Topics will be drawn from: safety engineering, accident \& hazard analysis for high-integrity systems, security analysis and cryptography.
+
+ \item  Modelling and analysis.
+
+  Topics will be drawn from: discrete maths for software engineering, model-based specification and analysis, proof, and lightweight verification.
+
+ \item High Integrity Systems Design.
+
+  Topics will be drawn from: reliability, fault detection, fault containment, fault tolerant design, and design by contract.
+
+ \item Assurance.
+
+  Topics will be drawn from: proving program correctness, programming languages for high integrity systems, safe-subset programming languages, programming tools for high integrity verification, and   model-based testing.
+
+\end{enumerate}
+
+\begin{omitable}
+{
+\begin{description}
+
+ \item [Part I:] Introduction to high integrity systems,
+
+  \begin{description}
+
+    \item [Topic 1:] An overview of high integrity systems       engineering.
+
+    \item [Topic 2:] Processes and metrics.
+
+  \end{description}
+
+ \item [Part II:] Safety-critical systems
+
+ \begin{description}
+
+    \item [Topic 3:] Introduction to safety-critical systems.
+
+    \item [Topic 4:] Safe programming-language subsets (SPARK Ada).
+
+    \item [Topic 5:] Safety Critical Systems Engineering.
+
+    \item [Topic 6:] Fault Tolerance and Reliability
+
+  \end{description}
+
+ \item [Part III:] Real-time systems
+
+ \begin{description}
+
+    \item [Topic 7:] Introduction to real-time critical systems?
+
+    \item [Topic 8:] Scheduling to meet real-time constraints.
+
+  \end{description}
+
+ \item [Part IV:] High Integrity Systems Design
+
+   \begin{description}
+
+    \item [Topic 9:] N-version redundancy.
+
+    \item [Topic 10:] Voting algorithms for N-version redundancy.
+      
+    \item [Topic 11:] Self-checking implementations.
+        
+    \item [Topic 12:] Design by contract.
+
+ \end{description}
+
+\item [Part V:] Assurance.
+
+  \begin{description}
+
+    \item [Topic 13:] Static analysis (SPARK Ada toolset).
+
+    \item [Topic 14:] Specification-based (model-based) testing.
+
+%    \item [Topic 15:] Model-checking (optional).
+
+  \end{description}
+
+
+\end{description}
+}
+\end{omitable}
+
+
+\section*{Staff Details}
+
+\noindent \quad\quad Tim Miller
+
+\noindent\quad\quad Doug McDonell 6.09
+
+\noindent\quad\quad Email: \texttt{tmiller@unimelb.edu.au}\\
+
+\noindent\quad\quad  Vanessa Teague
+
+\noindent\quad\quad Doug McDonell 9.18
+
+\noindent\quad\quad Email: \texttt{vjteague@unimelb.edu.au}\\
+
+\noindent\quad\quad Qingyu Chenn
+
+\noindent\quad\quad Email: \texttt{qingyuc1@student.unimelb.edu.au}
+
+
+\section*{Expectations on Students}
+
+The subject contacts hours consist of two weekly, one-hour lectures,
+and one weekly tutorial/workshops. 
+
+\subsubsection*{Lectures and Lecture Notes}
+
+Throughout the semester, the subject staff will hand out notes in lectures and workshops on all of the major topics
+contained in the subject. Staff will hand out additional
+reading material round out the the material in the notes.
+
+\begin{center}
+{\bf Students are expected to read the subject notes and additional
+  readings.}
+\end{center}
+
+Lectures are aimed at providing students with another view of the material
+in the subject notes. Lectures will primarily consist of
+problem-solving exercises and discussions, so it is expected that students
+will gain a deeper understanding of concepts and material from
+lectures than from the lecture notes.
+
+\begin{center}
+{\bf Students are expected to attend lectures.}
+\end{center}
+
+Material from other subjects such as Software Processes \& Management and Software Engineering Methods. is assumed in
+much of the subject notes, workshops, and assessment.
+
+\begin{center}
+  {\bf Students are expected to be familiar with the major topics from
+    these subjects.}
+\end{center}
+
+
+\subsubsection*{Tutorials/Workshops}
+
+Workshops are intended to take concepts and principles discussed in
+lectures and to apply them to realistic examples. There will be two
+example projects used throughout this subject. Both are high-integrity projects, and both require specialist methods to engineering.
+
+\begin{center}
+{\bf Students are expected to actively engage in workshops
+  by conducting workshop exercises and in engaging in the
+  discussions.}  
+\end{center}
+
+\subsubsection*{LMS}
+
+The LMS will be used to post assignment and workshop sheets, and to
+post announcements regarding the subject.  The subject staff will
+monitor the discussion board. Questions regarding assignments and
+workshops should be posted to the message board on the LMS; unless
+those questions require you to post part of your solution, in which
+case, please contact one of the subject staff directly.
+
+\begin{center}
+{\bf Students are expected to read the announcements on the LMS on a
+  daily basis.}  
+\end{center}
+
+\subsubsection*{Consultations}
+
+Due to the small class size and low turn out for consultation hours in previous offerings of the subject, there will be no consultation hours. If you want to discuss the subject, contact the relevant staff member via email to set up an appointment.
+
+\section*{Assessment}
+
+The assessment is 50\%
+assignment work and 50\% examination. The assignment
+work is expected to take about 48 hours; that is, about 4.8 hours/week
+for 10 weeks of the semester. The assessment will be in the form of
+one individual assignments (worth 10\%), and three pair assignments (two worth 10\% and one worth 20\%).
+
+The examination is a 2 hour exam based on the lecture, workshop and
+assignment material. Many of the workshop exercises are written in the same
+style and of similar difficulty to the exam questions. Being able to
+answer the assignment questions, workshop exercises, and project work
+means that you will be well prepared for the exam.
+
+\subsubsection*{Plagiarism and Collusion}
+
+Submissions must be entirely the work of the person(s)
+submitting them. This is in accordance with the university policy on
+academic honesty and plagiarism (see\
+\url{http://academichonesty.unimelb.edu.au/policy.html}). Even
+if you discuss the assignments with another student you are obliged to
+ensure that all work that you submit for assessment purposes is your
+independent work. All students should familiarise themselves with
+the procedures that must be followed if plagiarism or collusion is
+detected, and the penalties that must be applied --- they are quite
+harsh.
+
+\subsubsection*{Assessment hurdles}
+
+To pass the subject, students {\em must} achieve a 50\% hurdle in
+coursework and the exam. A failure to reach either hurdle will result
+in a ``hurdle failure'' marks. Failure to reach 50\% overall will
+result in outright failure.
+
+\begin{center}
+\begin{tabular}{lll}
+ \textbf{Assessment} & \textbf{Percentage} & \\
+ \textbf{Component}  & \textbf{of Total}   & \textbf{Hurdle} \\
+ \hline\hline
+ Assignments                       & 50\%                        & 25\%\\
+ Final Examination               & 50\%                        & 25\% \\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+\end{document}
+
+
+% LocalWords:  SWEN elicitation UML ICT Kazmierczak LMS

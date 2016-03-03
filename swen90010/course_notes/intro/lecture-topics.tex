@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{graphicx}
+
+\begin{document}
+
+\section*{Lecture outline}
+
+\begin{enumerate}
+
+ \item Subject profile: [10-15 mins].
+
+ \item Introduction to high integrity systems [25 mins]
+
+ \item Example: aircraft with auto take-off and landing systems, controlled by software: who would get on the first iteration of a system with this in it? But \emph{somebody} must do so.
+
+ \item How \emph{do} people write software that is able to do this without failing, when applications and entreprise systems fails so routinely? That is the theme of this subject.
+
+ \item What do we mean by high-integrity systems?
+
+    \begin{enumerate}
+
+     \item Definition: a system: software + hardware + operating procedures.
+
+     \item Definition: \emph{high integrity system}: systems that must operate with critical levels of security, safety, reliability, or performance.
+
+     \item Safety-critical, security-critical, mission-critical, and business-critical.
+
+     \item Types of high integrity system
+
+     \item Cannot use standard SE processes and methods.
+
+    \end{enumerate}
+
+
+ \item Need to not only produce safe systems, but \emph{demonstrate} they are safe (to customers or regulators).
+
+ \item Techniques and methods:
+
+    \begin{enumerate}
+    \item Must demonstrate dependability: availability, reliability, safety,  security, confidentiality, integrity, and maintainability.
+    \item Testing is not enough:, a really large set of tests is still usually only a fraction of all possible behaviour: ``\emph{Program testing can be used to show the presence of bugs, but never to show their absence!}'' --- Edsger W. Dijkstra.
+  \item   Methods that are otherwise considered too expensive to apply to ``standard'' software systems become cost-effective in high integrity domains. This is because the cost of failure far outweighs the effort involved required to engineer a dependable product; and because the cost of testing far outweighs more rigorous verification when required.
+    \end{enumerate}
+
+ \item Topics:
+
+  \begin{enumerate}
+    \item Intro to high integrity systems (today)
+    \item Safety and security engineering
+    \item Modelling and analysis
+    \item HIS design; fault tolerance and detection.
+    \item Assurance: proving program correctness, programming languages for high integrity systems, safe-subset programming languages.
+  \end{enumerate}
+
+
+\end{enumerate}
+
+\pagebreak
+
+Stanislaus Petrov: lieutenant colonel at Soviet Air Defence Forces.
+
+12:30am, September 26, 1983. When the entire world could come to a Standstill. A nuclear war was going to burst between Soviet Union and United States. Soviet early-warning system was showing that United States had launched five nuclear missiles toward Soviet Union. Procedure dictated that Petrov should press the big red ``START'' button to launch a retaliatory strike.
+
+Thankfully, nuclear war was averted by a common sense of Petrov. Under immense pressure he reasoned his way not to respond. His logic was; Why would US attack Soviet Union with just five missiles when they had thousands? They would surely want to wipe us out to prevent retaliation. 
+
+Later it was identified that early-warning system was showing faulty reports due to an unusual programming fault in the system that failed to detect a rare alignment of sunlight on high-altitude clouds and the satellites. During the post-crisis analysis, many other similar faults were found. A little fault  in the system could result in nuclear holocaust. Had he been mistaken, the mistake would have become obvious in minutes: the post's detection system had a 15-minute advantage over the ground radars
+
+\end{document}  
+
+% LocalWords:  mins atomicity Edsger

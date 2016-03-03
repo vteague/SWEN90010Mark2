@@ -1,0 +1,95 @@
+module Storage is
+
+  axiom is
+  dec
+    fillsafe : (nat cross nat cross nat) --> bool
+  pred
+    forall capacity, contents, amount : nat @
+       fillsafe(capacity, contents, amount) <=> 
+           contents + amount <= capacity
+  end;
+
+  schema Container is
+  dec
+    contents : nat;
+    capacity : nat
+  pred
+    contents <= capacity
+  end Container;
+
+  Light ::= on | off;
+
+  schema Indicator is
+  dec
+    light : Light;
+    reading : nat;
+    danger_level : nat
+  pred
+    light = on <=> (reading <= danger_level)
+  end Indicator;
+
+  schema state is
+  dec
+    Container;
+    Indicator
+  pred
+    reading = contents;
+    capacity = 5000
+  end state;
+
+  schema init is
+  pred
+    capacity' = 5000;
+    danger_level' = 50;
+    contents' = 0
+  end init;
+
+  op schema FillOK is
+  dec
+    amount? : nat;
+    report! : string
+  pred
+    //pre contents + amount? <= capacity;
+    pre fillsafe(capacity, contents, amount?);
+    contents' = contents + amount?;
+    report! = "Ok";
+    changes_only{contents, reading, light}
+  end FillOK;
+
+  op schema OverFill is
+  dec
+    amount? : nat;
+    report! : string
+  pred
+    //amount? + contents > capacity;
+    pre not(fillsafe(capacity, contents, amount?));
+    report! = "Tank is overfull";
+    changes_only{}
+  end OverFill;
+
+  Fill == (FillOK or OverFill);
+
+  op schema ChangeDangerLevelOK is
+  dec
+    new_level? : nat;
+    report! : string
+  pred
+    pre new_level? <= (capacity div 2);
+    danger_level' = new_level?;
+    report! = "OK";
+    changes_only {danger_level, light}
+  end ChangeDangerLevelOK;
+
+  op schema ChangeDangerLevelTooHigh is
+  dec
+    new_level? : nat;
+    report! : string
+  pred
+    pre new_level? > (capacity div 2);
+    report! = "New level is too high (more than capacity/2)";
+    changes_only{}
+  end ChangeDangerLevelTooHigh;
+
+  ChangeDangerLevel == (ChangeDangerLevelOK or ChangeDangerLevelTooHigh)
+
+end Storage

@@ -1,0 +1,28 @@
+\section{Code format rules}
+\label{app:code-format-rules}
+
+The layout of code has a strong influence on its readability. Readability is an important characteristic of high integrity software. As such, you are expected to have well-formatted code. 
+
+A code formatting style guide is available at \url{http://en.wikibooks.org/wiki/Ada_Style_Guide/Source_Code_Presentation}. You are free to adopt any guide you wish, or to use your own. However, the following your implementation must adhere to at least the following simple code format rules:
+
+\begin{itemize}[topsep=0mm,itemsep=1mm]
+
+\item Every Ada package must contain a comment at the top of the specification file indicating its purpose.
+
+\item Every function or procedure must contain a comment at the beginning explaining its behaviour. In particular, any assumptions should be clearly stated.
+
+\item Constants and variables must be documented.
+
+\item Variable names must be meaningful.
+
+\item Significant blocks of code must be commented.
+
+However, not every statement in a program needs to be commented. Just as you can write too few comments, it is possible to write too many comments.
+
+\item Program blocks appearing in if-statements, while-loops, etc. must be indented consistently. Tabs or spaces can be used, as long as it is done consistently.
+
+\item Lines must be no longer than 80 characters. You can use the Unix command ``\texttt{wc -L *.ad*}'' to check the maximum length line in your Ada source files.
+
+\end{itemize} 
+
+% LocalWords:  wc adb

@@ -1,0 +1,108 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+
+\begin{document}
+
+\lstset{language=,aboveskip=3mm}
+\tutorialsolutionstitle{9}
+
+\section*{Exercises}
+
+\begin{enumerate}
+
+\setcounter{enumi}{2}
+
+ \item The proof is failing because the line:
+
+ \begin{lstlisting}
+  Result := Input * 10;
+ \end{lstlisting}
+
+  can produce an integer overflow. That is, if \texttt{Input * 10} is greater than \texttt{Integer'Last}, then the computation will give an unexpected value.
+
+ \item If we uncomment the commented lines, the constraint that cannot be proved refers not to the line above, but to the conditions in the branch:
+
+ \begin{lstlisting}
+     if Input * 10 <= Integer'Last and
+        Input * 10 >= Integer'First then
+ \end{lstlisting}
+
+Again, the problem is that \texttt{Input * 10} could overflow. Although this is not assigned to a variable, our underlying architecture still only handles integers of a certain size. To check that the computation will not overflow, we instead have to switch around the computation to use division instead of multiplication:
+
+ \lstinputlisting[linerange={5-13}]{\rootdir/workshop-8/code/task3solution.adb}
+
+ \item For \texttt{task4.adb}, the problem again relates to an overflow: in this case, that the expression \texttt{AnArray(AnIndex) + 1} will overflow if \texttt{AnArray(AnIndex)} is equal to \texttt{Integer'Last}.
+
+ To correct this, we insert a new guard:
+
+ \lstinputlisting[linerange={5-10}]{\rootdir/workshop-8/code/task4solution.adb}
+
+What this means is that, using the SPARK tools, if all of the conjectures are successfully proved, then we have \emph{no integer overflows in our program} --- a very useful (and sometimes imperative!) property.
+
+ In the next workshop, we'll look at a different solution that involves using preconditions.
+
+\setcounter{enumi}{7}
+
+ \item For the expression \texttt{AnArray(AnIndex + 1)}, the problem is different. This error here relates to that fact that the array could be indexed out of bounds. That is, if \texttt{AnIndex} is equal to \texttt{Index'Last}, then the expression \texttt{AnArray(AnIndex + 1)} will index the array out of bounds. Thus, the SPARK toolset could not prove that an out-of-bounds index error was not possible. We can use much the same solution as above to eliminate this:
+
+\begin{lstlisting}
+    if AnIndex < Index'Last then
+\end{lstlisting}
+
+What this means is that, using the SPARK tools, if all of the conjectures are successfully proved, then we have \emph{no index out of bounds errors in our program}. A very powerful property -- and one that is difficult to detect with tests alone.
+
+
+\begin{comment}
+ \item If we open  the file \texttt{code.sum}, we see the following:
+
+ \begin{lstlisting}
+ VCs for procedure_task5procedure :
+ ----------------------------------------------------------------
+| # | From  | To               | Proved By | Dead Path | Status |
+|----------------------------------------------------------------
+| 1 | start | assert @ finish  | Examiner  | Live      |   EL   |
+| 2 | start | assert @ finish  | Examiner  | Live      |   EL   |
+| 3 | start | assert @ finish  | Examiner  | Live      |   EL   |
+| 4 | start | assert @ finish  | Examiner  | Dead      |   ED   |
+ ------------------------------------------------------------------
+ \end{lstlisting}
+
+ Thus, the fourth path is a dead path. Opening the file \texttt{task5/task5procedure.zlg}, we further see:
+
+ \begin{lstlisting}
+###  Established a contradiction [P-and-not-P] among 
+     the following hypotheses:
+          H4 & H5.
+ \end{lstlisting}
+
+ From the file \texttt{task5/task5procedure.dpc}, we can look at the hypotheses in contradiction:
+
+  \begin{lstlisting}
+procedure_task5procedure_4.
+H1:    true .
+H2:    true .
+H3:    true .
+H4:    not (not a) .
+H5:    not a .
+        ->
+C1:    false .
+ \end{lstlisting}
+
+ This provides us with some information for debugging our program. The problem with the dead path is that if the second branch executes, then it must be that the condition in the branch (\texttt{not A}) is false, and therefore, \texttt{A} is true. Therefore, the condition, \texttt{A}, in the nested branch must be true, so the false option of this branch can never be reached --- a dead path.
+
+ The fixed implementation is straightforward: we do not need to re-check the truth of \texttt{A} in the second branch because it is already established:
+
+ \lstinputlisting[linerange={3-16}]{\rootdir/workshop-8/code/task5solution.adb}
+
+ Re-running the SPARK tools over this confirms that there are no dead paths remaining.
+\end{comment}
+\end{enumerate}
+
+\end{document}
+
+
+% LocalWords:  aboveskip Integer'Last uncomment Integer'First adb VCs
+% LocalWords:  linerange AnArray AnIndex Index'Last toolset EL

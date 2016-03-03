@@ -1,0 +1,602 @@
+(* this is a prelude for Alt-Ergo*)
+(* this is a prelude for Alt-Ergo integer arithmetic *)
+logic safe_comp_div: int, int -> int
+axiom safe_comp_div_def: forall x, y:int. x >= 0 and y > 0 -> safe_comp_div(x,y) = x / y
+logic safe_comp_mod: int, int -> int
+axiom safe_comp_mod_def: forall x, y:int. x >= 0 and y > 0 -> safe_comp_mod(x,y) = x % y
+logic safe_eucl_div: int, int -> int
+axiom safe_eucl_div_def: forall x, y:int. x >= 0 and y > 0 -> safe_eucl_div(x,y) = x / y
+logic safe_eucl_mod: int, int -> int
+axiom safe_eucl_mod_def: forall x, y:int. x >= 0 and y > 0 -> safe_eucl_mod(x,y) = x % y
+logic match_bool : bool, 'a, 'a -> 'a
+
+axiom match_bool_True :
+  (forall z:'a. forall z1:'a. (match_bool(true, z, z1) = z))
+
+axiom match_bool_False :
+  (forall z:'a. forall z1:'a. (match_bool(false, z, z1) = z1))
+
+type qtmark
+
+type 'a ref
+
+logic mk_ref : 'a -> 'a ref
+
+logic contents : 'a ref -> 'a
+
+axiom contents_def : (forall u:'a. (contents(mk_ref(u)) = u))
+
+axiom ref_inversion :
+  (forall u:'a ref [contents(u)]. (u = mk_ref(contents(u))))
+
+function andb(x: bool, y: bool) : bool = match_bool(x, y, false)
+
+function orb(x: bool, y: bool) : bool = match_bool(x, true, y)
+
+function xorb(x: bool, y: bool) : bool = match_bool(y, match_bool(x, false,
+  true), match_bool(x, true, false))
+
+function notb(x: bool) : bool = match_bool(x, false, true)
+
+function implb(x: bool, y: bool) : bool = match_bool(y, true, match_bool(x,
+  false, true))
+
+logic us__ignore : 'a -> unit
+
+type us_private
+
+type us_type_of_heap
+
+type us_image
+
+logic abs : int -> int
+
+axiom abs_def :
+  (forall x:int [abs(x)]. (((0 <= x) -> (abs(x) = x)) and ((not (0 <= x)) ->
+  (abs(x) = (-x)))))
+
+axiom Abs_le :
+  (forall x:int. forall y:int. ((abs(x) <= y) <-> (((-y) <= x) and
+  (x <= y))))
+
+axiom Abs_pos : (forall x:int. (0 <= abs(x)))
+
+logic power : int, int -> int
+
+axiom Power_0 : (forall x:int. (power(x, 0) = 1))
+
+axiom Power_s :
+  (forall x:int. forall n:int. ((0 <= n) -> (power(x,
+  (n + 1)) = (x * power(x, n)))))
+
+axiom Power_s_alt :
+  (forall x:int. forall n:int. ((0 <  n) -> (power(x, n) = (x * power(x,
+  (n - 1))))))
+
+axiom Power_1 : (forall x:int. (power(x, 1) = x))
+
+axiom Power_sum :
+  (forall x:int. forall n:int. forall m:int. ((0 <= n) -> ((0 <= m) ->
+  (power(x, (n + m)) = (power(x, n) * power(x, m))))))
+
+axiom Power_mult :
+  (forall x:int. forall n:int. forall m:int. ((0 <= n) -> ((0 <= m) ->
+  (power(x, (n * m)) = power(power(x, n), m)))))
+
+axiom Power_mult2 :
+  (forall x:int. forall y:int. forall n:int. ((0 <= n) -> (power((x * y),
+  n) = (power(x, n) * power(y, n)))))
+
+logic min : int, int -> int
+
+logic max : int, int -> int
+
+axiom Max_is_ge :
+  (forall x:int. forall y:int. ((x <= max(x, y)) and (y <= max(x, y))))
+
+axiom Max_is_some :
+  (forall x:int. forall y:int. ((max(x, y) = x) or (max(x, y) = y)))
+
+axiom Min_is_le :
+  (forall x:int. forall y:int. ((min(x, y) <= x) and (min(x, y) <= y)))
+
+axiom Min_is_some :
+  (forall x:int. forall y:int. ((min(x, y) = x) or (min(x, y) = y)))
+
+axiom Max_x : (forall x:int. forall y:int. ((y <= x) -> (max(x, y) = x)))
+
+axiom Max_y : (forall x:int. forall y:int. ((x <= y) -> (max(x, y) = y)))
+
+axiom Min_x : (forall x:int. forall y:int. ((x <= y) -> (min(x, y) = x)))
+
+axiom Min_y : (forall x:int. forall y:int. ((y <= x) -> (min(x, y) = y)))
+
+axiom Max_sym :
+  (forall x:int. forall y:int. ((y <= x) -> (max(x, y) = max(y, x))))
+
+axiom Min_sym :
+  (forall x:int. forall y:int. ((y <= x) -> (min(x, y) = min(y, x))))
+
+axiom Div_mod :
+  (forall x:int. forall y:int. ((not (y = 0)) ->
+  (x = ((y * safe_comp_div(x,y)) + safe_comp_mod(x,y)))))
+
+axiom Div_bound :
+  (forall x:int. forall y:int. (((0 <= x) and (0 <  y)) ->
+  ((0 <= safe_comp_div(x,y)) and (safe_comp_div(x,y) <= x))))
+
+axiom Mod_bound :
+  (forall x:int. forall y:int. ((not (y = 0)) ->
+  (((-abs(y)) <  safe_comp_mod(x,y)) and (safe_comp_mod(x,y) <  abs(y)))))
+
+axiom Div_sign_pos :
+  (forall x:int. forall y:int. (((0 <= x) and (0 <  y)) ->
+  (0 <= safe_comp_div(x,y))))
+
+axiom Div_sign_neg :
+  (forall x:int. forall y:int. (((x <= 0) and (0 <  y)) ->
+  (safe_comp_div(x,y) <= 0)))
+
+axiom Mod_sign_pos :
+  (forall x:int. forall y:int. (((0 <= x) and (not (y = 0))) ->
+  (0 <= safe_comp_mod(x,y))))
+
+axiom Mod_sign_neg :
+  (forall x:int. forall y:int. (((x <= 0) and (not (y = 0))) ->
+  (safe_comp_mod(x,y) <= 0)))
+
+axiom Rounds_toward_zero :
+  (forall x:int. forall y:int. ((not (y = 0)) ->
+  (abs((safe_comp_div(x,y) * y)) <= abs(x))))
+
+axiom Div_1 : (forall x:int. (safe_comp_div(x,1) = x))
+
+axiom Mod_1 : (forall x:int. (safe_comp_mod(x,1) = 0))
+
+axiom Div_inf :
+  (forall x:int. forall y:int. (((0 <= x) and (x <  y)) ->
+  (safe_comp_div(x,y) = 0)))
+
+axiom Mod_inf :
+  (forall x:int. forall y:int. (((0 <= x) and (x <  y)) ->
+  (safe_comp_mod(x,y) = x)))
+
+axiom Div_mult :
+  (forall x:int. forall y:int. forall z:int [safe_comp_div(((x * y) + z),x)].
+  (((0 <  x) and ((0 <= y) and (0 <= z))) ->
+  (safe_comp_div(((x * y) + z),x) = (y + safe_comp_div(z,x)))))
+
+axiom Mod_mult :
+  (forall x:int. forall y:int. forall z:int [safe_comp_mod(((x * y) + z),x)].
+  (((0 <  x) and ((0 <= y) and (0 <= z))) ->
+  (safe_comp_mod(((x * y) + z),x) = safe_comp_mod(z,x))))
+
+axiom Div_mod1 :
+  (forall x:int. forall y:int. ((not (y = 0)) ->
+  (x = ((y * safe_eucl_div(x,y)) + safe_eucl_mod(x,y)))))
+
+axiom Div_bound1 :
+  (forall x:int. forall y:int. (((0 <= x) and (0 <  y)) ->
+  ((0 <= safe_eucl_div(x,y)) and (safe_eucl_div(x,y) <= x))))
+
+axiom Mod_bound1 :
+  (forall x:int. forall y:int. ((not (y = 0)) ->
+  ((0 <= safe_eucl_mod(x,y)) and (safe_eucl_mod(x,y) <  abs(y)))))
+
+axiom Mod_11 : (forall x:int. (safe_eucl_mod(x,1) = 0))
+
+axiom Div_11 : (forall x:int. (safe_eucl_div(x,1) = x))
+
+axiom Div_inf1 :
+  (forall x:int. forall y:int. (((0 <= x) and (x <  y)) ->
+  (safe_eucl_div(x,y) = 0)))
+
+axiom Div_inf_neg :
+  (forall x:int. forall y:int. (((0 <  x) and (x <= y)) ->
+  (safe_eucl_div((-x),y) = (-1))))
+
+axiom Mod_0 : (forall y:int. ((not (y = 0)) -> (safe_eucl_mod(0,y) = 0)))
+
+axiom Div_1_left : (forall y:int. ((1 <  y) -> (safe_eucl_div(1,y) = 0)))
+
+axiom Div_minus1_left :
+  (forall y:int. ((1 <  y) -> (safe_eucl_div((-1),y) = (-1))))
+
+axiom Mod_1_left : (forall y:int. ((1 <  y) -> (safe_eucl_mod(1,y) = 1)))
+
+axiom Mod_minus1_left :
+  (forall y:int [safe_eucl_mod((-1),y)]. ((1 <  y) ->
+  (safe_eucl_mod((-1),y) = (y - 1))))
+
+axiom Div_mult1 :
+  (forall x:int. forall y:int. forall z:int [safe_eucl_div(((x * y) + z),x)].
+  ((0 <  x) -> (safe_eucl_div(((x * y) + z),x) = (y + safe_eucl_div(z,x)))))
+
+axiom Mod_mult1 :
+  (forall x:int. forall y:int. forall z:int [safe_eucl_mod(((x * y) + z),x)].
+  ((0 <  x) -> (safe_eucl_mod(((x * y) + z),x) = safe_eucl_mod(z,x))))
+
+logic bool_eq : int, int -> bool
+
+logic bool_ne : int, int -> bool
+
+logic bool_lt : int, int -> bool
+
+logic bool_le : int, int -> bool
+
+logic bool_gt : int, int -> bool
+
+logic bool_ge : int, int -> bool
+
+logic mod : int, int -> int
+
+axiom mod_def :
+  (forall x:int. forall y:int [mod(x, y)]. (((0 <  y) -> (mod(x,
+  y) = safe_eucl_mod(x,y))) and ((not (0 <  y)) -> (mod(x,
+  y) = (safe_eucl_mod(x,y) + y)))))
+
+axiom bool_eq_axiom :
+  (forall x:int. (forall y:int. ((bool_eq(x, y) = true) <-> (x = y))))
+
+axiom bool_ne_axiom :
+  (forall x:int. (forall y:int. ((bool_ne(x, y) = true) <-> (not (x = y)))))
+
+axiom bool_lt_axiom :
+  (forall x:int. (forall y:int. ((bool_lt(x, y) = true) <-> (x <  y))))
+
+axiom bool_int__le_axiom :
+  (forall x:int. (forall y:int. ((bool_le(x, y) = true) <-> (x <= y))))
+
+axiom bool_gt_axiom :
+  (forall x:int. (forall y:int. ((bool_gt(x, y) = true) <-> (y <  x))))
+
+axiom bool_ge_axiom :
+  (forall x:int. (forall y:int. ((bool_ge(x, y) = true) <-> (y <= x))))
+
+logic bitwise_and : int, int -> int
+
+logic bitwise_or : int, int -> int
+
+logic bitwise_xor : int, int -> int
+
+type integer
+
+predicate in_range(x: int) = (((-2147483648) <= x) and (x <= 2147483647))
+
+logic bool_eq1 : int, int -> bool
+
+axiom bool_eq_def :
+  (forall x:int. forall y:int [bool_eq1(x, y)]. (((x = y) -> (bool_eq1(x,
+  y) = true)) and ((not (x = y)) -> (bool_eq1(x, y) = false))))
+
+logic attr__ATTRIBUTE_IMAGE : int -> us_image
+
+logic attr__ATTRIBUTE_VALUE__pre_check : us_image -> prop
+
+logic attr__ATTRIBUTE_VALUE : us_image -> int
+
+logic to_int : integer -> int
+
+logic of_int : int -> integer
+
+logic user_eq : integer, integer -> bool
+
+axiom inversion_axiom :
+  (forall x:integer [to_int(x)]. (of_int(to_int(x)) = x))
+
+logic dummy : integer
+
+axiom range_axiom : (forall x:integer. in_range(to_int(x)))
+
+axiom coerce_axiom :
+  (forall x:int [to_int(of_int(x))]. (in_range(x) ->
+  (to_int(of_int(x)) = x)))
+
+type modetype
+
+predicate in_range1(x: int) = ((0 <= x) and (x <= 1))
+
+logic attr__ATTRIBUTE_IMAGE1 : int -> us_image
+
+logic attr__ATTRIBUTE_VALUE__pre_check1 : us_image -> prop
+
+logic attr__ATTRIBUTE_VALUE1 : us_image -> int
+
+logic to_int1 : modetype -> int
+
+logic of_int1 : int -> modetype
+
+logic user_eq1 : modetype, modetype -> bool
+
+axiom inversion_axiom1 :
+  (forall x:modetype [to_int1(x)]. (of_int1(to_int1(x)) = x))
+
+logic dummy1 : modetype
+
+axiom range_axiom1 : (forall x:modetype. in_range1(to_int1(x)))
+
+axiom coerce_axiom1 :
+  (forall x:int [to_int1(of_int1(x))]. (in_range1(x) ->
+  (to_int1(of_int1(x)) = x)))
+
+type roletype
+
+predicate in_range2(x: int) = ((0 <= x) and (x <= 2))
+
+logic attr__ATTRIBUTE_IMAGE2 : int -> us_image
+
+logic attr__ATTRIBUTE_VALUE__pre_check2 : us_image -> prop
+
+logic attr__ATTRIBUTE_VALUE2 : us_image -> int
+
+logic to_int2 : roletype -> int
+
+logic of_int2 : int -> roletype
+
+logic user_eq2 : roletype, roletype -> bool
+
+axiom inversion_axiom2 :
+  (forall x:roletype [to_int2(x)]. (of_int2(to_int2(x)) = x))
+
+logic dummy2 : roletype
+
+axiom range_axiom2 : (forall x:roletype. in_range2(to_int2(x)))
+
+axiom coerce_axiom2 :
+  (forall x:int [to_int2(of_int2(x))]. (in_range2(x) ->
+  (to_int2(of_int2(x)) = x)))
+
+type persontype
+
+predicate in_range3(x: int) = (((-2147483648) <= x) and (x <= 2147483647))
+
+logic attr__ATTRIBUTE_IMAGE3 : int -> us_image
+
+logic attr__ATTRIBUTE_VALUE__pre_check3 : us_image -> prop
+
+logic attr__ATTRIBUTE_VALUE3 : us_image -> int
+
+logic to_int3 : persontype -> int
+
+logic of_int3 : int -> persontype
+
+logic user_eq3 : persontype, persontype -> bool
+
+axiom inversion_axiom3 :
+  (forall x:persontype [to_int3(x)]. (of_int3(to_int3(x)) = x))
+
+logic dummy3 : persontype
+
+axiom range_axiom3 : (forall x:persontype. in_range3(to_int3(x)))
+
+axiom coerce_axiom3 :
+  (forall x:int [to_int3(of_int3(x))]. (in_range3(x) ->
+  (to_int3(of_int3(x)) = x)))
+
+type 'a map
+
+logic get : 'a map, int -> 'a
+
+logic set : 'a map, int, 'a -> 'a map
+
+axiom Select_eq :
+  (forall m:'a map.
+  (forall i:int.
+  (forall a1:'a [set(m, i, a1)]. (get(set(m, i, a1), i) = a1))))
+
+axiom Select_neq :
+  (forall m:'a map.
+  (forall i:int. forall j:int.
+  (forall a1:'a [get(set(m, i, a1), j)| set(m, i, a1), get(m, j)].
+  ((not (i = j)) -> (get(set(m, i, a1), j) = get(m, j))))))
+
+logic bool_eq2 : 'a map, int, int, 'a map, int, int -> bool
+
+axiom T__ada_array___equal_def :
+  (forall a:'a1 map.
+  (forall af:int.
+  (forall al:int.
+  (forall b:'a1 map.
+  (forall bf:int.
+  (forall bl:int [bool_eq2(a, af, al, b, bf, bl)]. ((((((af <= al) and
+  (((al - af) + 1) = ((bl - bf) + 1))) or ((not (af <= al)) and
+  (bl <  bf))) and
+  (forall i:int [get(a, i)]. (((af <= i) and (i <= al)) -> (get(a,
+  i) = get(b, ((bf - af) + i)))))) -> (bool_eq2(a, af, al, b, bf,
+  bl) = true)) and ((bool_eq2(a, af, al, b, bf, bl) = true) ->
+  ((((af <= al) -> (((al - af) + 1) = ((bl - bf) + 1))) and
+  ((not (af <= al)) -> (bl <  bf))) and
+  (forall i:int [get(a, i)]. (((af <= i) and (i <= al)) -> (get(a,
+  i) = get(b, ((bf - af) + i))))))))))))))
+
+logic slide : 'a map, int, int -> 'a map
+
+axiom slide_def :
+  (forall a:'a1 map.
+  (forall old_first:int.
+  (forall new_first:int.
+  (forall i:int [get(slide(a, old_first, new_first), i)]. (get(slide(a,
+  old_first, new_first), i) = get(a, (i - (new_first - old_first))))))))
+
+logic concat : 'a map, int, int, 'a map, int, int -> 'a map
+
+axiom concat_def :
+  (forall a:'a1 map. forall b:'a1 map.
+  (forall a_first:int. forall a_last:int. forall b_first:int.
+  forall b_last:int.
+  (forall i:int [get(concat(a, a_first, a_last, b, b_first, b_last), i)].
+  ((((a_first <= i) and (i <= a_last)) -> (get(concat(a, a_first, a_last, b,
+  b_first, b_last), i) = get(a, i))) and ((a_last <  i) -> (get(concat(a,
+  a_first, a_last, b, b_first, b_last), i) = get(b,
+  (((i - a_last) + b_first) - 1))))))))
+
+logic compare : 'a map, int, int, 'a map, int, int -> int
+
+logic xorb1 : 'a map, int, int, 'a map, int, int -> 'a map
+
+logic andb1 : 'a map, int, int, 'a map, int, int -> 'a map
+
+logic orb1 : 'a map, int, int, 'a map, int, int -> 'a map
+
+logic notb1 : 'a map, int, int -> 'a map
+
+logic singleton : 'a, int -> 'a map
+
+axiom singleton_def :
+  (forall v:'a.
+  (forall i:int [get(singleton(v, i), i)]. (get(singleton(v, i), i) = v)))
+
+logic dummy4 : roletype map
+
+logic user_eq4 : roletype map, roletype map -> bool
+
+axiom compare_def :
+  (forall a:roletype map. forall b:roletype map.
+  (forall a_first:int. forall a_last:int. forall b_first:int.
+  forall b_last:int [compare(a, a_first, a_last, b, b_first, b_last)].
+  (((compare(a, a_first, a_last, b, b_first, b_last) = 0) <-> (bool_eq2(a,
+  a_first, a_last, b, b_first, b_last) = true)) and (((compare(a, a_first,
+  a_last, b, b_first, b_last) <  0) <->
+  (exists i:int. exists j:int. ((i <= a_last) and ((j <  b_last) and
+  ((bool_eq2(a, a_first, i, b, b_first, j) = true) and ((i = a_last) or
+  ((i <  a_last) and (to_int2(get(a, (i + 1))) <  to_int2(get(b,
+  (j + 1))))))))))) and ((0 <  compare(a, a_first, a_last, b, b_first,
+  b_last)) <->
+  (exists i:int. exists j:int. ((i <= b_last) and ((j <  a_last) and
+  ((bool_eq2(a, a_first, j, b, b_first, i) = true) and ((i = b_last) or
+  ((i <  b_last) and (to_int2(get(b, (i + 1))) <  to_int2(get(a,
+  (j + 1)))))))))))))))
+
+type icdtype
+
+logic mk_icdtype : persontype, roletype map, integer, integer, integer,
+  modetype -> icdtype
+
+logic rec__owner : icdtype -> persontype
+
+axiom rec__owner_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__owner(mk_icdtype(u, u1, u2, u3, u4, u5)) = u))
+
+logic rec__roleassigned : icdtype -> roletype map
+
+axiom rec__roleassigned_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__roleassigned(mk_icdtype(u, u1, u2, u3, u4, u5)) = u1))
+
+logic rec__upperbound : icdtype -> integer
+
+axiom rec__upperbound_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__upperbound(mk_icdtype(u, u1, u2, u3, u4, u5)) = u2))
+
+logic rec__numberofjoulestodeliver : icdtype -> integer
+
+axiom rec__numberofjoulestodeliver_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__numberofjoulestodeliver(mk_icdtype(u, u1, u2, u3, u4, u5)) = u3))
+
+logic rec__last50shocks : icdtype -> integer
+
+axiom rec__last50shocks_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__last50shocks(mk_icdtype(u, u1, u2, u3, u4, u5)) = u4))
+
+logic rec__mode : icdtype -> modetype
+
+axiom rec__mode_def :
+  (forall u:persontype. forall u1:roletype map. forall u2:integer.
+  forall u3:integer. forall u4:integer. forall u5:modetype.
+  (rec__mode(mk_icdtype(u, u1, u2, u3, u4, u5)) = u5))
+
+axiom icdtype_inversion :
+  (forall u:icdtype [rec__owner(u)| rec__roleassigned(u)| rec__upperbound(u)|
+  rec__numberofjoulestodeliver(u)| rec__last50shocks(u)| rec__mode(u)].
+  (u = mk_icdtype(rec__owner(u), rec__roleassigned(u), rec__upperbound(u),
+  rec__numberofjoulestodeliver(u), rec__last50shocks(u), rec__mode(u))))
+
+logic bool_eq3 : icdtype, icdtype -> bool
+
+axiom bool_eq_def1 :
+  (forall a:icdtype. forall b:icdtype [bool_eq3(a, b)].
+  ((((((((to_int3(rec__owner(a)) = to_int3(rec__owner(b))) and
+  (bool_eq2(rec__roleassigned(a), (-2147483648), 2147483647,
+  rec__roleassigned(b), (-2147483648), 2147483647) = true)) and
+  (to_int(rec__upperbound(a)) = to_int(rec__upperbound(b)))) and
+  (to_int(rec__numberofjoulestodeliver(a)) = to_int(rec__numberofjoulestodeliver(b)))) and
+  (to_int(rec__last50shocks(a)) = to_int(rec__last50shocks(b)))) and
+  (to_int1(rec__mode(a)) = to_int1(rec__mode(b)))) -> (bool_eq3(a,
+  b) = true)) and
+  ((not ((((((to_int3(rec__owner(a)) = to_int3(rec__owner(b))) and
+  (bool_eq2(rec__roleassigned(a), (-2147483648), 2147483647,
+  rec__roleassigned(b), (-2147483648), 2147483647) = true)) and
+  (to_int(rec__upperbound(a)) = to_int(rec__upperbound(b)))) and
+  (to_int(rec__numberofjoulestodeliver(a)) = to_int(rec__numberofjoulestodeliver(b)))) and
+  (to_int(rec__last50shocks(a)) = to_int(rec__last50shocks(b)))) and
+  (to_int1(rec__mode(a)) = to_int1(rec__mode(b))))) -> (bool_eq3(a,
+  b) = false))))
+
+logic user_eq5 : icdtype, icdtype -> bool
+
+logic dummy5 : persontype
+
+logic dummy6 : roletype map
+
+logic dummy7 : integer
+
+logic dummy8 : integer
+
+logic dummy9 : integer
+
+logic dummy10 : modetype
+
+logic is_practitioner : icdtype, int -> bool
+
+axiom def_axiom :
+  (forall icd:persontype. forall icd1:roletype map. forall icd2:integer.
+  forall icd3:integer. forall icd4:integer. forall icd5:modetype.
+  (forall person:int [is_practitioner(mk_icdtype(icd, icd1, icd2, icd3, icd4,
+  icd5), person)]. ((is_practitioner(mk_icdtype(icd, icd1, icd2, icd3, icd4,
+  icd5), person) = true) <-> (not (to_int2(get(icd1, person)) = 2)))))
+
+logic person : persontype
+
+ (* File "/home/timothym/subjects/swen90010/git.repository/swen90010/assignments/assignment-4/code/gnatprove/closedloop/../closedloop.mlw", line 1804, characters 5-8 *)
+goal WP_parameter_def :
+  (forall icd:persontype. forall icd1:roletype map. forall icd2:integer.
+  forall icd3:integer. forall icd4:integer. forall icd5:modetype.
+  forall o:modetype. forall o1:persontype. forall o2:roletype map.
+  forall o3:integer. forall o4:integer. forall o5:integer.
+  forall o6:modetype. forall o7:modetype. forall o8:persontype.
+  forall o9:roletype map. forall o10:integer. forall o11:integer.
+  forall o12:integer. forall o13:modetype. forall icd6:persontype.
+  forall icd7:roletype map. forall icd8:integer. forall icd9:integer.
+  forall icd10:integer. forall icd11:modetype. forall icd12:persontype.
+  forall icd13:roletype map. forall icd14:integer. forall icd15:integer.
+  forall icd16:integer. forall icd17:modetype. forall icd18:persontype.
+  forall icd19:roletype map. forall icd20:integer. forall icd21:integer.
+  forall icd22:integer. forall icd23:modetype. forall icd24:persontype.
+  forall icd25:roletype map. forall icd26:integer. forall icd27:integer.
+  forall icd28:integer. forall icd29:modetype.
+  (((is_practitioner(mk_icdtype(icd, icd1, icd2, icd3, icd4, icd5),
+  to_int3(person)) = true) and ((((to_int1(icd5) = 0) and
+  (((to_int1(o) = 1) and ((icd = o1) and ((icd1 = o2) and ((icd2 = o3) and
+  ((icd3 = o4) and ((icd4 = o5) and (o = o6))))))) and ((o1 = icd6) and
+  ((o2 = icd7) and ((o3 = icd8) and ((o4 = icd9) and ((o5 = icd10) and
+  (o6 = icd11)))))))) or ((not (to_int1(icd5) = 0)) and
+  ((((to_int1(o7) = 0) and ((icd = o8) and ((icd1 = o9) and ((icd2 = o10) and
+  ((icd3 = o11) and ((icd4 = o12) and (o7 = o13))))))) and ((o8 = icd12) and
+  ((o9 = icd13) and ((o10 = icd14) and ((o11 = icd15) and ((o12 = icd16) and
+  (o13 = icd17))))))) and (mk_icdtype(icd6, icd7, icd8, icd9, icd10,
+  icd11) = mk_icdtype(icd12, icd13, icd14, icd15, icd16, icd17))))) and
+  (((icd18 = icd6) and ((icd19 = icd7) and ((icd20 = icd8) and
+  ((icd21 = icd9) and ((icd22 = icd10) and (icd23 = icd11)))))) and
+  ((icd24 = icd6) and ((icd25 = icd7) and ((icd26 = icd8) and
+  ((icd27 = icd9) and ((icd28 = icd10) and (icd29 = icd11))))))))) ->
+  (((to_int1(icd5) = 0) -> (to_int1(icd23) = 1)) and
+  ((not (to_int1(icd5) = 0)) -> (to_int1(icd23) = 0)))))

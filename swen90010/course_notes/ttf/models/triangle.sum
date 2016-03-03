@@ -1,0 +1,35 @@
+module Triangle is
+
+ Triangle ::= EQI | ISO | SCA | INV;
+
+ axiom is
+ dec
+   validTriangle : (int cross int cross int) --> bool
+ pred
+   forall x, y, z : int @ 
+     validTriangle(x, y, z) <=> (x < y + z and y < x + z and z < x + y)
+ end;
+
+ schema ValidCase is
+ dec
+   x?, y?, z? : int;
+   class! : Triangle
+ pred
+   pre (validTriangle(x?, y?, z?));
+   #{x?, y?, z?} = 1 <=> class! = EQI;
+   #{x?, y?, z?} = 2 <=> class! = ISO;
+   #{x?, y?, z?} = 3 <=> class! = SCA
+ end ValidCase;
+
+ schema InvalidCase is
+ dec
+   x?, y?, z? : int;
+   class! : Triangle
+ pred
+   pre (not validTriangle(x?, y?, z?));
+   class! = INV
+ end InvalidCase;
+
+ Tri == (ValidCase or InvalidCase)
+
+end Triangle

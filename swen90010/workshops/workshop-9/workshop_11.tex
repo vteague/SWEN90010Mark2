@@ -1,0 +1,84 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{\rootdir/packages}
+
+\begin{document}
+
+\lstset{language=Ada,aboveskip=3mm}
+\tutorialtitle{11}
+
+
+\section*{Introduction}
+
+In the lectures, we looked at Hoare logic: a system for reasoning about the correctness of programs. Using Hoare logic, we can {\em prove} that a program meets its specification (or {\em contract}), rather than just demonstrating a handful of possible cases, which we do with testing.
+
+In last week's workshop, we looked at how the SPARK toolset can be used to prove the absence of certain undesirable run-time properties, such as buffer overflows. 
+
+In this workshop, we will use the SPARK toolset to semi-automatically (and in some cases, completely automatically) prove that programs meet their contracts. The theory underlying these tools is closely related to Hoare logic.
+
+\section*{Exercises}
+
+\begin{enumerate}
+
+
+ \item In the workshop source code, open the project in GPS. In {\tt swap.ads/b}, we have the swap program that we proved using Hoare logic in the lectures. Run the proof tool over \texttt{swap.adb} by selecting \emph{SPARK} $\rightarrow$ \emph{Prove File}. This will run a Hoare-logic style proof over the code.
+
+Run the spark tools over this {\tt swap.adb}, and the proof should be discharged.
+
+  Modify the source code so that the line {\tt Y := T} is replaced with {\tt Y := T + 1} and run again. Note now that there are two errors/warnings: (1) the possible overflow introduced by \texttt{T + 1}; and (2) the postcondition that is no longer discharged.
+
+ \item Now, let's prove the conditional swap program from lectures, found in {\tt conditionalswap.ads/b}. Run the prover over \texttt{conditionalswap.adb}. However, this time, when the pop-up window with ``\emph{Execute}'' comes up, add \texttt{-d} as a command argument; that is:
+
+\verb+    gnatprove -P%PP --ide-progress-bar -u %fp -d+
+
+This enables debugging mode, and will allow us to see what is going on under the hood of the prover a bit more.
+
+Once this has executed, it should output two debugging files, which contain the verification conditions that are required to be proved by the GNAT prover (the underlying theorem prover used in the SPARK tools):
+
+\verb+   gnatprove/conditionalswap.ads_6_19_postcondition.why+
+
+\verb+   gnatprove/conditionalswap.ads_6_19_postcondition_2.why+
+
+These two files correspond to the two paths in the program. Like Hoare's conditional rule, the SPARK tools split this into two different verification conditions: one for each path through the conditional. 
+
+Open both files and scroll all the way to the bottom to the final ``paragraph'' labelled \texttt{goal WP\_parameter\_def}. You are not expected to understand these paragraphs completely, but one can see enough of these to see how the conditional rule plays out; e.g.\ the \texttt{not (to\_int(x) <  to\_int(y)} in the first file is the ``not B'' in the conditional rule, while the part after the \texttt{->} symbol on the final line of both files is the postcondition. Essentially, these paragraphs apply the axiom rule three times, and then attempt to prove the postcondition (\texttt{to\_int(y2) <= to\_int(x2)}).
+
+From this simple example, we can see the symmetry between  Hoare logic and the SPARK proof tools.
+
+ \item The {\tt arith} package contains two procedures: one for doing division using only subtraction and addition, resulting in the result and its remainder; and another that uses this (commented out). The postcondition for the \texttt{Divide} procedure is:
+
+\verb|    (M = Q * N + R) and (R < N) and (R >= 0)|
+
+in which M is the numerator, N is the denominator, Q is the quotient, and R is the remainder. 
+
+Note that the loop invariant for the \texttt{Divide} procedure has been cancelled out. Run the SPARK prover and note several warnings. The first two are interesting here: (1) an overflow warning for the statement \texttt{Q := Q + 1}; and (2) the postcondition failure. Both are sensible warnings: the overflow statement is not protected, and the \emph{iteration rule} from Hoare logic cannot be proved without the loop invariant.
+
+Now, uncomment the loop invariant and re-run the analysis. This time, there are NO warnings. How is it that the overflow warning has disappeared, despite there being no explicit mechanism for ensuring that Q is strictly less than \texttt{Integer'Last}?
+
+ HINT: Consider looking at the \texttt{.why} file generated for this if you get stuck.
+
+ \item Now uncomment the \texttt{UseDivide} procedure (specification and body) that uses the \texttt{Divide} function, and run the prover over the file. What is the error referring to? Correct this.
+
+ \item In the last workshop, we encountered an example of a program in which an integer could overflow:
+
+ \lstinputlisting[linerange={5-9}]{\rootdir/workshop-9/code/task4.adb}
+
+  Add a precondition and postcondition to this procedure. In particular, make sure that your precondition is specified such that the procedure in the package body is not changed, but there are no warnings generated. That is, do not change the program the way that was done in the previous workshop, but instead, add a contract that eliminates the overflow, and also conforms to the program.   Using the SPARK tools to prove that the program implements its contract.
+
+ \item Finally, let's implement a program to conform to its contract. The \texttt{linear\_search.ads/b} package contains a specification and (empty) body of a linear search. The contract for this was seen in the notes. Implement a body for the \texttt{Search} function. This will require a loop invariant.
+
+  HINT: The loop invariant should specify that, so far, we have not found the element we are looking for.
+
+\item As a final activity, the package \texttt{sum.ads/b} contains a complete proof of the summation function that we looked at in the lectures. This is an interesting example of how effectively specify the $\Sigma_{}$ function in SPARK.
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  toolset Kazmierczak vcg idx sourcefile adb sparksimp Hoare pogs pogs siv
+% LocalWords:  gnatmake sparksimp AnArray AnIndex undischarged Hoare's arith yy
+% LocalWords:  conditionalswap siv cfg config factorials rlu GPS
+% LocalWords:  prover gnatprove uncomment Integer'Last UseDivide
+% LocalWords:  linerange

@@ -1,0 +1,44 @@
+// subprogram_readlast50shocks_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    4 [label="null\nVU: {null}\n<VId: 4>",shape="plaintext",fontcolor="chartreuse"];
+    5 [label="Icd.Mode'initial\nVD: {Icd.Mode}\n<VId: 5>",shape="plaintext"];
+    6 [label="icd'group'initial\n<VId: 6>",shape="plaintext"];
+    7 [label="Icd.Mode'final\nVU: {Icd.Mode}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Icd.Last50shocks'initial\nVD: {Icd.Last50shocks}\n<VId: 8>",shape="plaintext"];
+    9 [label="Icd.Last50shocks'final\nVU: {Icd.Last50shocks}\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Icd.Numberofjoulestodeliver'initial\nVD: {Icd.Numberofjoulestodeliver}\n<VId: 10>",shape="plaintext"];
+    11 [label="Icd.Numberofjoulestodeliver'final\nVU: {Icd.Numberofjoulestodeliver}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="Icd.Upperbound'initial\nVD: {Icd.Upperbound}\n<VId: 12>",shape="plaintext"];
+    13 [label="Icd.Upperbound'final\nVU: {Icd.Upperbound}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Icd.Roleassigned'initial\nVD: {Icd.Roleassigned}\n<VId: 14>",shape="plaintext"];
+    15 [label="Icd.Roleassigned'final\nVU: {Icd.Roleassigned}\n<VId: 15>",shape="plaintext",fontcolor="red"];
+    16 [label="Icd.Owner'initial\nVD: {Icd.Owner}\n<VId: 16>",shape="plaintext"];
+    17 [label="Icd.Owner'final\nVU: {Icd.Owner}\n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="person'initial\nVD: {Person}\n<VId: 18>",shape="plaintext"];
+    19 [label="person'final\nVU: {Person}\n<VId: 19>",shape="plaintext",fontcolor="red"];
+    20 [label="last50shocks'initial\nVD: {Last50shocks}\n<VId: 20>",shape="plaintext",fontcolor="red"];
+    21 [label="last50shocks'final\nVU: {Last50shocks}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
+    22 [label="precondition person in -16#8000_0000# .. 16#7FFF_FFFF#\nVU: {Person}\n<VId: 22>",shape="plaintext"];
+    24 [label="last50shocks := icd.last50shocks;\nVU: {Icd.Last50shocks}\nVD: {Last50shocks}\n<VId: 24>"];
+
+    1 ->  22 [arrowType="normal"];
+    1 ->  24 [arrowType="normal"];
+    5 ->  7 [arrowType="normal",color="red"];
+    6 ->  5 [arrowType="normal"];
+    6 ->  8 [arrowType="normal"];
+    6 ->  10 [arrowType="normal"];
+    6 ->  12 [arrowType="normal"];
+    6 ->  14 [arrowType="normal"];
+    6 ->  16 [arrowType="normal"];
+    8 ->  9 [arrowType="normal",color="red"];
+    8 ->  24 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal",color="red"];
+    12 ->  13 [arrowType="normal",color="red"];
+    14 ->  15 [arrowType="normal",color="red"];
+    16 ->  17 [arrowType="normal",color="red"];
+    18 ->  19 [arrowType="normal",color="red"];
+    18 ->  22 [arrowType="normal",color="red"];
+    24 ->  21 [arrowType="normal",color="red"];
+}

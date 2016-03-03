@@ -1,0 +1,16 @@
+Assignment 2 feedback
+=====================
+
+Names:
+
+HAZOP application: /2
+
+Hazards: /3
+
+Causes, consequences, and risk classes: /2
+
+Requirements: /2
+
+Analysis: /1
+
+Total: /10

@@ -1,0 +1,409 @@
+module ManualCARA is
+
+  //Data types for the CARA system. Integers are used instead of
+  //Reals to help with grounding when using Possum
+  MmHg == 1 .. 300;
+  Dosage == 0 .. 6;
+
+  //The possible modes
+  Mode ::= Auto | Manual | Wait;
+
+  //The number of BPMs in the system
+  NUM_BPMS == 3;
+
+  //A schema representing a patient
+  schema Patient is
+  dec
+    //The patient's blood pressure
+    systolic_pressure : MmHg;
+    diastolic_pressure : MmHg;
+
+    //The dosage to be administered to the patient 
+    current_dosage : Dosage
+  end Patient;
+
+  //A schema representing a pump
+  schema Pump is
+  dec
+    //Indicates whether the Pump is on
+    is_on : bool;
+
+    //The dosage to be administered to the patient at the next tick
+    current_dosage : Dosage
+  end Pump;
+
+  //A schema representing a blood pressure monitor (BPM)
+  schema BPM is
+  dec
+    //Indicates whether the BPM is on
+    is_on : bool;
+
+    //The last reading from the patient
+    systolic_pressure : MmHg;
+    diastolic_pressure : MmHg
+  end BPM;
+
+  //A schema representing the CARA component
+  schema CARA is
+  dec
+    //The dosage to be delivered, calculated from the
+    // measures and target pressures
+    current_dosage : Dosage;
+
+    //The target blood pressure
+    systolic_pressure : MmHg;
+    diastolic_pressure : MmHg
+  end CARA;
+
+  //The system state consists of a patient, a pump, three redundant BPMs,
+  //and a CARA module
+  schema state is
+  dec
+    patient : Patient;
+    pump : Pump;
+    bpm : BPM;
+    cara : CARA;
+    mode : Mode
+  end state;
+
+  //Initially, the dosage is the minimum. The blood pressure is
+  //unconstrained, except that it cannot be negative
+  schema PatientInit is
+  dec
+    patient' : Patient
+  pred
+    //The measured pressure is just non-negative
+    patient'.diastolic_pressure >= 0;
+    patient'.systolic_pressure >= 0;
+    patient'.current_dosage = min(Dosage)
+  end PatientInit;
+
+  //Initially, the dosage is the minimum, and the pump is off
+  schema PumpInit is
+  dec
+    pump' : Pump
+  pred
+    not (pump'.is_on);
+    pump'.current_dosage = min(Dosage)
+  end PumpInit;
+
+  //Initially, there is no readings, and the BPM is off
+  schema BPMInit is
+  dec
+    bpm' : BPM
+  pred
+    not (bpm'.is_on);
+    bpm'.systolic_pressure = min(MmHg);
+    bpm'.diastolic_pressure = min(MmHg)
+  end BPMInit;
+
+  //Initally, there is no dosage or readings
+  schema CARAInit is
+  dec
+    cara' : CARA   
+  pred
+    cara'.current_dosage = min(Dosage);
+    cara'.systolic_pressure = min(MmHg);
+    cara'.diastolic_pressure = min(MmHg)
+  end CARAInit;
+
+  schema init is
+  pred
+    PatientInit;
+    PumpInit;
+    BPMInit;
+    CARAInit;
+    mode' = Wait
+  end init;
+
+  ////////////////////////////////////////////////////////////
+  // Helper functions for the system
+  ////////////////////////////////////////////////////////////
+
+  //"Limit" an integer value to a set of values, by taking the min/max
+  //of the set if the value is lower/higher than the min/max of that set
+  //respectively
+  //Examples: limit(-1, 1..10) = 1
+  //          limit(5, 1..10) = 5
+  //          limit(15, 1..10) = 10
+  axiom is
+  dec
+    limit : int cross power int --> int
+  pred
+    forall i : int; ps : power int @ 
+        (i < min(ps) => limit(i, ps) = min(ps)) and 
+        (i >= min(ps) and i <= max(ps) => limit(i, ps) = i) and
+        (i > max(ps) => limit(i, ps) = max(ps))
+  end;
+
+  ////////////////////////////////////////////////////////////
+  // Operations for the Patient module
+  ////////////////////////////////////////////////////////////
+
+  //For the purpose of animation, we specify a crude update:
+  //add the dosage to the blood pressure, then minus 1 (to indicate
+  //that the blood pressure falls without intervention)
+  op schema PatientTickNonZero is
+  pred
+    pre (patient.systolic_pressure + patient.current_dosage > 0);
+    pre (patient.diastolic_pressure + patient.current_dosage > 0);
+    patient'.systolic_pressure = 
+        limit(patient.systolic_pressure + patient.current_dosage - 1, MmHg);
+    patient'.diastolic_pressure = 
+        limit(patient.diastolic_pressure + patient.current_dosage - 1, MmHg);
+    patient'.current_dosage = patient.current_dosage;
+    changes_only {patient}
+  end PatientTickNonZero;
+
+  //The exceptional case when the resulting blood pressure would be less
+  //then 0
+  op schema PatientTickZero is
+  pred
+    pre (patient.systolic_pressure + patient.current_dosage = 0 or
+         patient.diastolic_pressure + patient.current_dosage = 0);
+    changes_only {}
+  end PatientTickZero;
+
+  PatientTick == (PatientTickNonZero or PatientTickZero);
+
+  ////////////////////////////////////////////////////////////
+  // Operations for the Pump
+  ////////////////////////////////////////////////////////////
+
+  //Turn on the pump, but do not administer any dosages yet.
+  op schema PumpOn is
+  pred
+    pump'.is_on;
+    pump'.current_dosage = pump.current_dosage;
+    changes_only {pump}
+  end PumpOn;
+
+  //Turn off the pump
+  op schema PumpOff is
+  pred
+    not (pump'.is_on);
+    pump'.current_dosage = pump.current_dosage;
+    changes_only {pump}
+  end PumpOff;
+
+  //Set the current dosage when the pump is on
+  op schema PumpSetDosageOn is
+  dec
+    d? : Dosage
+  pred
+    pre (pump.is_on);
+    pump'.current_dosage = d?;
+    pump'.is_on = pump.is_on;
+    changes_only {pump}
+  end PumpSetDosageOn;
+
+  //Attempt to set the current dosage when the pump is off
+  op schema PumpSetDosageOff is
+  dec
+    d? : Dosage
+  pred
+    pre (not (pump.is_on));
+    changes_only {}
+  end PumpSetDosageOff; 
+
+  //Attempt to set the current dosage
+  PumpSetDosage == (PumpSetDosageOn or PumpSetDosageOff);
+
+  //Tick the clock for the pump when the pump is on
+  op schema PumpTickOn is
+  pred
+    pre (pump.is_on); 
+    patient'.current_dosage = pump.current_dosage;
+    patient'.systolic_pressure = patient.systolic_pressure;
+    patient'.diastolic_pressure = patient.diastolic_pressure;
+    changes_only {patient}
+  end PumpTickOn;
+
+  //Tick the clock for the pump when the pump is off
+  op schema PumpTickOff is
+  pred
+    pre (not (pump.is_on));
+    changes_only {}
+  end PumpTickOff;
+
+  //Tick the clock for the pump, providing a dosage to the patient
+  //if the pump is on
+  PumpTick == (PumpTickOn or PumpTickOff);
+
+  ////////////////////////////////////////////////////////////
+  // Operations for the BPM module
+  ////////////////////////////////////////////////////////////
+ 
+  //Turn on all BPMs, but do not start readings
+  op schema BPMOn is
+  pred
+    bpm'.is_on;
+    bpm'.systolic_pressure = bpm.systolic_pressure;
+    bpm'.diastolic_pressure = bpm.diastolic_pressure;
+    changes_only {bpm}
+  end BPMOn;
+
+  //Turn off the BPM
+  op schema BPMOff is
+  pred
+    not (bpm'.is_on);
+    bpm'.systolic_pressure = bpm.systolic_pressure;
+    bpm'.diastolic_pressure = bpm.diastolic_pressure;
+    changes_only {bpm}
+  end BPMOff;
+
+  //Models reading the patient's blood pressure when the pump is on
+  op schema BPMGetPressureOn is
+  pred
+    pre (bpm.is_on);
+    bpm'.systolic_pressure = patient.systolic_pressure;
+    bpm'.diastolic_pressure = patient.diastolic_pressure;
+    changes_only {bpm}
+  end BPMGetPressureOn;
+
+  //Models reading the patient's blood pressure when the pump is off
+  op schema BPMGetPressureOff is
+  pred
+    pre (not (bpm.is_on));
+    bpm'.systolic_pressure = min(MmHg);
+    bpm'.diastolic_pressure = min(MmHg);
+    changes_only {bpm}
+  end BPMGetPressureOff;
+
+  //Tick the clock for the BPM, which reads the patient's blood
+  //pressure if the BPM is on
+  BPMTick == (BPMGetPressureOn or BPMGetPressureOff);
+
+  ////////////////////////////////////////////////////////////
+  // The CARA module
+  ////////////////////////////////////////////////////////////
+
+  //A function for crudely calculating a dosage from the measured and
+  // target readings -- used for the purposes of animation only
+  axiom is 
+  dec
+    calculate_dosage : (MmHg cross MmHg cross MmHg cross MmHg) --> int
+  pred
+    forall target_diastolic, target_systolic, 
+           measured_diastolic, measured_systolic : MmHg @
+       calculate_dosage(target_diastolic, target_systolic, 
+                        measured_diastolic, measured_systolic) =
+          limit(((target_diastolic - measured_diastolic) + 
+                 (target_systolic - measured_systolic)) div 2, Dosage)
+  end;
+
+  op schema CARASetTargetPressure is
+  dec
+    target_systolic?, target_diastolic? : MmHg
+  pred
+    cara'.systolic_pressure = target_systolic?;
+    cara'.diastolic_pressure = target_diastolic?;
+    cara'.current_dosage = cara.current_dosage;
+    changes_only {cara}
+  end CARASetTargetPressure;
+
+  op schema CARACalculateDosage is
+  pred
+    cara'.current_dosage = calculate_dosage(cara.systolic_pressure,
+                                            cara.diastolic_pressure,
+                                            bpm.systolic_pressure,
+                                            bpm.diastolic_pressure);
+    cara'.systolic_pressure = cara.systolic_pressure;
+    cara'.diastolic_pressure = cara.diastolic_pressure;
+    changes_only {cara}
+  end CARACalculateDosage;
+
+  ////////////////////////////////////////////////////////////
+  // The ClosedLoop module
+  ////////////////////////////////////////////////////////////
+
+  //The standard increase/decrease for blood pressure
+  MmHg_INCREMENT == 5;
+
+  //Switch between modes of the system
+  op schema SwitchModes is
+  dec
+    new_mode? : Mode
+  pred
+    mode' = new_mode?;
+    changes_only {mode}
+  end SwitchModes;
+
+  //Increase the target systolic pressure by MmHg_INCREMENT
+  op schema IncreaseSystolic is
+  pred
+    pre (cara.systolic_pressure + MmHg_INCREMENT <= max(MmHg));
+    cara'.systolic_pressure = cara.systolic_pressure + MmHg_INCREMENT;
+    cara'.diastolic_pressure = cara.diastolic_pressure;
+    cara'.current_dosage = cara.current_dosage;
+    changes_only {cara}
+  end IncreaseSystolic;
+
+  //Decrease the target systolic pressure by MmHg_INCREMENT
+  op schema DecreaseSystolic is
+  pred
+    pre (cara.systolic_pressure - MmHg_INCREMENT >= min(MmHg));
+    cara'.systolic_pressure = cara.systolic_pressure - MmHg_INCREMENT;
+    cara'.diastolic_pressure = cara.diastolic_pressure;
+    cara'.current_dosage = cara.current_dosage;
+    changes_only {cara}
+  end DecreaseSystolic;
+
+  //Decrease the target distolic pressure by MmHg_INCREMENT
+  op schema IncreaseDiastolic is
+  pred
+    pre (cara.diastolic_pressure + MmHg_INCREMENT <= max(MmHg));
+    cara'.diastolic_pressure = cara.diastolic_pressure + MmHg_INCREMENT;
+    cara'.systolic_pressure = cara.systolic_pressure;
+    cara'.current_dosage = cara.current_dosage;
+    changes_only {cara}
+  end IncreaseDiastolic;
+
+  //Decrease the target distolic pressure by MmHg_INCREMENT
+  op schema DecreaseDiastolic is
+  pred
+    pre (cara.diastolic_pressure - MmHg_INCREMENT >= min(MmHg));
+    cara'.diastolic_pressure = cara.diastolic_pressure - MmHg_INCREMENT;
+    cara'.systolic_pressure = cara.systolic_pressure;
+    cara'.current_dosage = cara.current_dosage;
+    changes_only {cara}
+  end DecreaseDiastolic;
+
+  ////////////////////////////////////////////////////////////
+  // Bring the components together
+  ////////////////////////////////////////////////////////////
+
+  //The following three operations simply check which mode the system is in
+  op schema InWaitMode is
+  pred
+    pre (mode = Wait);
+    changes_only {}
+  end InWaitMode;
+
+  op schema InManualMode is
+  pred
+    pre (mode = Manual);
+    changes_only {}
+  end InManualMode;
+
+  op schema InAutoMode is
+  pred
+    pre (mode = Auto);
+    changes_only {}
+  end InAutoMode;
+
+  //In wait mode, the patient just contines, while the pump and BPM do nothing
+  WaitTick == (InWaitMode s_compose PatientTick);
+
+  //In manual mode, the pump, patient, and BPM tick along
+  ManualTick == (InManualMode s_compose
+                 (PumpTick s_compose PatientTick s_compose BPMTick));
+
+  //In auto mode, the entire closed loop ticks
+  AutoTick == (InAutoMode s_compose (PumpTick s_compose PatientTick s_compose 
+                               BPMTick s_compose CARACalculateDosage));
+
+  //The overall system tick
+  Tick == (WaitTick or ManualTick or AutoTick)
+
+end ManualCARA

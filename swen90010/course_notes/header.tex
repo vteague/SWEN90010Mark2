@@ -1,0 +1,110 @@
+\usepackage{custom-ohp}
+
+\usepackage{latexsym}
+\usepackage{times}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{booktabs}
+
+%\usepackage{marvosym}
+\usepackage{epsfig}
+%\usepackage{relsize}
+\usepackage{graphicx}
+
+\usepackage{url}
+\usepackage{xspace}
+
+\usepackage[ruled]{algorithm}
+\usepackage{svn}
+
+
+\usepackage[dvipdfm]{hyperref}
+\hypersetup{pdftitle={\subjecttitle},
+  }
+
+\setlength\foilheadskip{-30pt}
+\newcommand{\foilheadnopage}[1]{{\normalcolor\large\bfseries\centering{#1}\par\null}%
+  \vspace{\foilheadskip}}
+
+
+\title{\large \subjecttitle}
+\author{\large \semesteryear\\[1ex]
+  Lecturer: \lecturer}
+
+\leftheader{\quad\textsf{\tiny \subjecttitle}} % page number
+\rightheader{Week \weekno}
+%\rightheader{}
+\MyLogo{{\quad\textsf{\tiny\\\thepage}}}
+
+\usepackage{ifthen}
+
+\def\printversion{1}
+
+\newcommand{\presentation}{\def\printversion{0}}
+
+\newcommand{\answerslide}[1]{\ifthenelse{\equal{\printversion}{1}}{}{#1}}
+
+
+
+
+\newcommand{\omitable}[1]{}
+
+\def\section{%
+    \@startsection{section}{1}{\z@}%
+                  {-2.0ex plus -0.5ex minus -0.3ex}%
+                  {0.8ex plus 0.3ex minus 0.2ex}%
+                  {\large\bf\raggedright}}
+\def\subsection{%
+    \@startsection{subsection}{2}{\z@}%
+                  {-1.4ex plus -0.4ex minus -0.2ex}%
+                  {0.6ex plus 0.2ex minus 0.1ex}%
+                  {\normalsize\bf\raggedright}}
+\def\subsubsection{%
+    \@startsection{subsubsection}{3}{\z@}%
+                  {-0.8ex plus -0.3ex minus -0.1ex}%
+                  {0.4ex plus 0.1ex minus 0.1ex}%
+                  {\normalsize\bf\raggedright}}
+\def\paragraph{%
+    \@startsection{paragraph}{4}{\z@}%
+                  {-0.8ex plus -0.3ex minus -0.1ex}%
+                  {-1em}%
+                  {\normalsize\bf}}
+\def\subparagraph{%
+    \@startsection{subparagraph}{5}{\parindent}%
+                  {0.4ex plus 0.3ex minus 0.1ex}%
+                  {-1em}%
+                  {\normalsize\bf}}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{javabackground}{rgb}{0.9,0.9,0.9}
+\definecolor{javablack}{rgb}{0,0,0}
+
+\lstset{language=Java,
+  backgroundcolor=\color{javabackground},
+  basicstyle=\ttfamily\fontsize{16}{18}\selectfont,
+  keywordstyle=\color{javablack}\bfseries,
+  aboveskip={1.5\baselineskip},
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=single,
+  numbersep=10pt,
+  stepnumber=0,
+  tabsize=4,
+  xleftmargin=3ex,
+  xrightmargin=3ex,
+  showspaces=false,
+  showstringspaces=false}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

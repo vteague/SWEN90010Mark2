@@ -1,0 +1,92 @@
+\documentclass[11pt]{report}
+
+\def\rootdir{./}
+
+\input{packages}
+\input{pagestyle}
+\input{macros}
+\begin{document}
+
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+
+\mbox{}\\
+\vspace{10ex}
+\begin{center}
+\textbf{\Huge High Integrity Systems Engineering}\\[1ex]
+\textbf{\Large Subject Notes for SWEN90010}\\[1ex]
+\mbox{}\\[6ex]
+\textbf{\Large The Department of Computing}\\[0.5ex]
+\textbf{\large and}\\[0.5ex]
+\textbf{\Large Information Systems}\\[1.5ex]
+\textbf{\large The University of Melbourne}\\[0.5ex]
+\end{center}
+\vspace{10ex}
+
+\newpage
+
+%\input{preface}
+
+\tableofcontents
+
+\begin{bibunit}[plain]
+\chapter{Introduction to High Integrity Systems Engineering}
+
+\input{intro/intro}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{ada/ada}
+\putbib[bib]
+\end{bibunit}
+
+
+\begin{bibunit}[plain]
+\input{safety/safety}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{introToCrypto/introToCrypto}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{specification/specification}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{fault-tolerant-design/fault-tolerant-design}
+\putbib[bib]
+\end{bibunit}
+
+
+\begin{bibunit}[plain]
+\input{spark/spark}
+\putbib[bib]
+\end{bibunit}
+
+
+\begin{bibunit}[plain]
+\input{design-by-contract/design-by-contract}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{hoare-logic/hoare-logic}
+\putbib[bib]
+\end{bibunit}
+
+\begin{bibunit}[plain]
+\input{ttf/ttf}
+\putbib[bib]
+\end{bibunit}
+
+%\bibliography{bib}
+%\bibliographystyle{plain}
+
+\end{document}

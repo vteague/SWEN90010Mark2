@@ -1,0 +1,20 @@
+This directory contains the latex source of the course notes for
+SWEN90010: High Integrity Systems Engineering
+
+The notes are divided into several chapters. Each chapter is contained
+in a sub-directory, and pulled together in the file
+"course-notes.tex". To build the notes, type 'make'.
+
+Each chapter directory also contains a makefile for building that
+individual chaper. The file that pulls together the chapter is
+chapter-X.tex, where 'X' is the chapter number.
+
+To include files in a chapter, use the format:
+
+ \input{\rootdir/chapter-directory/path-to-new-file}
+
+The tag '\rootdir' is set in course-notes.tex and chapter-X.tex
+respectively, and is used so that chapters can be built individually,
+and the notes can be built together. The reason for this is that Latex
+includes files relative to the path from where the 'latex/pdflatex'
+command was run.

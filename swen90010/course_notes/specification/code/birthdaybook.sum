@@ -1,0 +1,57 @@
+//A specification of the well-known "Birthday Book" example
+module BirthdayBook is
+
+  [NAME, DATE];
+
+  schema state is 
+    dec
+      known    : power NAME;
+      birthday : NAME -|-> DATE
+    pred
+      known = dom birthday
+  end state;
+
+  schema init is
+    pred
+      dom birthday' = {}
+  end init;
+
+  op schema AddBirthday is
+    dec
+      name? : NAME;
+      date? : DATE
+    pred
+      pre( name? not_in dom birthday);
+      birthday' = birthday union {name? |--> date?}
+  end AddBirthday;
+
+  op schema FindBirthday is
+    dec
+      name? : NAME;
+      date! : DATE
+    pred
+      pre( name? in dom birthday );
+      date! = birthday(name?);
+      changes_only {}
+  end FindBirthday;
+
+  op schema Remind is
+    dec
+      today? : DATE;
+      cards! : power NAME
+    pred
+      cards! = { n : known | birthday(n) = today?};
+      changes_only{}
+  end Remind;
+
+  op schema RemindOne is
+    dec
+      today? : DATE;
+      card! : NAME
+    pred
+      card! in known;
+      birthday(card!) = today?;
+      changes_only{}
+  end RemindOne
+
+end BirthdayBook

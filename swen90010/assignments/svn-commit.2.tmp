@@ -1,0 +1,26 @@
+MOVE: src/ to code/
+--This line, and those below, will be ignored--
+
+D    assignment-4/src
+A  + assignment-4/code
+A  + assignment-4/code/project.idx
+A  + assignment-4/code/patient.adb
+A  + assignment-4/code/measures.ads
+A  + assignment-4/code/randomfloat.adb
+D    assignment-4/code/queues.adb
+D    assignment-4/code/ringbuffer.ads
+A  + assignment-4/code/manualoperationexample.adb
+A  + assignment-4/code/bpm.adb
+A  + assignment-4/code/pump.adb
+A  + assignment-4/code/measures.adb
+A  + assignment-4/code/patient.ads
+D    assignment-4/code/stack.ads
+A  + assignment-4/code/randomfloat.ads
+A  + assignment-4/code/Makefile
+D    assignment-4/code/queues.ads
+A  + assignment-4/code/spark.cfg
+D    assignment-4/code/testringbuffer.adb
+D    assignment-4/code/ringbuffer.adb
+A  + assignment-4/code/bpm.ads
+A  + assignment-4/code/spark.wrn
+A  + assignment-4/code/pump.ads

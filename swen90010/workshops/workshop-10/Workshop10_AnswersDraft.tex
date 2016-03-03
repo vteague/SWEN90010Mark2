@@ -1,0 +1,76 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+
+
+\begin{document}
+\section{Week 10 Workshop: }
+\subsection{Byzantine Agreement}
+Byzantine Agreement requires $t+1$ rounds and a total of at least $3t + 1$ nodes to tolerate $t$ traitors.  Assume that the general begins by giving the order, but then behaves like an ordinary participant for the rest of the protocol.
+\begin{enumerate}
+\item In class we covered the Exponential Information Gathering (EIGByz) Algorithm, for Byzantine failures.  Think of an example with 2 traitors and 4 honest participants in which the honest participants do not agree, even though they follow EIGByz correctly.
+
+{\bf Ans: } One of the traitors is the general, who divides the 4 honest participants into 2 pairs.  One pair are told to attack, the other pair to retreat.  Then the 2 traitors (the general and one other) lie to the honest participants about what the other pair of honest participants have told them.  (There could be other good solutions too.)
+
+\item We also covered a simpler version of Exponential Information Gathering appropriate for Authenticated Byzantine Agreement (slide~18).  Give an example with two traitors in which the honest participants do not agree after $t$ rounds, even if they follow  this simplified EIG algorithm exactly.  Explain why all honest participants must agree after $t+1$ rounds.
+
+{\bf Ans: } See sketch in notes on bottom of p.~19.
+\end{enumerate}
+
+\subsection{Message Authentication and Hashing}
+\begin{enumerate}
+\item {\bf The ``birthday paradox''}  Let $H$ be a hash function that outputs a $k$-bit digest.  (Assume for simplicity that it's a single-block hash function with fixed-length inputs that are also $k$ bits.  It doesn't really matter though.)   You are trying to generate collisions by guessing.  Show that after guessing about $2^{k/2}$ different input values, there is a decent probability of having found at least one pair of different values $A$ and $B$ with $H(A) = H(B)$. 
+
+(Hint: For small $x, e^{-x} \approx 1-x$.  Bigger hint: see Paar and Pelzl's texbook, Ch~11.)
+
+This is an important result, and the main reason that recommended hash lengths tend to be double the recommended symmetric-encryption key lengths.
+
+{\bf Ans: } See Paar and Pelzl, pp $300--302$.
+\end{enumerate}
+
+\subsection{Applications}
+\begin{enumerate}
+\item {\bf Randomised partial checking}  Suppose two adjacent mix servers $A$ and $B$ shuffle and rerandomise some encrypted values, and an independent (trustworthy) party verifies their correctness using randomised partial checking.  Each ciphertext of $A$'s output, which is also $B$'s input, is randomly selected to have either its source or its destination revealed, each with probability $1/2$.  (Suppose also that each proves that no two outputs derive from the same input, and no two inputs are linked to the same output---see the paper by Juels, Catalano and Jakobsson if interested.)  
+	\begin{enumerate}
+	\item If $A$ substitutes one input, what is the probability that it gets caught?
+
+	{\bf Ans: } $1/2$.
+	\item If $B$ substitutes $k$ outputs, what is the probability that it gets caught?
+	
+	{\bf Ans: } $1 - 1/2^k$.
+	\item If $A$ and $B$ collude together and substitute $k$ inputs and $k$ outputs, can they do so stupidly so they are guaranteed to get caught?  
+	
+	{\bf Ans: } Yes, if they manage to cheat on both the source and the destination of one of the middle ciphertexts.
+	\end{enumerate}
+\end{enumerate}
+\end{document}

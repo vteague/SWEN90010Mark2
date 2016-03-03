@@ -1,0 +1,151 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+\lstset{language=,aboveskip=3mm}
+\tutorialtitle{6}
+
+\section*{Introduction}
+
+This workshop continues with formal modelling in Sum, and also using Possum. The aim is to familiarise yourself with the existing specification for assignment 3, and to get you started on the assignment itself.
+
+\section*{The existing specification}
+
+Before you start reading, update your local copy of the subject repository and check out the assignment 3 folder. In that folder, you should see the file \texttt{models/ICD.sum}. This is a Sum specification of geneartor and HRM components of the ICD system, as well as a placeholder specification for the heart.
+
+\section*{Data types}
+
+The data types in the specification do not map directly to those in the implementation from assignment 1. This is not uncommon, because the data types in the specifications tend to be abstractions of those that will appear in the implementation.
+
+
+\section*{Revisiting schemas as types}
+
+Before going on, review the section called \emph{Schemas as types} in the subject notes (Section 4.5.7).
+
+The specification consists of three ``modules'': \texttt{HRM}, \texttt{ImpulseGenerator}, and \texttt{Heart}. The state of each of these is defined as a schema, and these schemas are used as types/sets in the state of the specification. The state is defined as such:
+
+\begin{lstlisting}
+    heart : Heart;
+    hrm : HRM;
+    generator : ImpulseGenerator
+\end{lstlisting}
+
+So, the system consists of a heart, impulse generator, and heart rate monitor. If we wanted to define, for example, two heart rate monitors, we could write:
+
+\begin{lstlisting}
+   hrm_1; hrm_2 : HRM;
+\end{lstlisting}
+
+Operations are defined on the state, so in this specification, the operations change the individual instances of the HRM.
+
+\section*{The {\large {\texttt{changes\_only}}} operator and schema instances}
+
+Note that in operations that change one of the state variables, the \texttt{changes\_only} operator is used to specify which state variable(s) have changed. However, when we are using schemas as types/sets, and we might want to change part of a schema instance while leaving the remainder. To do this, we need to specify which parts of the schema binding do NOT change by explicitly stating this. For example, in operation for turning the impulse generator on is defined as:
+
+\begin{lstlisting}
+  //Turn on the generator, but do not administer any impulses yet.
+  op schema ImpulseGeneratorOn is
+  pred
+    generator'.is_on;
+    generator'.impulse = generator.impulse;
+    changes_only {generator}
+  end ImpulseGeneratorOn;
+\end{lstlisting}
+
+The only state variable that changes is \texttt{generator}, however the impulse does not change, so this is explicitly constrained using \texttt{generator'.impulse = generator.impulse;}. Without this, the post-state value of \texttt{generator.impulse} could be \emph{any} impulse value --- the operation is free to non-deterministically assign it a valid value.
+
+Unfortunately, we cannot write  \texttt{changes\_only \{generator.impulse\}}, because the \texttt{changes\_only} operator accepts only state variables, and not specific values of state variables.
+
+\section*{Modules, information hiding, and specification}
+
+When you designed and implemented the ICD system in assignment 1, modularity was a key aspect of the implementation. Using an interface and information hiding, each module could be used without knowledge of the internal workings.
+
+In specifications, information hiding is less important. This is for two reasons:
+
+\begin{enumerate}
+
+ \item Due to the abstraction levels used within a specification (e.g.\ using sets and predicates instead of concrete data types and structured programs), hiding the details is not required. When we hide a data type or algorithm of a module, we present the interface at a level such that a user can understand what information can be recorded by the module, and what effect the operations can have on this -- but not the concrete details (data types and algorithms). These details are presented at a higher level of abstraction, using concepts like sets, functions, and relations, and statements about the assumptions (preconditions) and effects (postconditions).
+
+ In a specification, we are already presenting at that abstract level, so hiding this information is not necessary.  Further, knowing the data type chosen in a specification is useful (often required!) to understand that specification.
+
+ \item Unlike the code of a software system, the reader of a specification is likely to want to understand the details of the entire specification --- or at least, most of the details. As such, understanding single modules is in isolation is not so useful.
+
+\end{enumerate}
+
+Despite this, it can still be valuable to represent the specification as a coherent set of modules, therefore working towards a design. The \texttt{ICD} specification does this --- it splits the system up into its components: heart, hrm, and generator. Operations are defined on those methods, however, there are no ``getter'' and ``setter'' operations used to transfer information between modules.
+
+For example, consider the following operation, which models the case in which the HRM is on and it reads the heart rate:
+
+\begin{lstlisting}
+  //Models reading the heart rate when the monitor is on
+  op schema HRMGetPressureOn is
+  pred
+    pre (hrm.is_on);
+    hrm'.rate = heart.rate;
+    hrm'.is_on = hrm.is_on;
+    changes_only {hrm}
+  end HRMGetPressureOn;
+\end{lstlisting}
+
+Here, the measures recorded in the HRM are assigned directly from the information in the heart. Unlike in the simulation, we do not model the random variations, as we are interested in modelling correct behaviour.
+
+In the specification, I have added a new operation called \texttt{ImpulseGeneratorSetImpulse}, which takes as input (variable with a question mark (?)), the impulse to deliver to the heart. This is NOT part of the requirements, as is added just to allow you to interact with the specification using Possum.
+
+The only operations that take outputs (variables with an exclamation point, or shriek (!)) are \texttt{ImpulseGeneratorStatus} and \texttt{HRMStatus}, which allow the medic to review the status of the generator and HRM respectively.
+
+These three operations are the only interactions between a human and the system.  The remainder of the operations model transitions of the system over time as information passes between the components.
+
+\section*{Your tasks}
+
+\begin{enumerate}
+
+ \item Load the \texttt{ICD} specification into Possum, change the current module to \texttt{ICD}, and initialise the module.
+
+ \item Use the \texttt{display state} command to view the state variables and their values.
+
+ \item Note that the constraint on the initial value of the heart rate (modelled in \texttt{HeartInit}) is that the heart rate is non-negative. We cannot constrain the behaviour any more than this, as we have no control of the behaviour of the heart.
+
+To make interaction with the specification easier, change the initial values of the heart rate to something more realistic; e.g. 100bpm. Initialise the system again.
+
+ \item The next step is to turn on the generator and HRM, using \texttt{ImpulseGeneratorOn} and \texttt{HRMOn}. Without this, the system will ``tick'' along without doing anything. Execute these two operations to turn the hardware components on.
+
+ \item Next, set the current impulse of the generator to the value 4. 
+
+ \item There are three ``tick'' operations: one for each of the components: \texttt{ImpulseGeneratorTick},  \texttt{HeartTick}, and \texttt{HRMTick}. Explore these tick components.
+
+ \item The final operation in the specification is called \texttt{Tick}. This models the ``global'' behaviour of the system by bringing together the ticks of the three components. It is defined as follows:
+
+\begin{lstlisting}
+   //The overall system tick (manual mode)
+   Tick == (ImpulseGeneratorTick s_compose HeartTick s_compose HRMTick)
+\end{lstlisting}
+
+Recall from the notes that the \texttt{s\_compose} operator (short for \emph{sequential composition}) is used to put the three tick operations together in \emph{sequence}. Thus, the \texttt{Tick} operation is defined as the generator ticking, followed by the heart ticking, followed by the HRM ticking.
+
+ With a positive impulse (the previous task), execute the \texttt{Tick} operation a few times using Possum, which should change the heart rate.
+
+ Note that the change in heart rate, modelled in \texttt{HeartTick}, is just one possible behaviour for a heart, and is included just for the purpose of animating the specification using Possum. In reality, we cannot specify this behaviour, because we do not know how a heart will behaviour, nor the effect of an impulse being delivered. In the specification, we specify a basic update that says that the heart rate increase 1 bpm every tick, but is reduced by a shock.
+
+ Taking the definitions of the three tick operations, and the global operation \texttt{Tick}, explore their behaviour with Possum to convince yourself that they are correct (or otherwise!).
+
+ \item If you get this far during the workshop, start working on task 1 of the assignment, which asks you to model the behaviour of the \texttt{ClosedLoop} and \texttt{ICD} components from assignment 1.  The ICD component ``closes the loop'' between the HRM and the impulse generator, so must interact with both. Focus on this part of the specification; that is, how to model the interaction between the HRM, impulse generator, and ICD.
+
+ TIP: As stated in the assignment sheet, the file \texttt{models/axioms.sum} contains two potentially useful functions: a function for calculating average and standard deviation of a list of integers; and a function for sorting a list of integers.
+
+\end{enumerate}
+
+\end{document}
+
+% LocalWords:  typechecker Typechecking sumtt typecheck bool param
+% LocalWords:  currentmodule Ctrl Dialogs init undashed FillOk FillOK
+% LocalWords:  fillsafe ICD  dec bpm pred HRM hrm
+% LocalWords:  ClosedLoop aboveskip  HRMStatus HRMOn
+% LocalWords:  ImpulseGenerator ImpulseGeneratorOn HRMGetPressureOn
+% LocalWords:  ImpulseGeneratorSetImpulse ImpulseGeneratorStatus
+% LocalWords:  HeartInit ImpulseGeneratorTick HeartTick HRMTick

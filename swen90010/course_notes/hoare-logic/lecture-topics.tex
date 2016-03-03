@@ -1,0 +1,499 @@
+\documentclass[11pt]{article}
+
+\def\rootdir{../}
+
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{oz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\algnewcommand\algorithmicskip{\textbf{skip}}
+\algnewcommand\algorithmicdone{\textbf{done}}
+\usepackage{color}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{javabackground}{rgb}{0.9,0.9,0.9}
+\definecolor{javablack}{rgb}{0,0,0}
+
+
+\lstset{language=Java,
+  backgroundcolor=\color{javabackground},
+  basicstyle=\ttfamily\fontsize{10}{12}\selectfont,
+  keywordstyle=\color{javablack}\bfseries,
+  aboveskip={1.5\baselineskip},
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=single,
+  numbersep=10pt,
+  stepnumber=1,
+  tabsize=8,
+  xleftmargin=0ex,
+  xrightmargin=0ex,
+  showspaces=false,
+  showstringspaces=false,
+  aboveskip=0.5ex
+}
+
+\begin{document}
+
+\section*{Lecture aims}
+
+ \begin{enumerate}
+
+ \item To critique the difference between program proof and other forms of verification, such as testing.
+
+ \item To be able to prove the correctness of simple programs against their contracts.
+
+ \item To think about programming in a more systematic and mathematical manner, with the result of improving our programming skills.
+
+ \end{enumerate}
+
+\section*{Lecture plan}
+  
+\subsubsection*{Introduction to reasoning about correctness}
+
+\begin{enumerate}
+
+  \item Start with video: \url{http://www.youtube.com/watch?v=H61d_OkIht4}
+
+  \item Nulka is a ``soft-kill'' decoy missile, which leads homing missiles away from ships to splash harmlessly in the water. Developed in Melbourne by BAE and DSTO.
+
+  \item Nulk's flight control unit software formally verified using SPARK (at the programming level), using Hoare logic (topic for next 3-4 lectures).
+
+ \item Now deployed on over 130 Australian, Canadian and United States warships, and is the most successful Australia defence export.
+
+\end{enumerate}
+
+\subsubsection*{Introduction to reasoning about programs}
+
+\begin{enumerate}
+
+ \item Semantics vs syntax. Three major types of semantics: 
+
+ \begin{enumerate}
+
+   \item denotational: translate programs into denotations; e.g. sets of legal traces; Dijkstra's weakest precondition semantics.
+
+   \item operational: describes how programs are executed directly; e.g. as an abstract machine.
+
+   \item axiomatic: describes programs by the axioms that hold over them; the meaning is what is provable; e.g. Hoare logic.
+
+ \end{enumerate}
+
+ \item We have specifications and designs (with contracts), but we need to implement our code such that it conforms to its contract.
+
+ \item Testing, review, and ``basic'' static analysis are not enough --- many applications require \emph{proof} of correctness.
+
+ \item Binary search example (below) --- where is the fault?
+
+  First version of the binary search  appeared in 1946.  Not until 1962 that the first {\em correct} version appeared. Common version ``proved'' by John Bentley contains a fault!
+
+ If the best and brightest computer scientists cannot produce a correct program, and faults can remain undetected in text books for decades, what hope do we have?
+
+\end{enumerate}
+
+\subsubsection*{A small programming language}
+
+\begin{enumerate}
+
+ \item Language has:
+
+ \begin{enumerate}
+
+  \item Procedures.
+
+  \item Expressions: numbers, arithmetic, variables reference and array reference.
+
+  \item Boolean expressions
+
+  \item Statements: variable assignment, array assignment, ``skip'', sequencing, branching, iteration, and procedure calls.
+
+ \end{enumerate}
+
+ \item A \emph{program} is a list of procedures and a statement that calls those procedures.
+
+\end{enumerate}
+
+\subsubsection*{Hoare logic}
+
+\begin{enumerate}
+
+ \item Hoare triples.
+
+ \item Inference rules.
+
+ \item Example: increment an integer (below) --- can we prove this?
+
+ \item The rules:
+
+  \begin{enumerate}
+
+   \item Assignment axiom. Example (Inc program): $\{x \geq 0\}~ x := x + 1~ \{x > 0\}$.
+ 
+   Note that the rule at first seems backwards, but going forwards does not work using incremented example above.
+
+   \item Consequence rule: Example: complete the Inc program proof. Additional example: $\{\textrm{true}\} ~x := 5~ \{x \geq 5\}$.
+
+   \item Sequential composition rule: Example: swap program (below). 
+
+    First, assume simultaneous assignment of $x$ and $y$. This motivates the use of \emph{auxiliary} variables and pre-state values.
+
+    Then do sequential version, in which $t=x$\~{} cannot be proved. This motivates the sequential composition rule. Example: complete the swap program.
+
+   \item Empty statement axiom. Example: see condition rule example.
+
+   \item Conditional rule. Example: conditional swap (below)
+
+   \item Iteration rule: Example: summation (below).
+
+     Discuss the idea and challenge of loop invariants.
+
+     Discuss the notion of partial correctness and termination. The following program is an example of 
+
+\begin{algorithmic}[0]
+\State $\{y \geq 0\}$
+\While {$y \geq 0$}
+  \State $x := 0;$
+\EndWhile
+\State $\{y \geq 0\}$
+\end{algorithmic}
+
+   Apply iteration rule to prove hypothesis: $\{y \geq 0 \} ~x := 0 \{ y \geq 0 \}$, which allows us to conclude:
+
+\begin{algorithmic}[0]
+\State $\{y \geq 0\}$
+\While {$y \geq 0$}
+  \State $x := 0;$
+\EndWhile
+\State $\{y \geq 0 \land \neg y \geq 0\}$
+\end{algorithmic}
+
+which has a contradiction. The program does not achieve this because it does not terminate, but even if it did terminate, it couldn't achieve that postcondition.
+
+ \item Loop invariants. Requires some creativity, but is an active research area, even in the department.
+
+  Properties of loop invariant $I$:
+
+  \begin{enumerate}
+
+    \item $P \implies I$: must be \emph{weaker} than its precondition.
+
+    \item  $I \land \neg B \implies Q$: \emph{stronger} than its postcondition.
+
+    \item $\{B \land I\} ~S~ \{I\}$: loop re-establishes the invariant.
+
+\end{enumerate}
+
+ Of course, these assume the loop body is correct!
+
+
+  Some heuristics:
+
+  \begin{enumerate}
+
+    \item Loop invariants generally contain most of the variables from the loop condition, loop body, the precondition, and the postcondition (where we mean the precondition/postcondition of the loop, not necessarily the entire program).
+
+    \item Generally state a relationship between the variables.
+
+    \item Generally contain a predicate similar to the postcondition.
+
+    \item Hold even if the loop condition is false.
+
+  \end{enumerate}
+
+ \end{enumerate}
+
+ \item Array assignment rule: Example: $ \{ x = y \land a[x] = 0\}  ~a[y] := 5~ \{ a[x] = 0\}$.
+
+   Initial attempt at rule: $\{P[E/a[NE]]\}~a[NE] := E~ \{P\}$.
+
+   But if $x=y$, then $a[x] = 5$, but we cannot tell from the program.
+
+   Hoare's corrected rule: $\{P[a\{NE \rightarrow E\}/a]\}~a[NE] := E~ \{P\} $
+
+  \item Procedure call. Example: invalid example below. Proper example: factorial call.
+
+   Programs and calls must have the following properties:
+
+  \begin{enumerate}
+
+    \item The number of arguments in a procedure call must be equal to the number of parameters in the procedure.
+      
+    \item The formal parameter names must be distinct from each other.
+
+    \item The arguments for value-result variables must be distinct from each other. It is this rule that prevents the problem outlined in the counterexample above --- the procedure call would be illegal.
+
+    \item Value parameters cannot be changed in the procedure body.
+
+    \item No recursion.
+   
+  \end{enumerate}
+
+  Look at recursive procedures and the induction rule.
+
+\end{enumerate}
+
+\subsubsection*{Mechanisation}
+
+\begin{enumerate}
+
+ \item Annotate the program with the necessary predicates. Automatic for all except loop invariant.
+
+ \item Use a program to generate \emph{verification conditions}. 
+
+ \item Prove using theorem prover.
+
+ \item Left over involve user input (but can still be automated).
+
+ \item All dischared implies correct. One or more failed implies incorrect. One or more undischarged either way implies unknown.
+
+\end{enumerate}
+
+\subsection*{Dijkstra's weakest precondition semantics}
+
+
+\begin{enumerate}
+
+ \item Weakest precondition: For  statement $S$ and postcondition $R$, the weakest precondition, written $wp(S, R)$, is the weakest predicate that establishes $R$ if $S$ is executed and terminates.
+
+ \item The transformation rules: show table.
+
+ \item Note that $\{ wp(S, Q) \}~ S ~\{Q\}$.
+
+ \item To prove $\{P\} ~S~ \{Q\}$, need to just prove $P \rightarrow wp(S, Q)$.
+
+\end{enumerate}
+
+
+\pagebreak
+
+\lstset{language=Java}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/hoare-logic/code/BinarySearch.java}
+
+\vfill
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  procedure Inc (X: in out Integer)
+     Pre => (X >= 0),
+     Post => (X > 0);
+  is begin
+     X := X + 1;
+  end Inc;
+\end{lstlisting}
+ 
+\vfill
+
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  procedure Swap (X, Y : in out Float)
+  with
+      Post => (X = Y'Old and Y = X'Old);
+  is 
+      T : Float;
+  begin
+      T := X;
+      X := Y; 
+      Y := T;
+  end Swap;
+\end{lstlisting}
+
+\vfill 
+
+\pagebreak
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+    procedure ConditionalSwap (X, Y : in out Float)
+    with
+        Post => (X >= Y);
+    is 
+        T : Float;
+    begin
+        if X < Y then
+            T := X;
+            X := Y; 
+            Y := T;
+        endif;
+    end Swap;
+\end{lstlisting}
+
+\vfill
+
+
+\lstset{aboveskip=3mm}
+\begin{lstlisting}[escapeinside={||}]
+   procedure Summation (N : in Integer; A : in Array; Sum : out Integer)
+   with
+     Pre => (N >= 0),
+     Post => (Sum = |$\sum_{j=0}^{N-1}$| A(J));
+   is begin
+      I := 0;
+      Sum := 0;
+      while I < N do
+         Sum := Sum + A[I];
+         I := I + 1;
+      done;
+   end Summation;
+\end{lstlisting}
+
+\vfill
+\begin{displaymath}
+  \begin{array}{lllll}
+\textrm{Assume:} & p(x, y) \sdef x := y + 1 & & (1)\\[2mm]
+                 & \{y + 1 = y + 1\}~ x := y + 1~ \{x = y + 1\} & \textrm{[Assignment axiom]} & (2)\\[2mm]
+                 & true ~\implies ~ y + 1 = y + 1 & \textrm{[Logical theorem]} & (3)\\[2mm]
+ \textrm{From 2, 3:} & \{true\}~ x := y + 1~ \{x = y + 1\} & \textrm{[Consequence rule]} & (4)\\[2mm]
+ \textrm{From 1, 4:} & \{true\}~ p(x,y)~ \{ x = y + 1\} & \textrm{[Procedure rule]} & (5)\\[2mm]
+ \textrm{From 5:}    & \{true\}~ p(z,z)~ \{ z = z + 1\} & \textrm{[Procedure rule]} & (6)
+\end{array}
+\end{displaymath}
+
+\vfill
+
+\pagebreak
+
+\vfill
+
+\begin{verbatim}
+   procedure Factorial (N : in Natural; F : out Natural)
+   with
+     Post => (F = N!)
+   is begin
+
+
+      F : = 1;
+
+
+      I : = 0;
+
+
+      while I /= N do
+
+
+         I := I + 1;
+
+
+
+         F := F * I;
+
+
+
+      done;
+
+
+
+   {F = N!}
+   end Factorial;
+
+\end{verbatim}
+\vfill
+
+
+\pagebreak
+
+\vfill
+
+\begin{verbatim}
+   procedure InsertionSort (A : in out Array)
+   with
+     Post => (for all m in (0 .. A'Length-2) => A(J) < A(J + 1));
+   is begin
+
+
+      while I /= N - 2 do
+
+
+
+         J := I;
+
+
+         while J /= 1 and A[J - 1] > A[J] do
+     
+
+
+             swap(A, J - 1, J);
+
+
+             J := J - 1;
+
+
+         done;
+
+
+      done;
+
+
+   {for all m in (0 .. A'Length-2) => A(J) < A(J + 1)}
+   end Summation;
+
+\end{verbatim}
+\vfill
+
+\pagebreak
+
+\begin{tabular}{ll}
+\\[4mm]
+  $\{P[E/x]\}~ x := E~ \{P\}$ & (assignment axiom)\\[10mm]
+$\{P\}~ \textbf{skip}~ \{P\}$ & (empty statement axiom)\\[10mm]
+ $\begin{array}{c}
+   P' \implies P,~  Q \implies Q', ~\{P\} ~S~ \{Q\}\\
+ \hline
+ \{P'\} ~S~ \{Q'\}
+ \end{array}$ & (consequent rule)\\[10mm]
+ $\begin{array}{c}
+  \{P\} ~S_1~ \{R\},~~ \{R\} ~S_2~ \{Q\} \\
+ \hline
+ \{P\} ~S_1; S_2~ \{Q\}
+ \end{array}$ & (sequential composition rule)\\[10mm]
+$\begin{array}{c}
+  \{P \land B\} ~S_1~ \{Q\},~~ \{P \land \neg B\} ~S_2~ \{Q\} \\
+ \hline
+ \{P\}~ \textbf{if}~ B ~\textbf{then}~ S_1 ~ \textbf{else}~ S_2 ~ \textbf{endif}~\{Q\}
+ \end{array}$ & (conditional rule)\\[10mm]
+ $\begin{array}{c}
+  \{P \land B\} ~S~~\{P\}  \\
+ \hline
+ \{P\}~ \textbf{while}~ B ~\textbf{do}~ S ~ \textbf{done}~\{\neg B \land P\}
+ \end{array}$ & (iteration rule)\\[10mm]
+ $\begin{array}{c}
+  \{P\}~S~ \{Q\}\\
+\overline{\{P  [E_1/v_1, E_n/v_n]\} ~p(E_1, \ldots, E_n)~ \{Q [E_1/v_1, \ldots, E_n/v_n]\}}
+ \end{array}$ & (procedure call rule)\\[10mm]
+ $\{P[a\{NE \rightarrow E\}/a]\}~a[NE] := E~ \{P\}$ & (array assignment rule)\\[10mm]
+\end{tabular}
+
+\pagebreak
+\vspace{2mm}
+
+\begin{tabular}{llll}
+\multicolumn{3}{c}{\textbf{Dijkstra's predicate transformers}}\\
+\toprule
+\textbf{Rule} & \textbf{Input} & \textbf{Output}\\
+\midrule
+Skip &       $wp(\algorithmicskip, R)$  & $R$\\[2mm]
+Assignment  & $wp(x := E, R)$ & $R[E/x]$\\[2mm]
+Sequence    & $wp(S_1; S_2, R)$ & $wp(S_1, wp(S_2, R))$\\[2mm]
+Conditional & $wp(\algorithmicif~B~\algorithmicthen~S_1 ~\algorithmicelse~ S_2 ~\algorithmicend\algorithmicif, R)$ & $B \rightarrow wp(S_1, R) \land \neg B \rightarrow wp(S_2, R)$\\[2mm]
+While loop  & $wp(\algorithmicwhile~ B ~\algorithmicdo~ S ~\algorithmicdone)$
+            & $\exists k . (k \geq 0 \land P_k)$\\
+          & & where $P_0 \equiv \neg B \land Q$\\
+          & & \quad\quad $P_{k+1} \equiv B \land wp(S, P_k)$\\
+\bottomrule
+\end{tabular}
+
+
+\end{document}  
+

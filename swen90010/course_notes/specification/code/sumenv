@@ -1,0 +1,5 @@
+export COGITOPATH=/usr/share/Cogito1.3/
+export MATHPATH=$COGITOPATH/lib
+export PATH=$PATH:$COGITOPATH/bin
+
+

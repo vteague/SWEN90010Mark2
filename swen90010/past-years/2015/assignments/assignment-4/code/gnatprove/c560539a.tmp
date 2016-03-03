@@ -1,0 +1,8 @@
+warning_mode=TREAT_AS_ERROR
+flow_analysis_mode
+prove_mode
+flow_debug
+ide_mode
+single_file
+analyze_file=closedloop.adb
+

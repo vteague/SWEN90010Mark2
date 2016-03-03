@@ -1,0 +1,52 @@
+module Bakery is
+
+  [Customer];
+
+  schema state is
+  dec
+    in_shop : power Customer;
+    being_served : power Customer
+  pred
+    #being_served <= 1;
+    being_served subset in_shop
+  end state;
+
+  schema init is
+  pred
+    in_shop' = {};
+    being_served' = {}
+  end init;
+
+  op schema Arrive is
+  dec
+    c? : Customer
+  pred
+    //The customer must not already be in the shop
+    pre c? not_in in_shop;
+    //Add the customer to the set of customers
+    in_shop' = in_shop union {c?};
+    changes_only{in_shop}
+  end Arrive;
+
+  op schema Serve is
+  dec
+    c! : Customer
+  pred
+    //can only be served if there is currently not someone else being served
+    pre being_served = {};
+    c! in in_shop;  //non-deterministically choose a customer
+    being_served' = {c!};
+    changes_only{being_served}
+  end Serve;
+
+  op schema Leave is
+  dec
+     c? : Customer
+  pred
+     pre c? in in_shop;  //the customer must be in the bakery
+     being_served' = being_served diff {c?};
+     in_shop' = in_shop diff {c?};
+     changes_only{being_served, in_shop}
+  end Leave
+
+end Bakery

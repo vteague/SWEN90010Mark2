@@ -1,0 +1,32 @@
+\newtheoremstyle{defstyle} % name of the style to be used
+  {\parskip} % measure of space to leave above the theorem. E.g.: 3pt
+  {\parskip} % measure of space to leave below the theorem. E.g.: 3pt
+  {}% name of font to use in the body of the theorem
+  {}% measure of space to indent
+  {\bf}% name of head font
+  {\\}% punctuation between head and body
+  {.5em}% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}~~ {\rm \thmnote{(#3)}}}% header
+
+\newcommand{\tutorialtitle}[1]{
+\begin{center}
+\textbf{\sc SWEN90010: High Integrity Systems Engineering}\\[0.5ex]
+\textbf{\sc Department of Computing and Information Systems}\\[0.5ex]
+\textbf{\sc The University of Melbourne}\\[2ex]
+\textbf{\large Workshop {#1}}
+\end{center}
+}
+
+
+\newcommand{\tutorialsolutionstitle}[1]{
+\begin{center}
+\textbf{\sc SWEN90010: High Integrity Systems Engineering}\\[0.5ex]
+\textbf{\sc Department of Computing and Information Systems}\\[0.5ex]
+\textbf{\sc The University of Melbourne}\\[2ex]
+\textbf{\large Workshop {#1} sample solutions}
+\end{center}
+}
+
+\newcommand{\tobedone}[1]{\todo[inline,color=green!20!white]{\textbf{TODO:} #1}}
+
+\newcommand{\tm}[1]{\todo[inline,color=yellow]{\textbf{Tim says:} #1}}

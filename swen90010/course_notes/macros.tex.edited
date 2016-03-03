@@ -1,0 +1,47 @@
+\newtheoremstyle{defstyle} % name of the style to be used
+  {\parskip} % measure of space to leave above the theorem. E.g.: 3pt
+  {\parskip} % measure of space to leave below the theorem. E.g.: 3pt
+  {}% name of font to use in the body of the theorem
+  {}% measure of space to indent
+  {\bf}% name of head font
+  {\\}% punctuation between head and body
+  {.5em}% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}~~ {\rm \thmnote{(#3)}}}% header
+
+\theoremstyle{defstyle}
+\newtheorem{mydefinition}{Definition}[chapter]
+\newenvironment{definition}{\begin{mydefinition}}{$\Box$\end{mydefinition}}
+
+\newtheorem{myexample}{Example}[chapter]
+\newenvironment{example}{\begin{myexample}}{$\Box$\end{myexample}}
+
+\newtheorem{myexercise}{Exercise}[chapter]
+\newenvironment{exercise}{\begin{myexercise}}{$\Box$\end{myexercise}}
+<<<<<<< .mine
+
+
+%%%%%%%%%%%%%%%%%%%%% 
+%% Macros for Hoare logic programming language
+%%%%%%%%%%%%%%%%%%%%%
+\def\tif{\textbf{if}}
+\def\tthen{\textbf{then}}
+\def\telse{\textbf{else}}
+\def\tendif{\textbf{endif}}
+\def\twhile{\textbf{while}}
+\def\tdo{\textbf{do}}
+\def\tdone{\textbf{done}}
+\def\tproc{\textbf{procedure}}
+\def\ttrue{\textbf{true}}
+\def\tfalse{\textbf{false}}
+\def\tnot{\textbf{not}}
+\def\tskip{\textbf{skip}}
+
+%%% Re-assign done words from the algorthmicx pacakge
+\algdef{SE}[WHILE]{While}{EndWhile}[1]{\algorithmicwhile\ #1\ \algorithmicdo}{\tdone}%
+\algdef{SE}[IF]{If}{EndIf}[1]{\algorithmicif\ #1\ \algorithmicthen}{\algorithmicend\algorithmicif}%
+=======
+
+
+\algnewcommand\algorithmicskip{\textbf{skip}}
+\algnewcommand\algorithmicdone{\textbf{done}}
+>>>>>>> .r220

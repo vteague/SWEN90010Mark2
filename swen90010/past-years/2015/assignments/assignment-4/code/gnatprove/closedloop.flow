@@ -1,0 +1,6 @@
+[
+{"file": "closedloop.ads", "line": 37, "col": 45, "message": "Parameter is used by the precondition", "rule": "pragma_warning", "severity": "warning", "entity": {"file": "closedloop.ads", "line": 37, "name": "ClosedLoop.ReadSettings"}},
+{"file": "closedloop.ads", "line": 33, "col": 49, "message": "Parameter is used by the precondition", "rule": "pragma_warning", "severity": "warning", "entity": {"file": "closedloop.ads", "line": 33, "name": "ClosedLoop.ReadLast50Shocks"}},
+{"file": "closedloop.ads", "line": 29, "col": 47, "message": "Parameter is used by the precondition", "rule": "pragma_warning", "severity": "warning", "entity": {"file": "closedloop.ads", "line": 29, "name": "ClosedLoop.SwitchMode"}},
+{"file": "closedloop.ads", "line": 42, "col": 51, "message": "Parameter is used by the precondition", "rule": "pragma_warning", "severity": "warning", "entity": {"file": "closedloop.ads", "line": 42, "name": "ClosedLoop.ChangeSettings"}}
+]

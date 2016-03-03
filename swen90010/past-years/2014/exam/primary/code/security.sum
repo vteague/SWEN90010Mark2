@@ -1,0 +1,74 @@
+module Security is
+
+  [Username, Password, File];
+
+  schema state2 is
+  dec
+    password : Username -|-> Password;
+    permission : Username cross File -|-> bool;
+    logged_in : power Username
+  end state2;
+
+  schema state is
+  dec
+    password : Username -|-> Password;
+    permission : Username cross File -|-> bool;
+    logged_in : power Username;
+    access : File -|-> Username
+  pred
+    ran(access) subset logged_in
+  end state;
+
+  op schema SuccessfulLogin is
+  dec
+    u? : Username;
+    p? : Password
+  pred
+    pre (p? = password(u?));
+    logged_in' = logged_in union {u?};
+    changes_only {logged_in}
+  end SuccessfulLogin;
+
+  op schema FailedLogin is
+  dec
+    u? : Username;
+    p? : Password
+  pred
+    pre (p? /= password(u?));
+    changes_only {}
+  end FailedLogin;
+
+  Login == (SuccessfulLogin or FailedLogin);
+
+  op schema AccessFileOK is
+  dec
+    u? : Username;
+    f? : File
+  pred
+    pre (u? in logged_in);
+    pre (f? not_in dom(access));
+    access' = access func_override {f? |--> u?};
+    changes_only{access}
+  end AccessFileOK;
+
+  op schema AccessFileNotLogged is
+  dec
+    u? : Username;
+    f? : File
+  pred
+    pre (u? not_in logged_in);
+    changes_only {}
+  end AccessFileNotLogged;
+
+  op schema AccessFileLocked is
+  dec
+    u? : Username;
+    f? : File
+  pred
+    pre (f? in dom(access));
+    changes_only {}
+  end AccessFileLocked;
+
+  AccessFile == (AccessFileOK or AccessFileNotLogged or AccessFileLocked)
+
+end Security

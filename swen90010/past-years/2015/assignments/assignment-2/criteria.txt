@@ -1,0 +1,76 @@
+Assignment 2 feedback
+=====================
+
+Names:
+
+HAZOP application: /2
+
+ 2 marks: There is sufficient evidence to conclude that the team has systematically applied HAZOP; e.g. almost all reasonable interpretations of guidewords have been considered.
+
+ 1 mark: The idea of HAZOP has been used, but there is little indication that the application was systematic; e.g. there are some clear missing uses of the guidewords, possibly resulting in missing hazards.
+
+ All links or all components considered (depending on what they defined as a 'design item'):
+   - Heart to HRM
+   - HRM to ICD
+   - ICD to generator
+   - generator to heart
+
+ Causes from roles (cardiologist, assistant, and patient) considered.
+
+ Consider lack of behaviour as well as unwanted:
+   - absent signals and wrong signals
+   - signals when not wanted (e.g. unneeded shock)
+   - MORE = 3 things: "too many joules", "too many shocks", and "too fast shocks" (latter could be "early")
+
+Hazards: /3
+
+ 3 marks: The team has identified all (most) of the class I-II hazards below, and has categorised them similarly to below, and has some sensible class III hazards. Class IV hazards need not be documented. 
+
+ 2 marks: There are several class I-II hazards missing, or risk classes are not sensible; or only the very high risks (classes I-II) have been considered.
+
+ 1 mark: Many of the serious hazards missing, incorrect/nonsensical risk classes, missing data, etc. Some of this will be the result of a poor application of HAZOP.
+
+ Important hazards (ie. classes I-II):
+   1) Lack of pulses or shock (class I)
+   2) Inability to turn off hardware or switch between modes (class II)
+   3) Shock when none warranted (class I)
+   4) Tachycardia treatment considered fibrillation (class I)
+   5) Joules delivered too high (class I)
+   6) Tachycardia limit too high (class I)
+   7) Less/more than 10 impulses or 1 shock (class I-II)
+   8) Clinical assistant or patient able to change settings (class II)
+   9) Incorrect values for last 50 ticks (class II-III)
+  10) The interplay between shocks and subsequent measures of the heart beat; that is, shocks are intended to change the heartbeat, but these should be ignored in the short term and not collected as data to detect fibrillation (class I-II)
+
+Causes, consequences, and risk classes: /2
+
+   2 marks: All identified hazards are addressed: that is, with frequency, severity, risk (from the first two), possible causes, consequences, and recommendations.
+
+   1 marks: Deviations from the above; e.g. poor risk assessment, missing causes, consequences or risks, etc. In particular, as discussed in the lecture, consequences need to be relative to the safety, rather than the behaviour; that is, the impact on the people or environment, not the resulting functionality.
+
+Requirements: /2
+
+There are some (what I think) important requirements missing in the software. By using software, we have an opportunity to detect and then mitigate several hazards from occurring. I expect to see at least the following:
+
+  1) Authorisation requirements related to roles; e.g. cardiologist must be authenticated and authorised to change settings.
+  2) Fail safe checks; e.g. if the closed loop is on and the heart beat is 0, raise an alarm. These checks can occur in several places, but this is the main one.
+  3) A requirement that eliminates the issue of a ventricle fibrillation shock being detected as an erratic heart beat.
+  4) Measurement as part of the feedback loop. That is, checking that a ventricle fibrillation shock is delivered by monitoring the heart directly after. NOTE: I'm not sure how many people will get this; if nobody does, then perhaps my expectations are too high.
+
+Some additional things to comment on, that I do not expect to see, but just to get students thinking:
+
+  1) New requirements that settings can only be incremented/decremented in small units; e.g. 1 joule for shocks. This prevents 'slip of the finger' accidents, such as the cardiologist entering 300 instead of 30 for ventricle fibrillation treatment.
+  2) Item 3 above (measurement as part of the loop) if nobody gets this.
+
+ Mark allocation:
+
+  2 marks: For most/all of the requirements above, plus sensible ways of addressing the other high-risk hazards identified by the team.
+  1 mark: Several hazards not addressed that could be addressed by requirements.
+
+Analysis: /1
+
+  1 mark: A mark for any reasonable analysis of an assignment 1 submission. The marks here are not so important: it is the process of doing it and critically analysing their assignment 1 submissions that is important.
+
+Total: /10
+
+LocalWords:  HAZOP guidewords HRM ICD ie

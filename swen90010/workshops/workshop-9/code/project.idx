@@ -1,0 +1,10 @@
+Swap                 spec is in    swap.ads
+Swap                 body is in    swap.adb
+ConditionalSwap      spec is in    conditionalswap.ads
+ConditionalSwap      body is in    conditionalswap.adb
+Arith                spec is in    arith.ads
+Arith                body is in    arith.adb
+Task4                spec is in    task4.ads
+Task4                body is in    task4.adb
+Task4Solution        spec is in    task4solution.ads
+Task4Solution        body is in    task4solution.adb

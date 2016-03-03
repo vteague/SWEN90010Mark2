@@ -1,0 +1,148 @@
+           *******************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 27-MAY-2013 13:49:21.66
+
+                         procedure Sort.PowerOfTwo
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 56:
+
+procedure_poweroftwo_1.
+H1:    true .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+        ->
+C1:    0 >= integer__first .
+C2:    0 <= integer__last .
+ 
+
+For path(s) from start to run-time check associated with statement of line 57:
+
+procedure_poweroftwo_2.
+H1:    true .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    0 >= integer__first .
+H5:    0 <= integer__last .
+        ->
+C1:    1 >= integer__first .
+C2:    1 <= integer__last .
+ 
+
+For path(s) from start to assertion of line 59:
+
+procedure_poweroftwo_3.
+H1:    true .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    0 >= integer__first .
+H5:    0 <= integer__last .
+H6:    1 >= integer__first .
+H7:    1 <= integer__last .
+H8:    0 >= integer__first .
+H9:    0 <= integer__last .
+H10:   0 <> n .
+        ->
+C1:    1 = 2 ** 0 .
+C2:    n >= integer__first .
+C3:    n <= integer__last .
+ 
+
+For path(s) from assertion of line 59 to assertion of line 59:
+
+procedure_poweroftwo_4.
+H1:    result = 2 ** k .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    k >= integer__first .
+H5:    k <= integer__last .
+H6:    k + 1 >= integer__first .
+H7:    k + 1 <= integer__last .
+H8:    result >= integer__first .
+H9:    result <= integer__last .
+H10:   2 * result >= integer__first .
+H11:   2 * result <= integer__last .
+H12:   k + 1 >= integer__first .
+H13:   k + 1 <= integer__last .
+H14:   k + 1 <> n .
+        ->
+C1:    2 * result = 2 ** (k + 1) .
+C2:    n >= integer__first .
+C3:    n <= integer__last .
+ 
+
+For path(s) from assertion of line 59 to run-time check associated with statement of line 60:
+
+procedure_poweroftwo_5.
+H1:    result = 2 ** k .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    k >= integer__first .
+H5:    k <= integer__last .
+        ->
+C1:    k + 1 >= integer__first .
+C2:    k + 1 <= integer__last .
+ 
+
+For path(s) from assertion of line 59 to run-time check associated with statement of line 61:
+
+procedure_poweroftwo_6.
+H1:    result = 2 ** k .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    k >= integer__first .
+H5:    k <= integer__last .
+H6:    k + 1 >= integer__first .
+H7:    k + 1 <= integer__last .
+H8:    result >= integer__first .
+H9:    result <= integer__last .
+        ->
+C1:    2 * result >= integer__first .
+C2:    2 * result <= integer__last .
+ 
+
+For path(s) from start to finish:
+
+procedure_poweroftwo_7.
+H1:    true .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    0 >= integer__first .
+H5:    0 <= integer__last .
+H6:    1 >= integer__first .
+H7:    1 <= integer__last .
+H8:    0 >= integer__first .
+H9:    0 <= integer__last .
+H10:   not (0 <> n) .
+        ->
+C1:    2 ** n = 1 .
+ 
+
+For path(s) from assertion of line 59 to finish:
+
+procedure_poweroftwo_8.
+H1:    result = 2 ** k .
+H2:    n >= integer__first .
+H3:    n <= integer__last .
+H4:    k >= integer__first .
+H5:    k <= integer__last .
+H6:    k + 1 >= integer__first .
+H7:    k + 1 <= integer__last .
+H8:    result >= integer__first .
+H9:    result <= integer__last .
+H10:   2 * result >= integer__first .
+H11:   2 * result <= integer__last .
+H12:   k + 1 >= integer__first .
+H13:   k + 1 <= integer__last .
+H14:   not (k + 1 <> n) .
+        ->
+C1:    2 ** n = 2 * result .
+ 
+

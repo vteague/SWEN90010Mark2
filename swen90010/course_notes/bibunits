@@ -1,0 +1,4 @@
+for f in bu*.aux; do 
+	bn=`basename $f`;
+	bibtex $bn; 
+done

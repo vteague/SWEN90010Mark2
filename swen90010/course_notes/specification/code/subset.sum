@@ -1,0 +1,6 @@
+axiom[X] is
+dec
+  issubset : (power X) <--> (power X)
+pred
+  forall x, y : power X @ (issubset(x,y) <=> (forall e : x @ e in y))
+end 

@@ -1,0 +1,899 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.BinarySearch
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_1.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H3 on reading formula in, to give:
+     %%%  H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  true
+***  Proved C2:  true
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 - index__first -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 - index__first + 1 
+          and element(a, [i_]) = target)
+<S>  New H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New C1:  10 >= index__first
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H3:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New C1:  true
+***  Proved C1:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_2.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H3 on reading formula in, to give:
+     %%%  H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified H7 on reading formula in, to give:
+     %%%  H7:  true
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+%%%  Simplified H10 on reading formula in, to give:
+     %%%  H10:  true
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified C8 on reading formula in, to give:
+     %%%  C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+***  Proved C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H3.
+***  Proved C6:  target >= integer__first
+     using hypothesis H4.
+***  Proved C7:  target <= integer__last
+     using hypothesis H5.
+***  Proved C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last - 
+          index__first + 1 and element(a, [i_]) = target)
+     using hypothesis H2.
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H4:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H5:  target <= 2147483647
+<S>  New H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H6:  index__last >= 1
+<S>  New H11:  1 <= index__last
+<S>  New H12:  1 < index__last
+<S>  New H3:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C2:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New C3:  element(a, [1]) <= target
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H6:  true
+<S>  New H11:  true
+<S>  New H12:  true
+<S>  New H3:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C4:  target <= element(a, [10])
+<S>  New C2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+***  Proved C2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]
+          ) = target)
+     using hypothesis H2.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+     +++  New H13:  integer__size >= 0
+     +++  New H14:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_3.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified C8 on reading formula in, to give:
+     %%%  C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+***  Proved C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C4:  target <= element(a, [result])
+     using hypothesis H4.
+***  Proved C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H5.
+***  Proved C6:  target >= integer__first
+     using hypothesis H6.
+***  Proved C7:  target <= integer__last
+     using hypothesis H7.
+***  Proved C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last - 
+          index__first + 1 and element(a, [i_]) = target)
+     using hypothesis H9.
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New H17:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New H18:  low + result <= 2147483647
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New H14:  (low + result) div 2 >= 1
+<S>  New H26:  (low + result) div 2 >= 0
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H15:  (low + result) div 2 <= 10
+<S>  New H27:  (low + result) div 2 <= 9
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H10 (redundant, given H14 & H32).
+---  Eliminated hypothesis H15 (redundant, given H27).
+---  Eliminated hypothesis H26 (redundant, given H14).
+---  Eliminated hypothesis H27 (redundant, given H11 & H32).
+     +++  New H33:  integer__size >= 0
+     +++  New H34:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_4.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified C5 on reading formula in, to give:
+     %%%  C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified C8 on reading formula in, to give:
+     %%%  C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+***  Proved C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C3:  element(a, [low]) <= target
+     using hypothesis H3.
+***  Proved C4:  target <= element(a, [(low + result) div 2])
+     using hypothesis H23.
+***  Proved C5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H5.
+***  Proved C6:  target >= integer__first
+     using hypothesis H6.
+***  Proved C7:  target <= integer__last
+     using hypothesis H7.
+***  Proved C8:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+     using hypothesis H1.
+***  Proved C9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last - 
+          index__first + 1 and element(a, [i_]) = target)
+     using hypothesis H9.
+>>>  Restructured hypothesis H23 into:
+     >>>  H23:  target <= element(a, [(low + result) div 2])
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New H17:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New H18:  low + result <= 2147483647
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New H14:  (low + result) div 2 >= 1
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H15:  (low + result) div 2 <= 10
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H13 (redundant, given H15 & H32).
+---  Eliminated hypothesis H14 (redundant, given H12 & H32).
+     +++  New H33:  integer__size >= 0
+     +++  New H34:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_5.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified C3 on reading formula in, to give:
+     %%%  C3:  true
+***  Proved C3:  true
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New C1:  (low + result) div 2 >= 1
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New C2:  (low + result) div 2 <= 10
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New C4:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New C5:  low + result <= 2147483647
+***  Proved C4:  low + result >= - 2147483648
+     using hypotheses H10 & H12.
+***  Proved C5:  low + result <= 2147483647
+     using hypotheses H11 & H13.
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+***  Proved C1:  (low + result) div 2 >= 1
+     using hypotheses H10 & H12.
+***  Proved C2:  (low + result) div 2 <= 10
+     using hypotheses H11 & H13.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_6.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+***  Proved C1:  (low + result) div 2 >= index__first
+     using hypothesis H14.
+***  Proved C2:  (low + result) div 2 <= index__last
+     using hypothesis H15.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_7.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+***  Proved C1:  (low + result) div 2 + 1 >= index__first
+     using hypothesis H14.
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 - index__first -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 - index__first + 1 
+          and element(a, [i_]) = target)
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H15:  (low + result) div 2 <= 10
+<S>  New C2:  (low + result) div 2 <= 9
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New H17:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New H18:  low + result <= 2147483647
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New H14:  (low + result) div 2 >= 1
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+     +++  New H26:  integer__size >= 0
+     +++  New H27:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_8.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+***  Proved C1:  (low + result) div 2 >= index__first
+     using hypothesis H14.
+***  Proved C2:  (low + result) div 2 <= index__last
+     using hypothesis H15.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_9.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H3 on reading formula in, to give:
+     %%%  H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+%%%  Simplified H7 on reading formula in, to give:
+     %%%  H7:  true
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H7).
+%%%  Simplified H10 on reading formula in, to give:
+     %%%  H10:  true
+>>>  Restructured hypothesis H12 into:
+     >>>  H12:  index__last <= index__first
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H4:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H5:  target <= 2147483647
+<S>  New H3:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H6:  index__last >= 1
+<S>  New H11:  1 <= index__last
+<S>  New H12:  index__last <= 1
+<S>  New H3:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H2:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H6:  true
+<S>  New H11:  true
+<S>  New H12:  false
+<S>  New H3:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  element(a, [10]) = target
+###  Established a contradiction [false-hypothesis] using hypothesis H12.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_10.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H10).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H11).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H27).
+>>>  Restructured hypothesis H32 into:
+     >>>  H32:  result <= (low + result) div 2 + 1
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New H17:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New H18:  low + result <= 2147483647
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New H14:  (low + result) div 2 >= 1
+<S>  New H26:  (low + result) div 2 >= 0
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H15:  (low + result) div 2 <= 10
+<S>  New H27:  (low + result) div 2 <= 9
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H15 (redundant, given H27).
+---  Eliminated hypothesis H26 (redundant, given H14).
+     +++  New H33:  integer__size >= 0
+     +++  New H34:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_binarysearch_11.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first -> element(a, [i_]) <= element(a, [i_ + 1]))
+%%%  Simplified H5 on reading formula in, to give:
+     %%%  H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H1).
+%%%  Simplified H16 on reading formula in, to give:
+     %%%  H16:  true
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H12).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H13).
+>>>  Restructured hypothesis H23 into:
+     >>>  H23:  target <= element(a, [(low + result) div 2])
+>>>  Restructured hypothesis H32 into:
+     >>>  H32:  (low + result) div 2 <= low
+-S-  Applied substitution rule binarysearch_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+<S>  New H6:  target >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H7:  target <= 2147483647
+<S>  New H5:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule binarysearch_rules(4).
+     This was achieved by replacing all occurrences of integer__base__first by:
+          - 2147483648.
+<S>  New H17:  low + result >= - 2147483648
+-S-  Applied substitution rule binarysearch_rules(5).
+     This was achieved by replacing all occurrences of integer__base__last by:
+          2147483647.
+<S>  New H18:  low + result <= 2147483647
+-S-  Applied substitution rule binarysearch_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 1 -> 
+          element(a, [i_]) <= element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= index__last and element(
+          a, [i_]) = target)
+<S>  New H10:  result >= 1
+<S>  New H12:  low >= 1
+<S>  New H14:  (low + result) div 2 >= 1
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule binarysearch_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H11:  result <= 10
+<S>  New H13:  low <= 10
+<S>  New H15:  (low + result) div 2 <= 10
+<S>  New H1:  for_all(i_ : integer, 1 <= i_ and i_ <= 9 -> element(a, [i_]) <= 
+          element(a, [i_ + 1]))
+<S>  New H9:  for_some(i_ : integer, i_ >= 1 and i_ <= 10 and element(a, [i_]) 
+          = target)
+<S>  New H5:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+     +++  New H33:  integer__size >= 0
+     +++  New H34:  index__size >= 0
+

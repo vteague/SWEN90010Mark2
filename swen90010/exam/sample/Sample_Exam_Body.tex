@@ -1,0 +1,550 @@
+This is a collection of sample exam questions, not a sample exam itself. The final exam will be a two hour exam consisting of 50 marks. The style of question will be similar to the questions in this handout.
+
+\epart{Safety engineering}
+
+\question{10}
+
+Explain the purpose, the information derived from a typical analysis and the use of {\em hazard analysis} in the safety engineering process.
+
+\question{15}
+
+Consider the following description of a nuclear power system, which controls the temperature of the nuclear core. The system consists of an array of sensors, three assessors, a voter, a controller, and an actuator. A system architecture is shown in Figure~\ref{fig:nuclear-reactor}.
+
+\begin{itemize}
+
+ \item There is an array of sensors monitoring the temperature of the core. Sensors are accurate to 0.1\%, but can fail by not providing a reading, or by providing a reading outside of the 0.1\% range.
+
+ \item Three {\em assessors} each read the temperature signals sent from all sensors, and use a majority vote to determine the core temperature. Two sensor readings are considered sufficiently equal if they are within 0.4\% of each other.
+
+ If any assessor detects that less than half of the sensors are sufficiently equal to the others, it should send a shutdown signal to the voter. Otherwise, it sends its estimated temperature.
+
+ \item The voter using a voting algorithm to detect any non-functioning assessor. If the voter detects that more than one assessor has failed, or it receives a shutdown signal from any assessor, it should send a shutdown signal to the controller. Otherwise, it sends its estimated temperature to the controller.
+
+ \item The controller controls the actuator by lowering or raising cooling rods into the core based on the estimated temperature sent from the voter. If it receives a shutdown signal, it will lower the rods completely and raise an alert.
+
+ \item The actuator controls the rods. The level of the rods should be in correlation with the core temperature; that is, if the temperature is high, the rods should be lowered further into the core than if the temperature is low.
+
+\end{itemize}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.35]{./figs/nuclear-reactor}
+\caption{A system architecture for a nuclear reactor.}
+\label{fig:nuclear-reactor}
+\end{figure}
+
+Perform a Hazard and Operability Study (HAZOP) on the assessors of this system, paying attention to any safety concerns. You will need to tabular consequences, potential causes, and risks. 
+
+On an exam, any question about HAZOP would also include a template hazard log and the HAZOP guidewords.
+
+%\question{15}
+
+%Perform a Failure Mode and Effect Analysis (FMEA) on the assessors of the syste%m, paying attention to any safety concerns.
+
+\question{15}
+
+Choose one hazard from either of the previous two questions. Use fault-tree analysis to analyse causes of this hazard.
+
+On an exam,  any question on fault tree analysis will include the symbols used for fault trees.
+
+~
+
+{\bf NOTE:} The final exam will NOT contain two questions such as these above, but may contain one question similar to any of these.
+
+
+\epart{Model-based specification}
+
+
+
+Consider a simple scheduling module for a single processor. A set of processes are running on the system, but the processor can execute only one at each time. Each process must be in exactly one of the following states:
+
+\begin{enumerate}
+
+ \item \emph{active}: currently executing on the processor;
+
+ \item \emph{ready}: not executing, but ready to be executed; or
+
+ \item \emph{waiting}: waiting on some other resource, so not ready to be executed.
+
+\end{enumerate}
+
+At any point, there must be \emph{at most} one active process. There should be no ready processes if there is no active process --- that is, the processor must be in use as much as possible.
+
+
+
+
+\question{7}
+
+Model the state and state invariant of the single processor scheduler using an Alloy signature and predicate respectively. The signature should model all active, ready, and waiting processors, and the invariant predicate should model the constraints between them; e.g.\ only one active process at at time.
+
+Your solution should assume the existence a signature \verb+ProcessID+, which is the set of all process IDs, declared as follows:
+
+\begin{verbatim}
+  sig ProcessID {}
+\end{verbatim}
+
+\question{5}
+
+New processes can be added into the scheduling system. A new process must not be an existing process in the system. When a new process is added into the system, by default it is in the \emph{waiting} state.
+
+Model an operation called \verb+NewProcess+ as an Alloy predicate, which takes, as input, a process ID (\verb+ProcessID+) and adds the process to the scheduling system.
+
+\question{7}
+
+Model an operation called \verb+Ready+ as an Alloy predicate, which takes, as input, a process ID, and switches this process out of the waiting state. The specified process must be a waiting process.  If there is no active process, the specified process becomes the new active process. Otherwise, it becomes a \emph{ready} process.
+
+\question{7}
+
+Model an operation called \verb+Swap+ as an Alloy predicate, which models the case of an active process switching into a waiting process; that is, the process has finished executing for now. In addition to swapping out the active process, the scheduler should select \emph{any} of the ready processes to become the new active process. If there are no ready processes, then there is no new active process. This operation should take no input.
+\question{12}
+
+Note: this question requires you to understand a model in detail and to use Alloy to play around with the model, which is not representative of a good exam question. However, the style of question is representative of an exam question, and completing this question is good revision.
+
+Consider the Alloy model at the end of this document, which models a key system for a hotel. The source is available on the LMS under the \emph{Workshops} menu.
+
+\begin{enumerate}
+\item Read the model.  Write one sentence to show why {\tt NoBadEntry} seems as if it ought to be true.
+\item Execute {\tt check NoBadEntry}.  Write one sentence explaining what has gone wrong.
+\item Write a new fact that fixes the model.  Execute {\tt check NoBadEntry} again to make sure you have fixed the problem.
+\end{enumerate}
+
+
+\epart{Security and cryptography}
+
+
+\question{5}
+
+                   	A message authentication code (MAC) takes a message $m$ and a key $k$, and outputs a digest $\textit{MAC}(m,k)$.
+				\begin{enumerate}
+					\item What is the main security property required of a MAC?
+					\item Suppose we have a  hash function that is collision-resistant for single blocks, extended to long messages using the Merkle-Damg{\aa}rd construction (See Paar and Pelzl's textbook, Section 11.3, Figure~11.5\footnote{This is a sample exam, so you have to look it up yourself.}).  Let $||$ indicate message concatenation, and $h$ the hash function for multiple blocks.  We construct a MAC as $\textit{MAC}(m,k) = h(k || m)$.  Is this secure?  Why or why not?
+				\end{enumerate}
+
+\question{5}
+			 Consider Randomised Partial Checking (RPC) from the last lecture.  Assume that there is a way to prevent mixers from sending two input ciphertexts to the same output, or taking two output ciphertexts from the same input.  Server $A$'s output list $L$ is Server $B$'s input list, as shown in the lecture slides.  They are randomly checked by tossing a coin for each member of $L$ and demanding either the link to an element of $A$'s input list, or the link to an element of $B$'s output list.  Let $l$ be the length of each list.
+				\begin{enumerate}
+					\item Suppose both servers are honest.  What is the anonymity set of each element?  In other words, if you want to break the privacy of an element of $A$'s input list (which might be a vote for example), how many different elements of $B$'s output list might be (a rerandomised version of) that element?
+					\item Suppose Server $A$ is dishonest.  It drops a value from its input list and substitutes a different value.  What is the probability that it gets caught by the random auditing process?
+					\item What about if it substitutes $t$ different values?    
+				\end{enumerate}
+
+\question{5}
+
+\begin{enumerate}[(a)]
+\item Explain the Heartbleed vulnerability.  What protocol was affected? What was the main server bug that caused the problem?  How was it fixed?
+		\item An RSA public key consists of two items: an exponent $e$ and a modulus $N$. 
+				\begin{enumerate}
+						\item  If you discover another person with the same $e$ as your key, can you decrypt their messages?  Explain why or why not.
+						\item  If you discover another person with the same $N$ as your key, can you decrypt their messages?  Explain why or why not.
+				\end{enumerate}
+		\end{enumerate}
+
+\question{5}
+
+\begin{enumerate}[(a)]
+			\item  Consider a program for solving (unauthenticated) Byzantine Agremeent using the Exponential Information Gathering algorithm.  Write the main parts of the algorithm out in your favourite programming language.  (Assume you have scaffolding and library functions as necessary, {\it e.g.} for sending and receiving messages to and from other participants.)
+			\item In order to tolerate one traitor, identify the minimum number of rounds your algorithm needs to run, and the minimum number of total participants.  
+			\item Find a counterexample showing that agreement might fail if there is one less participant than necessary.
+			\item Find a(nother) counterexample showing that agreeement might fail if there is one less round than necessary.
+		\end{enumerate}
+	
+\epart{Fault-tolerant design}
+
+\question{7}
+
+What is design diversity and how does it contribute to software redundancy?
+
+\question{5}
+
+Do recovery blocks require design diversity? Justify your answer.
+
+\question{7}
+
+Systems that must detect up to $n$ non-malicious failures require  $2n + 1$ redundant components. How many components do systems with malicious (or Byzantine) failures require to detect $n$ failures? Why is this the case?
+
+\epart{Correctness by construction}
+
+\question{7}
+
+You are working in a company that specialises in high-integrity software. SPARK is the implementation language of choice. A new manager arrives at the company and shows a preference for switching to Ada instead of using the SPARK safe subset. The manager's preference is based on a study that showed that more lines of code are required in safe programming language subsets than in the superset language to write the same program. The manager asserts that this increases the cost of the project.
+
+Do you agree or disagree with the manager's assertion?
+
+
+\question{3}
+
+Why did the designers of SPARK prohibit dynamically-sized arrays?
+
+
+\question{4}
+
+In the design by contract paradigm, the called program has an obligation to establish the postcondition under the specified precondition. This precondition is the called program's benefit. Why would a precondition be considered a benefit?
+
+\question{12}
+
+Figure~\ref{fig:poweroftwo} shows an Ada program for calculating the power of two of an integer. The postcondition is that \verb+Result = 2**N+, in which \verb+2**N+ is defined as:
+
+\begin{tabular}{lll}
+ \verb+2**0+ & = & \verb+1+\\
+ \verb|2**(N+1)| & = & \verb|2*(2**N)|\\
+\end{tabular}
+
+The loop invariant has been provided. 
+Using Hoare logic, show that this program either establishes its contract, or fails to establish its contract. 
+
+\begin{figure}[!t]
+\begin{verbatim}
+  procedure PowerOfTwo(N : in Integer; Result : out Integer) with
+    Post => (Result = 2**N);
+  is
+    K : Integer;
+  begin
+    K := 0;
+    Result := 1;
+    while K /= N loop
+      pragma Loop_Invariant (Result = 2**K);
+      K := K + 1;
+      Result := 2 * Result;
+    end loop;
+  end PowerOfTwo;
+\end{verbatim}
+\caption{An Ada program for calculating a power of two.}
+\label{fig:poweroftwo}
+\end{figure}
+
+\begin{omitable}
+{
+
+\question{12}
+
+Use Hoare logic to establish whether the following program establishes is contract or not. This is the inner loop of the previous program, which is used to find the index of the minimum value in an array.
+
+The loop invariant {\tt  Min(A, J, MinIndex)} is defined as follows:
+
+\begin{tabular}{lll}
+ {\tt Min(A, J, MinIndex)} & $=$ & {\tt for all I in Index range 1 .. J => (A(I) >= A(MinIndex))}\\
+\end{tabular}
+
+This states that the element at {\tt MinIndex} is the smallest element found so far.
+
+\begin{verbatim}
+   subtype Index is Integer range 1 .. 10;
+   type IntArray is array(Index) of Integer;
+
+   procedure FindMinIndex(A : in IntArray; MinIndex : out Index) with
+      Post => (for all I in Index range 1 .. A'Length => (A(I) >= A(MinIndex)));
+   is
+      J : Index;
+   begin
+      -- find the minimum element in the list
+      J := 1;
+      MinIndex := 1;
+      while J < A'Length loop
+        pragma Loop_Invariant (Min(A, J, MinIndex));
+        if A(J) < A(MinIndex) then
+          MinIndex := J;
+        end if;
+
+        J := J + 1;
+      end loop;
+
+   end FindMinIndex;
+\end{verbatim}  
+}
+\end{omitable}
+
+
+\question{12}
+
+Figure~\ref{fig:listave} shows an Ada program for calculating the average of an array of integers. The program includes a contract with the postcondition:
+
+\quad {\tt (if A'Length = 0 then Result = 0 else}
+
+\quad {\tt Result = summation(1, A'Length) / A'Length);}
+
+where   {\tt summation(A,B) = $\sum_{i=A}^{B}$ \tt A($i$)}.
+
+The program loops through all elements in the array, keeping a running tally in the variable {\tt Sum}. The loop invariant has been given in the assertion. At the end of the loop, the total sum is divided by the list length to give the average, unless the list is empty, in which case the result is 0.
+
+Using Hoare logic, show that this program either establishes its contract, or fails to establish its contract. 
+
+\begin{figure}[!h]
+\begin{verbatim}
+  type IntArray is array(<>) of Integer;
+
+  procedure ListAverage(A : in IntArray; Result : out Float) with
+    Post => (if A'Length = 0 then Result = 0 else
+             else  Result = summation(1, A'Length) / A'Length);
+  is
+    Sum, I : Integer;
+  begin
+    I := 0;
+    Sum := 0;
+    while I /= A'Length loop
+      pragma Loop_Invariant (Sum = summation(1, I));
+      Sum := Sum + A(I);
+      I := I + 1;
+    end loop;
+
+    if A'Length = 0 then
+      Result := 0;
+    else
+      Result := Sum / A'Length;
+    end if;
+  end ListAverage;
+\end{verbatim}
+
+where {\tt summation(A,B) = $\sum_{i=A}^{B}$ \tt A($i$)}.
+
+\caption{An Ada program for calculating the average from an array of integers.}
+\label{fig:listave}
+\end{figure}
+
+\begin{omitable}
+{
+\question{12}
+Figure~\ref{fig:hoare-program} shows an SPARK program for finding the maximum element of a non-empty array of integers. The contract of the program is:
+
+\begin{verbatim}
+ --# pre A'Length > 0;
+ --# post (for all J in range 1..A'Length => (Max >= A(J)));
+\end{verbatim}
+
+That is, the list must be non-empty, and  the output variable \verb+Max+ should be greater than or equal to the values at all indices of the array. Note that we assume that the array indices start at 1.
+
+The program loops through all elements in the array, using the variable \verb+Max+ to keep track of the greatest element it has encountered so far.
+
+The loop invariant has been provided. It states that \verb+Max+ is the greatest value from index 1 to index \verb+I+ --- that is, the greatest element seen so far in the list.
+
+Using Hoare logic, show that this program can be proved to establishes its contract, or not. 
+
+\begin{figure}[!h]
+\begin{verbatim}
+   procedure GetMax(A : in IntArray; Max : out Integer) is
+   --# pre A'Length > 0;
+   --# post (for all J in range 1..A'Length => (Max >= A(J)));
+      I : Integer;
+   begin
+      Max := Integer'First;  -- Start with the lowest possible value
+      I := 1;
+      while I /= A'Length loop
+          --# loop invariant: (for all J in range 1..I-1 => (Max >= A(J)));
+          if A(I) > Max then
+              Max := A(I);
+          end if;
+          I := I + 1;
+       end loop;      
+   end GetMax;
+\end{verbatim}
+
+\caption{A SPARK program for finding the greatest element of a non-empty array of integers.}
+\label{fig:hoare-program}
+\end{figure}
+
+}
+\end{omitable}
+
+\question{8}
+Figure~\ref{fig:array-swap} shows an SPARK program for swapping two indices of an array. The contract of the program is:
+
+\begin{verbatim}
+   Post => (A = A'Old'Update(I => A'Old(J), J => A'Old(I)));
+\end{verbatim}
+
+Using Hoare logic, show that this program can be proved to establishes its contract, or not. 
+
+\begin{figure}[!h]
+\begin{verbatim}
+   procedure Swap(A : in out PosIntArray; I, J : in Index) with
+      Post => (A = A'Old'Update(I => A'Old(J), J => A'Old(I)));
+   is
+      T : Integer;
+   begin
+      T := A(I);
+      A(I) := A(J);
+      A(J) := T;
+   end Swap;
+\end{verbatim}
+\caption{A SPARK program for swapping two elements of an array.}
+\label{fig:array-swap}
+\end{figure}
+
+\question{20}
+
+Figure~\ref{fig:binary-search} contains a SPARK implementation of a binary search algorithm. The program assumes that the list is sorted, and also that the target is in the list. The postcondition is that the variable \verb+Index+ is the index of the variable \verb+Target+ in the array \verb+A+. The predicate \verb+Sorted(A)+ is defined as:
+
+\quad \verb|Sorted(A) = for all I in Index range 1 .. A'Length - 1 => (A(I) <= A(I+1))|
+
+The loop invariant has been provided. It states that the precondition always holds (which is true because the list \verb+A+ never changes) and that the target always remains in the range \verb+[Low..Result]+.
+
+Use Hoare logic to establish whether the following program establishes is contract or not. 
+
+
+\begin{figure}[!t]
+\begin{verbatim}
+procedure BinarySearch(A : in IntArray; 
+                       Target : in Integer;
+                       Result : out Index) with
+  Pre => Sorted(A) and
+           (for some I in Index range 1 .. A'Length => (A(I) = Target)),
+  Post => A(Result) = Target;
+is
+  Low : Index := Index'First;
+  Mid : Index;
+begin
+  Result := Index'Last;
+  while (Low < Result) loop
+    pragma Loop_Lnvariant (Sorted(A) and A(Low) <= Target and Target <= A(Result));
+    Mid := (Low + Result) / 2;
+    if A(Mid) < Target then
+      Low := Mid + 1;
+    else
+      Result := Mid;
+     end if;
+  end loop;
+end BinarySearch;
+\end{verbatim}
+\caption{An Ada program implementing the binary search algorithm}
+\label{fig:binary-search}
+\end{figure}
+
+\question{20}
+
+Consider the following program, which implements selection sort. The algorithm is a simple sorting algorithm: iterate through the list finding the minimum element, and swap this with the first element. Then repeat for element 2, and so on.
+
+
+The loop invariant of the outer loop is: {\tt Sorted(A, 1, I) and MaxRemains(A, I)}. This means that array {\tt A} is sorted between elements {\tt 1} and {\tt I}, and that all elements after {\tt I} are greater than all elements before and up to {\tt I}. Formally, these are defined as:
+
+\begin{tabular}{lll}
+ {\tt Sorted(A, M, N)} & $=$ & {\tt for all I in Index range M .. N =>}\\
+ & & {\tt ~~(for all J in Index range M .. N =>}\\
+ & & {\tt ~~~~ (if I <= J then A(I) <= A(J)));}\\[2mm]
+{\tt MaxRemains(A, I)} & $=$ & {\tt for all M in Index range 1 .. I =>}\\
+ & & {\tt ~~for all N in Index range I + 1 .. A'Length =>}\\
+ & & {\tt ~~~~ A(M) <= A(N)}\\
+\end{tabular}
+
+The inner loop finds the next minimum element in the list.
+The loop invariant of the inner loop states {\tt A(MinIndex)} is the minimum element found so far.
+
+Using Hoare logic, show that this program can be proved to establishes its contract, or not. 
+
+NOTE: This is a far harder question than would be seen on an exam, however, this is good practice: if you can prove this, you understand the material well.
+
+\begin{verbatim}
+   subtype Index is Integer range 1 .. 10;
+   type IntArray is array(Index) of Integer;
+
+   procedure SelectionSort(A : in out IntArray) with
+     Post => Sorted(A, 1, A'Length);
+   is
+      I, J, MinIndex : Index;
+      T : Integer;
+   begin
+      I := 1;
+      while I < A'Length - 1 loop
+         pragma Loop_Invariant (Sorted(A, 1, I) and MaxRemains(A, I));
+
+         -- find the minimum element in the remaining part of the list
+         J := I + 1;
+         MinIndex := I;
+         while J < A'Length loop
+            pragma Loop_Invariant(for all M in Index range I + 1 .. J =>
+                                (A(M) >= A(MinIndex)));
+            if A(J) < A(MinIndex) then
+               MinIndex := J;
+            end if;
+
+            J := J + 1;
+         end loop;
+
+         T := A(I);
+         A(I) := A(MinIndex);
+         A(MinIndex) := T;
+         I := I + 1;
+
+      end loop;
+
+   end SelectionSort;
+\end{verbatim}  
+
+
+\clearpage
+
+\alloyfile{}{./code/hotel1.als}
+
+\begin{comment}
+\question{12}
+
+Consider the design of a controller for an autonomous vehicle. To replace a human driver, obstacle detection is a major component of such a vehicle.  To control the vehicle safely, obstacles must be detected, and their distance from the vehicle must be estimated. Only then can a control system safely navigate the vehicle around obstacles, or slow/stop the vehicle if required.
+
+Figure~\ref{fig:adjustspeed} shows a model of an operation \verb+AdjustSpeed+, which determines whether to accelerate, decelerate, or maintain the speed. An implementation of this model is executed every 10ms, and is used immediately before an operation that determines what direction to travel.
+
+Apply the following two tactics to the \verb+AdjustSpeed+ operation to generate a test template hierarchy, test inputs, and expected outputs for those inputs:
+
+\begin{enumerate}
+ \item Cause-effect analysis (CE):  partitions the {\em output} space, based on equivalence classes.
+
+ \item Partition analysis (PA): partition an operation predicate into disjunctive normal form, and then eliminate overlap between disjuncts.
+\end{enumerate}
+
+You should show your working to determine how you arrived at the inputs and expected outputs.
+
+\begin{figure}[!t]
+\begin{verbatim}
+ ACTION == DECELERATE | MAINTAIN | ACCELERATE;
+
+ op schema TooFast is
+ dec
+   speed? : nat;
+   speed_limit? : nat;
+   action! : ACTION
+ pred
+   //Going too fast, so slow down
+   pre(speed? > speed_limit);
+   action! = DECELERATE
+ end TooFast;
+
+ op schema RightSpeed is
+ dec
+   speed? : nat;
+   speed_limit? : nat;
+   obstacle? : bool;
+   action! : ACTION
+ pred
+   //On the speed limit, so slow down if there is an obstacle.
+   //If no obstacle, maintain the speed
+   pre(speed? = speed_limit);
+   obstacle => action! = DECELERATE;
+   not(obstacle) => action! = MAINTAIN
+ end RightSpeed;
+
+ op schema BelowSpeedLimit is
+ dec
+   speed? : nat;
+   speed_limit? : nat;
+   obstacle? : bool;
+   action! : ACTION
+ pred
+   //Below the speed limit, so slow down if there is an obstacle.
+   //If no obstacle, accelerate
+   pre(speed? < speed_limit);
+   obstacle => action! = DECELERATE;
+   not(obstacle) => action! = ACCELERATE
+ end RightSpeed;
+
+ AdjustSpeed == (TooFast or RightSpeed or BelowSpeedLimit)
+\end{verbatim}
+\caption{Operation for determining whether to decelerate, accelerate, or maintain the speed of an autonomous vehicle.}
+\label{fig:adjustspeed}
+\end{figure}
+
+\end{comment}
+
+
+
+
+% LocalWords:  ALARP Operability HAZOP FMEA pre emptive schedulable lVolts
+% LocalWords:  rVolts lClicks rClicks schedulability MaxRemains A'Length Hoare
+% LocalWords:  MinIndex ccc lll superset AdjustSpeed disjuncts
+% LocalWords:  ProcessID NewProcess

@@ -1,0 +1,8 @@
+rule_family fact:
+
+    fact(X) requires [X : i] .
+
+    fact(1): fact(N) may_be_replaced_by N * fact(N-1) if [N > 0] .
+
+    fact(2): fact(0) may_be_replaced_by 1 .
+

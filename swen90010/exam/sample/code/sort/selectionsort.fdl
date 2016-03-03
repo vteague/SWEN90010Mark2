@@ -1,0 +1,34 @@
+           {*******************************************************}
+                               {FDL Declarations}
+                              {Examiner GPL 2011}
+             {Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.}
+           {*******************************************************}
+
+
+                        {DATE : 27-MAY-2013 13:49:21.63}
+
+                        {procedure Sort.SelectionSort}
+
+
+title procedure selectionsort;
+
+  function round__(real) : integer;
+  type intarray = array [integer] of integer;
+  const system__min_int : integer = pending;
+  const system__max_int : integer = pending;
+  const index__base__first : integer = pending; 
+  const index__base__last : integer = pending; 
+  const integer__base__first : integer = pending; 
+  const integer__base__last : integer = pending; 
+  const index__first : integer = pending; 
+  const index__last : integer = pending; 
+  const index__size : integer = pending; 
+  const integer__first : integer = pending; 
+  const integer__last : integer = pending; 
+  const integer__size : integer = pending; 
+  var list : intarray;
+  var i : integer;
+  var j : integer;
+  var minindex : integer;
+
+end;

@@ -1,0 +1,4 @@
+project Why is
+for Source_Files use (
+   "closedloop.mlw");
+end Why;

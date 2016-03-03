@@ -1,0 +1,154 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.FindMinIndex
+
+
+
+
+For path(s) from start to run-time check associated with statement of line 58:
+
+procedure_findminindex_1.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to run-time check associated with statement of line 59:
+
+procedure_findminindex_2.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from start to assertion of line 62:
+
+procedure_findminindex_3.
+H1:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H2:    integer__size >= 0 .
+H3:    index__size >= 0 .
+       ->
+C1:    min(a, 1, 1, 1) .
+
+
+For path(s) from assertion of line 62 to assertion of line 62:
+
+procedure_findminindex_4.
+H1:    min(a, 1, j, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    j >= 1 .
+H6:    element(a, [j]) < element(a, [minindex]) .
+H7:    j < 9 .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    min(a, 1, j + 1, j) .
+
+
+procedure_findminindex_5.
+H1:    min(a, 1, j, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    j >= 1 .
+H6:    element(a, [minindex]) <= element(a, [j]) .
+H7:    j < 9 .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    min(a, 1, j + 1, minindex) .
+
+
+For path(s) from assertion of line 62 to run-time check associated with 
+          statement of line 63:
+
+procedure_findminindex_6.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 62 to run-time check associated with 
+          statement of line 64:
+
+procedure_findminindex_7.
+*** true .          /* all conclusions proved */
+
+
+For path(s) from assertion of line 62 to run-time check associated with 
+          statement of line 67:
+
+procedure_findminindex_8.
+H1:    min(a, 1, j, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    j >= 1 .
+H6:    j <= 10 .
+H7:    element(a, [j]) < element(a, [minindex]) .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    j <= 9 .
+
+
+procedure_findminindex_9.
+H1:    min(a, 1, j, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    j >= 1 .
+H6:    j <= 10 .
+H7:    element(a, [minindex]) <= element(a, [j]) .
+H8:    integer__size >= 0 .
+H9:    index__size >= 0 .
+       ->
+C1:    j <= 9 .
+
+
+For path(s) from start to finish:
+
+procedure_findminindex_10.
+*** true .   /* contradiction within hypotheses. */
+
+
+
+For path(s) from assertion of line 62 to finish:
+
+procedure_findminindex_11.
+H1:    min(a, 1, 9, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(a, [9]) < element(a, [minindex]) .
+H6:    integer__size >= 0 .
+H7:    index__size >= 0 .
+       ->
+C1:    min(a, 1, 10, 9) .
+
+
+procedure_findminindex_12.
+H1:    min(a, 1, 9, minindex) .
+H2:    for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 2147483648 <= 
+          element(a, [i___1]) and element(a, [i___1]) <= 2147483647) .
+H3:    minindex >= 1 .
+H4:    minindex <= 10 .
+H5:    element(a, [minindex]) <= element(a, [9]) .
+H6:    integer__size >= 0 .
+H7:    index__size >= 0 .
+       ->
+C1:    min(a, 1, 10, minindex) .
+
+

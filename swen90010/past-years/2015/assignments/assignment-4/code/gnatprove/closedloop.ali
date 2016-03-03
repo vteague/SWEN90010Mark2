@@ -1,0 +1,105 @@
+V "GNAT Lib v2014"
+A -g
+A -gnatc
+A -mtune=generic
+A -march=pentiumpro
+P ZX
+
+RN
+RV NO_ELABORATION_CODE
+
+U closedloop%b		closedloop.adb		4bba7a40 OO PK
+
+U closedloop%s		closedloop.ads		0055ed2f EE OO PK
+
+D closedloop.ads	20150518110039 0055ed2f closedloop%s
+D closedloop.adb	20150518110116 4bef976f closedloop%b
+D system.ads		20140406181356 bd760655 system%s
+X 1 closedloop.ads
+1K9*ClosedLoop 45l5 45e15 2|1b14 34l5 34t15
+5E9*ModeType 5e30 20r17
+5n22*On{5E9} 31r33 31r72 2|7r21 10r22
+5n26*Off{5E9} 31r52 2|8r22
+8E9*RoleType 8e63 11r48
+8n22*Cardiologist{8E9} 27r35
+8n36*ClinicalAssistant{8E9}
+8n55*Patient{8E9} 24r35
+9I9*PersonType<integer> 11r33 15r18 23r56 26r57 29r59 33r61 37r57 42r63 2|5r59
+. 14r61 19r57 27r63
+11A9*RoleAssignment(8E9)<9I9> 16r25
+13R9*ICDType 21e17 23r35 26r36 29r38 33r40 37r36 42r42 2|5r38 14r40 19r36
+. 27r42
+15i10*owner{9I9}
+16a10*roleAssigned{11A9} 24r11 27r12 34r27
+17i10*upperBound{integer} 39r31 44r18 2|23r25 31m11
+18i10*numberOfJoulesToDeliver{integer} 40r35 44r50 2|24r29 32m11
+19i10*last50Shocks{integer} 35r33 2|16r27
+20e10*mode{5E9} 31r26 31r45 31r65 2|7r14 8m14 10m14
+23V13*Is_Practitioner{boolean} 23>29 23>44 30s14 38s13
+23r29 icd{13R9} 24r7
+23i44 person{9I9} 24r24
+26V14*Is_Cardiologist{boolean} 26>30 26>45 43s13
+26r30 icd{13R9} 27r8
+26i45 person{9I9} 27r25
+29U14*SwitchMode 29=25 29>47 2|5b14 12t7
+29r25 icd{13R9} 30r30 31r18 31r41 31r61 2|5b25 7r10 8m10 10m10
+29i47 person{9I9} 30r35 2|5b47
+33U14*ReadLast50Shocks 33>31 33>49 33<73 2|14b14 17l8 17t24
+33r31 icd{13R9} 34r23 35r29 2|14b31 16r23
+33i49 person{9I9} 34r13 2|14b49
+33i73 last50Shocks{integer} 35r14 2|14b73 16m7
+37U14*ReadSettings 37>27 37>45 37<69 37<81 2|19b14 25l8 25t20
+37r27 icd{13R9} 38r29 39r27 40r31 2|19b27 23r21 24r25
+37i45 person{9I9} 38r34 2|19b45
+37i69 upperBound{integer} 39r14 2|19b69 23m7
+37i81 numberOfJoules{integer} 40r14 2|19b81 24m7
+42U14*ChangeSettings 42=29 42>51 42>75 42>87 2|27b14 33l8 33t22
+42r29 icd{13R9} 43r29 44r14 44r46 2|27b29 31m7 32m7
+42i51 person{9I9} 43r34 2|27b51
+42i75 upperBound{integer} 44r31 2|27b75 31r25
+42i87 numberOfJoules{integer} 44r76 2|27b87 32r38
+FD 1 closedloop.ads
+FS .1 1K9 closedloop
+FS .2 23V13 closedloop__is_practitioner
+FS .3 26V14 closedloop__is_cardiologist
+FS .4 29U14 closedloop__switchmode
+FS .5 33U14 closedloop__readlast50shocks
+FS .6 37U14 closedloop__readsettings
+FS .7 42U14 closedloop__changesettings
+FS .8 23V13 closedloop__is_practitioner -> 1.2
+FS .9 26V14 closedloop__is_cardiologist -> 1.3
+FD 2 closedloop.adb
+FS .1 1K14 standard__closedloop -> 1.1
+FS .2 5U14 closedloop__switchmode -> 1.4
+FS .3 14U14 closedloop__readlast50shocks -> 1.5
+FS .4 19U14 closedloop__readsettings -> 1.6
+FS .5 27U14 closedloop__changesettings -> 1.7
+FD 3 system.ads
+FX 1 closedloop.ads .1 closedloop
+F 23*13 closedloop__is_practitioner .4:30s14 .6:38s13
+F 26*14 closedloop__is_cardiologist .7:43s13
+FX 1 closedloop.ads .2 closedloop__is_practitioner
+F 23>29 closedloop__is_practitioner__icd .8:24c7
+F 23>44 closedloop__is_practitioner__person .8:24c24
+FX 1 closedloop.ads .3 closedloop__is_cardiologist
+F 26>30 closedloop__is_cardiologist__icd .9:27c8
+F 26>45 closedloop__is_cardiologist__person .9:27c25
+FX 1 closedloop.ads .4 closedloop__switchmode
+F 29=25 closedloop__switchmode__icd 30r30 31r18 31r41 31r61 2|.2:7r10 8m10
+. 10m10
+F 29>47 closedloop__switchmode__person 30c35
+FX 1 closedloop.ads .5 closedloop__readlast50shocks
+F 33>31 closedloop__readlast50shocks__icd 34c23 35c29 2|.3:16c23
+F 33>49 closedloop__readlast50shocks__person 34c13
+F 33<73 closedloop__readlast50shocks__last50shocks 35r14 2|.3:16m7
+FX 1 closedloop.ads .6 closedloop__readsettings
+F 37>27 closedloop__readsettings__icd 38c29 39c27 40c31 2|.4:23c21 24c25
+F 37>45 closedloop__readsettings__person 38c34
+F 37<69 closedloop__readsettings__upperbound 39r14 2|.4:23m7
+F 37<81 closedloop__readsettings__numberofjoules 40r14 2|.4:24m7
+FX 1 closedloop.ads .7 closedloop__changesettings
+F 42=29 closedloop__changesettings__icd 43r29 44r14 44r46 2|.5:31m7 32m7
+F 42>51 closedloop__changesettings__person 43c34
+F 42>75 closedloop__changesettings__upperbound 44c31 2|.5:31c25
+F 42>87 closedloop__changesettings__numberofjoules 44c76 2|.5:32c38
+

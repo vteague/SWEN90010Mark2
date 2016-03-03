@@ -1,0 +1,42 @@
+\newlength{\tab}
+\setlength{\tab}{1em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\evensidemargin}{0.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\textwidth}{16cm}
+%  \setlength{\headsep}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{23cm}
+\setlength{\itemsep}{0pt}
+\setlength{\topsep}{0pt}
+
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{javabackground}{rgb}{0.9,0.9,0.9}
+\definecolor{javablack}{rgb}{0,0,0}
+
+\lstset{language=Ada,
+  backgroundcolor=\color{javabackground},
+  basicstyle=\ttfamily\fontsize{10}{12}\selectfont,
+  keywordstyle=\color{javablack}\bfseries,
+  aboveskip={1.5\baselineskip},
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=single,
+  numbersep=10pt,
+  stepnumber=1,
+  tabsize=8,
+  xleftmargin=0ex,
+  xrightmargin=0ex,
+  showspaces=false,
+  showstringspaces=false,
+  aboveskip=0.5ex
+}

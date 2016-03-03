@@ -1,0 +1,650 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.FindMinIndex
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_findminindex_1.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New C1:  true
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New C2:  true
+***  Proved C1:  true
+***  Proved C2:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_findminindex_2.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+***  Proved C1:  1 >= index__first
+     using hypothesis H3.
+***  Proved C2:  1 <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_findminindex_3.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+%%%  Simplified H9 on reading formula in, to give:
+     %%%  H9:  index__last - index__first <> 0
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H2.
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  true
+<S>  New H9:  index__last <> 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  true
+<S>  New H9:  true
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H1 (true-hypothesis).
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H3 (true-hypothesis).
+---  Eliminated hypothesis H4 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+     +++  New H10:  integer__size >= 0
+     +++  New H11:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_4.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H2.
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  j + 1 <> index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New H19:  j <= 9
+<S>  New H22:  j <> 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H19 & H22 together imply that
+          j < 9.
+     H19 & H22 have therefore been deleted and a new H23 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H6 (redundant, given H23).
+---  Eliminated hypothesis H18 (redundant, given H5).
+     +++  New H24:  integer__size >= 0
+     +++  New H25:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_5.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+     using hypothesis H2.
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(a, [minindex]) <= element(a, [j])
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  j + 1 <> index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New H15:  j <= 9
+<S>  New H18:  j <> 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H15 & H18 together imply that
+          j < 9.
+     H15 & H18 have therefore been deleted and a new H19 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H6 (redundant, given H19).
+---  Eliminated hypothesis H14 (redundant, given H5).
+     +++  New H20:  integer__size >= 0
+     +++  New H21:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_6.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+***  Proved C1:  minindex >= index__first
+     using hypothesis H3.
+***  Proved C2:  minindex <= index__last
+     using hypothesis H4.
+***  Proved C3:  j >= index__first
+     using hypothesis H5.
+***  Proved C4:  j <= index__last
+     using hypothesis H6.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_findminindex_7.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+***  Proved C1:  j >= index__first
+     using hypothesis H5.
+***  Proved C2:  j <= index__last
+     using hypothesis H6.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_findminindex_8.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H6)
+          .
+***  Proved C1:  j + 1 >= index__first
+     using hypothesis H5.
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New C2:  j <= 9
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+     +++  New H18:  integer__size >= 0
+     +++  New H19:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_9.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+***  Proved C1:  j + 1 >= index__first
+     using hypothesis H5.
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New C2:  j <= 9
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(a, [minindex]) <= element(a, [j])
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+     +++  New H14:  integer__size >= 0
+     +++  New H15:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_10.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+%%%  Simplified H9 on reading formula in, to give:
+     %%%  H9:  not index__last - index__first <> 0
+>>>  Restructured hypothesis H9 into:
+     >>>  H9:  index__last - index__first = 0
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  true
+<S>  New H9:  index__last = 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, index__last, 1)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  true
+<S>  New H9:  false
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, 10, 1)
+###  Established a contradiction [false-hypothesis] using hypothesis H9.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_findminindex_11.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+>>>  Restructured hypothesis H22 into:
+     >>>  H22:  j + 1 = index__last - index__first + 1
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  j + 1 = index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, index__last, j)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New H19:  j <= 9
+<S>  New H22:  j = 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, 10, j)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H5 (redundant, given H22).
+---  Eliminated hypothesis H6 (redundant, given H19).
+---  Eliminated hypothesis H18 (redundant, given H22).
+---  Eliminated hypothesis H19 (redundant, given H22).
+-S-  Eliminated hypothesis H22.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  min(a, 1, 9, minindex)
+<S>  New H11:  element(a, [9]) < element(a, [minindex])
+<S>  New C1:  min(a, 1, 10, 9)
+     +++  New H23:  integer__size >= 0
+     +++  New H24:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_findminindex_12.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(a, [minindex]) <= element(a, [j])
+>>>  Restructured hypothesis H18 into:
+     >>>  H18:  j + 1 = index__last - index__first + 1
+-S-  Applied substitution rule findminindex_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= integer__last)
+-S-  Applied substitution rule findminindex_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(a, [i___1]) and element(a, [
+          i___1]) <= 2147483647)
+-S-  Applied substitution rule findminindex_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  minindex >= 1
+<S>  New H5:  j >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  j + 1 = index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, index__last, minindex)
+-S-  Applied substitution rule findminindex_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  minindex <= 10
+<S>  New H6:  j <= 10
+<S>  New H15:  j <= 9
+<S>  New H18:  j = 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(a, [i___1]) and element(a, [i___1]) <= 
+          2147483647)
+<S>  New C1:  min(a, 1, 10, minindex)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H5 (redundant, given H18).
+---  Eliminated hypothesis H6 (redundant, given H15).
+---  Eliminated hypothesis H14 (redundant, given H18).
+---  Eliminated hypothesis H15 (redundant, given H18).
+-S-  Eliminated hypothesis H18.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  min(a, 1, 9, minindex)
+<S>  New H11:  element(a, [minindex]) <= element(a, [9])
+     +++  New H19:  integer__size >= 0
+     +++  New H20:  index__size >= 0
+

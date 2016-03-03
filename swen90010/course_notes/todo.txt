@@ -1,0 +1,2 @@
+- Add s_compose operator (from workshop) to Sum chapter
+- Add record types (from workshop) to Ada chapter

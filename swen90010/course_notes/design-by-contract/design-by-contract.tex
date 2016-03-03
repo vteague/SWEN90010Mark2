@@ -1,0 +1,456 @@
+\chapter{Design by contract}
+
+In this chapter, we present the concept of \emph{Design by Contract} (DbC) -- a paradigm for designing software. The paradigm prescribes that designers should specify the interfaces between software components using formal, mathematical statements, such as preconditions, postconditions, and invariants. These statements serve as both documentation, as well as statements that can be reasoned about automatically to provide verification assistance.
+
+SPARK supports DbC using its advanced annotation system, and the tool support for SPARK contracts are particularly mature.
+
+The learning outcomes of this part of the subject are:
+
+\begin{enumerate}
+
+ \item To understand the motivation, advantages, and disadvantages of design by contract.
+
+ \item To specify formal contracts for small- and medium-scale packages in SPARK.
+
+\end{enumerate}
+
+\section{Introduction to Design by Contract}
+
+Design by Contract (DbC) \cite{meyer00} is a design paradigm specifying how sub-systems or components of a system interact with each other. The paradigm is based on the metaphor of ``clients'' and ``suppliers'', who have \emph{obligations} for and receive  \emph{benefits} from (respectively) a mutual \emph{contract}.
+
+\subsection{History}
+
+The DbC paradigm was developed by Bertrand Meyer, while a professor University of California, Santa Barbara. In concert with DbC, Meyer and colleagues developed Eiffel --- a programming language that embodies the very spirit of DbC.
+
+For his efforts on Eiffel and DbC, Meyer was presented with the 2006 ACM Software System Award:
+
+\begin{quote}
+  ``For designing and developing the Eiffel programming language, method and environment, embodying the Design by Contract approach to software development and other features that facilitate the construction of reliable, extendable and efficient software.'' --- 2006 ACM Software System Award Citation.
+\end{quote}
+
+The Eiffel language and tools to support DbC reasoning are provided by the Eiffel Software company (\url{http://www.eiffel.com}).
+
+\subsection{Some Definitions}
+
+Before we go further, we cover some standard software engineering definitions that are especially important for DbC:
+
+\begin{enumerate}
+
+  \item \emph{Information hiding} is a design principle that specifies that data types and implementation should be \emph{abstracted} and hidden behind a publicly available interface.
+
+  \item \emph{Encapsulation} is a strategy for information hiding that bundles related entities together behind an interface.
+
+  \item An \emph{abstract data type} (ADT) is some package/module/class that encapsulates data and operations on that data, and hides the data types and implementation behind an \emph{interface}.
+
+\end{enumerate}
+
+\begin{exercise}
+Explain why these concepts are important in software engineering.
+\end{exercise}
+
+\section{Specifying ADT interfaces}
+
+In the above definitions, \emph{interfaces} play a key role. In modern programming languages, interfaces are an important part of providing abstraction via information hiding. Most software library interfaces and many components and module interfaces in larger packages document their interfaces, so that a user of the interface can understand what services it provides, and how it must provide inputs to receive correct outputs.
+
+\subsection{ADT interfaces as natural-language comments}
+
+Many ADT interface specifications are documented using comments at the top of modules and operations. These comments, if crafted well, provide users (the developers using the code) with information as to which parts to use and how to use them. They also provide the developers of the module itself with a design against which to implement and verify their code.
+
+\begin{example}
+\label{ex:dbc:java-interface-comments}
+Consider the following example of a Java class interface that implements the behaviour of a bounded stack of integers.
+
+\lstset{language=Java}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+//Implements a bounded stack data type.
+//The stack must also be less than a specified size.
+public class StackImpl implements IStack
+{
+  //Create a new empty stack, with a maximum size, which
+  // must be greater than 0
+  public StackImpl(int size);
+
+  //Add Object o to the top of the stack
+  // if the stack is not full.
+  public void push(Object o);
+
+  //Return and remove the object at the top of the stack
+  // if the stack is not empty.
+  public Object pop();
+
+  //Return the size of the stack.
+  public int size();
+}
+\end{lstlisting}
+
+\end{example}
+
+
+\subsection{ADT interfaces as invariants, preconditions, and postconditions}
+
+While specifying the behaviour of an interface using natural language comments provides users with information to use the class/module, a more structured manner of doing so is using \emph{invariants}, \emph{preconditions}, and \emph{postconditions}.
+
+Recall from Chapter~\ref{chapter:specification}, the following definitions:
+
+\begin{enumerate}
+
+ \item A \emph{precondition} is a statement that must hold for an operation to execute. If the precondition does not hold, the behaviour of the operation is undefined.
+
+ \item A \emph{postcondition} is a statement that must hold after a operation executes, provided that the precondition was true before the operation was executed.
+
+ \item An \emph{state invariant} (or just \emph{invariant}) is a statement that must hold at all times. It must hold before any operation is executed, and must also hold after that operation is executed. That is, all operations must preserve the invariant.
+
+ An invariant can be violated \emph{during} execution of an operation, provided that the invariant is re-established at the end of the operation.
+
+\end{enumerate}
+
+Preconditions, postconditions, and invariants say ``what'' must hold, but not ``how'' this must be achieved.
+
+Example~\ref{ex:dbc:java-interface-comments} specifies the behaviour of a Java class, in which the data types and implementation are hidden. However, is it clearer to specify this as preconditions and postconditions?
+
+\begin{example}
+\label{ex:dbc:java-interface-pre-post}
+The following example specifies the behaviour of the Java class from Example~\ref{ex:dbc:java-interface-comments} using preconditions and postconditions. In this example, the keyword \texttt{requires} is used to denote the precondition, and the keyword \texttt{ensures} is used to denote the postcondition.
+
+\lstset{language=Java}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+//Implements a bounded stack data type.
+public class StackImpl implements IStack
+{
+  //invariant: The stack must be less than a specified size.
+
+  //ensures: Creates a new empty stack, with a maximum size, which
+  // must be greater than 0
+  public StackImpl(int size);
+
+  //requires: the stack is not full.
+  //ensures: Object o is added to the top of the stack.
+  public void push(Object o);
+
+  //requires: the stack is not empty
+  //ensures: return and remove the object at 
+  //         the top of the stack
+  public Object pop();
+
+  //requires: none (or true)
+  //ensures: return the size of the stack.
+  public int size();
+\end{lstlisting}
+
+\end{example}
+
+The above example does not provide any additional information than that of the interface specification from Example~\ref{ex:dbc:java-interface-comments}. However, the structured comments are preferable for two reasons:
+
+\begin{enumerate}
+
+ \item The separation of precondition and postcondition make it clearer to both developers and users of the module what is required from the calling code --- that the precondition holds before a call is made to the operation --- and what is required from the implementation of the operations --- that the postcondition holds after a call is made to the operation. 
+
+ Establishing the former is the obligation of the user, while establishing the latter is the obligation of the developer.
+
+ \item The requirement to provide an invariant, precondition, and postcondition (especially the first two) force the designer to consider these issues --- that is, what is invariant about the module and what the preconditions of the operations are? As such, we are more likely to end up with a more complete interface specification.
+
+\end{enumerate}
+
+
+\subsection{ADT interfaces as contracts}
+
+Software systems are viewed as a set of interacting components. Interaction occurs via calls to operations defined in an interface; in many cases, an ADT interface. When a call is made, the caller is expected to ensure that the input is of the required format, and the callee is expected to ensure that it provides a correct output with respect to the input.
+
+DbC leverages this by using the metaphor of a \emph{contract}.
+
+\subsubsection*{Contracts}
+
+In business, a {\em contract} is an agreement between two or more parties with mutual obligations and benefits. For example, a contract between a client and supplier of a product has the following properties:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+   & \textbf{Obligation} & \textbf{Benefit}\\
+\midrule
+ \textbf{Client} & Pay for product & Receives product \\
+ \textbf{Supplier}  & Provide product & Receives income\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The DbC paradigm uses this metaphor in software: a module is the supplier and the calling code is the client. The supplying module must perform some computation, and in return the calling code must ensure that the input values sent to the supplying module are correct.
+
+\subsubsection{Contracts and software}
+
+Using contracts on interfaces ensures that interaction between components is governed by contracts. In total, a contract for an interface should consist of at least the  three following items:
+
+\begin{enumerate}
+
+ \item preconditions for all operations --- what the contract expects;
+
+ \item postconditions for all operations --- what the contract guarantees; and
+
+ \item an invariant --- what the contract maintains.
+
+\end{enumerate}
+
+
+Using the metaphor of a contract in software design, we can reflect the above table as follows:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+   & \textbf{Obligation} & \textbf{Benefit}\\
+\midrule
+ \textbf{Client} & Establish precondition & Receives result of computation \\
+ \textbf{Supplier}  & Provide result of computation & Has precondition established\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Expanding the above:
+
+\begin{enumerate}
+
+ \item The \emph{precondition is the obligation of the client}: before calling any operation, the client must ensure that the precondition of that operation holds. For example, if calling a binary search operation, it must ensure that the input list is sorted in ascending order.
+
+ \item The \emph{postcondition is the obligation of the supplier}: the supplier must change the ADT state and/or return the requested result to the client, as specified by the postcondition. The supplier must also establish the invariant.
+
+ \item The \emph{client's benefit} is it has the operation executed, as requested.
+
+ \item The \emph{supplier's benefit} is that it can assume that precondition of any executed operation, and the invariant, hold before the operation is executed, therefore simplifying the implementation. In practice, the supplier may sometimes throw exceptions or handle violations gracefully, however, this is not always possible or desirable.
+
+\end{enumerate}
+
+Contracts are bi-directional, and assuming all of the contracts are correct, violation of a contract by either party is a \emph{fault}.  Further to this, in the case of a fault, we can assign the responsibility of the fault to a particular module: either the calling module or the called module.
+
+The example of the stack in Example~\ref{ex:dbc:java-interface-pre-post} demonstrates informal contracts via standard comments. However, can we be more precise?
+
+
+\subsection{Formal contracts}
+
+So far, we have specified interfaces for ADTs using comments, and in one case, comments structured as invariants, preconditions, and postconditions. However, the DbC paradigm advocates that software designers should define \emph{formal}, \emph{precise} and \emph{verifiable} contracts. 
+
+Many languages provide constructs, such as assertions, to establish formal properties of their implementations. The DbC paradigm goes further, stating that such properties are so valuable in establishing software correctness, that they should be a routine part of the software design, and that all modules should have contracts.
+
+\begin{example}
+The following example provides a formal contract for the running stack example using  \emph{Java Modelling Language} \cite{leavens99}. To distinguish JML contract statements from normal Java comments, the \texttt{@} symbol is used.
+
+\lstset{language=Java}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+//Implements a bounded stack data type.
+public class StackImpl implements IStack
+{
+  private /*@ spec_public @*/ Object [] elements;
+  private /*@ spec_public @*/ int top;
+  private /*@ spec_public @*/ int maxsize
+
+  //@ public invariant top >= -1 && top < maxsize;
+
+  //@ requires size > 0;
+  //@ ensures maxsize == size && top == -1 && elements != null;
+  public StackImpl(int size);
+
+  //@ requires top < maxsize - 1;
+  //@ ensures top == \old(top) + 1 && elements[top] == o;
+  public void push(Object o);
+
+  //@ requires top >= 0;
+  //@ ensures top == \old(top) - 1 && \result == elements[\old(top)];
+  public Object pop();
+
+  //@ ensures \result == top + 1;
+  public int size();
+\end{lstlisting}
+
+The \texttt{spec\_public} keyword denotes that the variable is public for \emph{specification purposes}. That is, it is seen in any generated documentation, but the corresponding variable remains private/protected to other code.
+
+\end{example}
+
+The example above is a formalised version of the same interface in Example~\ref{ex:dbc:java-interface-pre-post}, in which JML is used instead of natural language. The same preconditions, postconditions, and invariants are provided, except in a precise manner.
+
+\subsection{Advantages and disadvantages of formal contracts}
+
+Formal contracts, in particular those that are offered as a native support as part of a programming languages, offer several advantages over natural language comments. These include:
+
+\begin{enumerate}
+
+ \item They document a precise (unambiguous) specification of behaviour. Further, if contracts are enforced as part of a language (or by project/organisational methods), the formal nature offers many of the same benefits offered by formal specification, as outlined in Section~\ref{sec:specification:costs}.
+
+ Or, to put it better:
+
+\begin{quote}
+``\emph{In practice, it is amazing to see how far just stating what a module should do goes towards helping to ensure that it does it.} --- Bertrand Meyer.
+\end{quote}
+
+ \item They can be used as runtime assertions. That is, during implementation and testing of the system, when an operation is executed, we can check the precondition, postcondition, and invariant all hold, and raise a runtime error if they do not. The failure of a contract to hold implies that either the code or the contract is wrong.
+
+ \item A corollary of the above point is that contracts can be used as test oracle. If we are unit testing a module, we can run large amounts of tests, and use the runtime checking to ensure that the contract is satisfied.
+
+ \item Contracts can be used for static analysis. That is, using software tools, we can specify certain properties as part of the contract are satisfied, and check these statically.
+
+ \item One way to implement operations with contracts is to assume that the precondition of an operation is satisfied; that is, do not use defensive programming. This has the benefit that there is no ``double-up'' checking of preconditions. That is, in many cases of a precondition, the calling code will ensure that the precondition holds before execution, and then the called operation will also check this. This results in duplicated effort and execution.
+
+\end{enumerate}
+
+The main disadvantage of contracts is that introducing them into a project/organisation requires some learning overhead, but empirical evidence demonstrates that this overhead is recouped quickly.
+
+
+\section{Contracts in SPARK}
+
+In Chapter~\ref{chapter:spark}, the SPARK programming language was introduced, but SPARK annotations were not discussed in detail. SPARK contains several types of annotation, such as variable dependencies, and global variable declaration. In this subject, we'll concern ourselves mostly with  module invariants, operation preconditions, and operation postconditions, which can be used to specify \emph{SPARK contracts}. While SPARK documentation does not use the term ``Design by Contract'', these contracts are well within the spirit of DbC.
+
+\subsection{Syntax}
+
+There are several elements that are required in a SPARK contract for a module, with the most important for this subject being:
+
+\begin{enumerate}
+
+ \item The \texttt{Initializes} list: the variables initialised by the module.
+
+ \item The \texttt{Pre} (for each operation): the precondition.
+
+ \item The \texttt{Post} (for each operation): the postcondition.
+
+\end{enumerate}
+
+The SPARK annotation language for preconditions and postconditions contains some additional syntax on top of SPARK expressions to specify contracts.
+
+\subsubsection{Arrays and records}
+\label{sec:dbc:spark:arrays-and-records}
+
+\lstset{language=}
+\begin{lstlisting}
+  x in A'Range      //range membership
+  A'Update(x => y)  //array updates (where 'x' is an array index)
+  A'Update(x => y)  //record updates (where 'x' is a field in the record)
+\end{lstlisting}
+
+For arrays, there are two main types of operation. The first is ``range membership'', in which  \texttt{x} is a variable and \texttt{A} is a type mark, and \texttt{x in A'Range} denotes that the value of \texttt{x} is in the type mark \texttt{A}.
+
+For arrays, as well as records, the operator \texttt{A'Update(x => y)}, in which \texttt{A} is an array/record, \texttt{x} is an index/name, and \texttt{y} is an expression, indicates that \texttt{A'Update(x => y)} is the same as array/record \texttt{A}, except with the index/name \texttt{x} overridden with the new value \texttt{y}. This is the same as function override in set theory.
+
+
+\subsubsection{Logic}
+
+SPARK offers standard propositional operators and quantification over type marks (i.e. not over arrays).
+
+\lstset{language=}
+\lstset{aboveskip=3mm}
+\begin{lstlisting}
+  P and Q                     //conjunction
+  P or Q                      //disjunction
+  if P then Q                 //implication
+  not(P)                      //negation
+  for some x in X => (P(x))   //existential quantification
+  for all x in X => (P(x))    //universal quantification
+\end{lstlisting}
+
+\subsubsection{Arithmetic}
+
+\lstset{language=}
+\begin{lstlisting}
+   +, -, /, *          //plus, minus, division, multiplication
+   x mod y             //modulus
+   x**y                //exponent
+   <, >=, >, <=        //less than (or equal to), greater than (or equal to)
+   =, /=               //equals, not equals
+\end{lstlisting}
+
+\subsubsection{Return}
+
+The \texttt{Return} operator denotes the value that a function will return:
+
+\lstset{language=}
+\begin{lstlisting}
+   FunctionName'Result    //the return value of function `FunctionName'
+\end{lstlisting}
+
+The first of these is a standard return: just return an expression. The second, called an \emph{implicit return}, allows the declaration of a new variable (\texttt{V}), and then allows the value of that variable to be constrained. The syntax \texttt{return V => P(V)} can be read: ``return the value of variable \texttt{V}, \emph{such that} predicate \texttt{P} holds on \texttt{V}.''
+
+\subsubsection{Some things to note}
+
+\begin{enumerate}
+
+ \item In a postcondition, {\small\verb+V'Old+} refers to the value of the variable {\em before} execution, and {\small\tt V} to the value after. Thus, the syntax is reversed from Alloy's syntax of labelling the post-state variable.
+
+
+ \item The {\small\tt =>} and {\small\tt ->} operators are different: the former comes after a quantification (e.g.\ {\small\tt for all}), the latter is logical implication.
+
+ \item Any valid SPARK expression is a valid expression in a precondition or postcondition. That is, programming-level expressions can be references as part of SPARK predicates.
+
+\end{enumerate}
+
+
+
+\begin{example}
+This example is taken from the SPARK manual (\url{http://docs.adacore.com/spark2014-docs/html/lrm/mapping-spec.html}.
+
+The function simply adds two numbers together, but in addition to taking care of the addition, it also prevents integer overflows by specifying, as a precondition, that the inputs cannot lead to an overflow:
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting[linerange={10-13}]{\rootdir/design-by-contract/code/Swap_Add_Max.ads}
+
+The contract specifies that this function must return (that is, the result of the expression \texttt{Add'Result}) an integer that adds X and Y. The precondition prevents the overflow.
+\end{example}
+
+\begin{example}
+The following is also taken from the SPARK Proof Manual.
+
+Consider a more complex function that swaps two elements in an array:
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting[linerange={22-24}]{\rootdir/design-by-contract/code/Swap_Add_Max.ads}
+
+The precondition states that the \emph{new} value of array \texttt{A} should be the old value (\texttt{A'Old}), but with the elements at indices \texttt{I} and \texttt{J} replaced by the values at indices \texttt{J} and {I} respectively in the \emph{old} array.
+
+\end{example}
+
+\begin{example}
+The following illustrates linear search as a contract:
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/design-by-contract/code/linear_search.ads}
+
+In this example, types are used to restrict much of the behaviour (e.g. the index of the array), and the postcondition specifies the functional behaviour: if the result is in the range of the array \texttt{A}, then the element at the result must be equal to \texttt{I} (the element being searched for); otherwise, it must be that the element is not in the array.
+\end{example}
+
+\begin{example}
+As a final example, consider the following contract interface, which includes (among others) the functions for adding and swapping presented earlier:
+
+\lstset{language=Ada}
+\lstset{aboveskip=3mm}
+\lstinputlisting{\rootdir/design-by-contract/code/Swap_Add_Max.ads}
+\end{example}
+
+\subsection{Similarity to Alloy}
+
+As a brief note, it is important to note the similarities between the Alloy specification language, and the SPARK contract language. These similarities are not coincidence: the combination of languages such as Alloy and SPARK is common (although to date, most applied work has used the Z language instead of Alloy), and the translation from Alloy or Z to SPARK can be quite straightforward for standard precondition/postconditions. That is, systems engineers specify behaviour in Z/Alloy, prove properties about this using tools based on first-order logic, and then translate the specifications into SPARK contracts. The contracts are then implemented in SPARK code, and this code is verified against the contracts. The similarities between languages like Z/Alloy and SPARK make the translation straightforward in many cases.
+
+\subsection{Tools}
+
+The SPARK toolset comes with tools for supporting contracts in SPARK, including the SPARK Examiner, which can be used to check that a contract is a valid SPARK contract.
+
+In the workshops, we will look at a powerful tool chain (as part of the SPARK tools) that can be used for verifying programs against their contracts.
+
+
+
+\section{Additional reading}
+\label{sec:dbc:additional-reading}
+
+\begin{enumerate}
+
+\item The following offers can excellent tutorial on SPARK contracts, using a real system developed by Altran-Praxis: \url{http://www.adacore.com/home/products/sparkpro/tokeneer/discovery/}. The notation used in this tutorial is for SPARK versions prior to 2014, but the notation for preconditions and postcondition expressions is the same.
+
+ \item The following tutorial on SPARK2014 is a great place to start: \url{http://docs.adacore.com/spark2014-docs/html/ug/getting_started.html}
+
+ \item The following tutorial on SPARK contracts is another good reference for people who have played with the SPARK examiner: \url{http://docs.adacore.com/spark2014-docs/html/ug/tutorial.html}
+
+\item Bertrand Meyer's textbook, \emph{Object-Oriented Software Construction} \cite{meyer00}, is a detailed presentation of the Eiffel programming language, including Design by Contract.
+
+\end{enumerate}
+
+% LocalWords:  DbC ACM ADT aboveskip StackImpl IStack callee ADTs JML
+% LocalWords:  maxsize defensive initializes ValuePresent FindSought
+% LocalWords:  linerange toolset Altran Praxis

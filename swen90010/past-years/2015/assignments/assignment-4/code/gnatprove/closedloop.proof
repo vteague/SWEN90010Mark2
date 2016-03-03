@@ -1,0 +1,6 @@
+[
+{"file":"closedloop.ads","line":31,"col":14,"message":"info: postcondition proved","rule":"postcondition","severity":"info","tracefile":"","entity":{"name":"ClosedLoop.SwitchMode","file":"closedloop.ads","line":29}}
+,{"file":"closedloop.ads","line":35,"col":14,"message":"info: postcondition proved","rule":"postcondition","severity":"info","tracefile":"","entity":{"name":"ClosedLoop.ReadLast50Shocks","file":"closedloop.ads","line":33}}
+,{"file":"closedloop.ads","line":39,"col":14,"message":"info: postcondition proved","rule":"postcondition","severity":"info","tracefile":"","entity":{"name":"ClosedLoop.ReadSettings","file":"closedloop.ads","line":37}}
+,{"file":"closedloop.ads","line":44,"col":14,"message":"info: postcondition proved","rule":"postcondition","severity":"info","tracefile":"","entity":{"name":"ClosedLoop.ChangeSettings","file":"closedloop.ads","line":42}}
+]

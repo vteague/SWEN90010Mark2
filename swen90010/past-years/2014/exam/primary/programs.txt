@@ -1,0 +1,134 @@
+Slow subtraction:
+
+subtract(z, x)
+--# pre true?
+--# post z = z~ - x~
+begin
+  while x /= 0 do
+    z := z - 1;
+    x := x - 1;
+  done
+
+==========================
+Relevant rules:
+  2**0 = 1
+  2**(n+1) = (2**n)*2
+
+power_of_2(n, j)
+
+{True}
+{0 = 2**0} -- fails due to fault.
+k := 0;
+{0 = 2**k}
+j := 0; -- note the fault: should be j = 1
+{j = 2**k}
+while k /= n do
+  {j = 2**k}
+   -- j = 2**k => 2*j = 2**(k+1)
+   -- j = 2**k => 2*(2**k) = 2**(k+1)
+   -- holds from defn of 2**(n+1)
+  {2*j = 2**(k+1)}
+  k := k + 1;
+  {2*j = 2**k}
+  j := 2*j;
+  {j = 2**k}
+done
+{j = 2**k and k = n}
+{j = 2**n}
+
+===========================
+Relevant rules:
+  0**2 = 0
+  (n+1)**2 = n*2 + (2*n-1)
+
+{True}
+square(n, s)
+ i := 0;
+ s := 0;
+ while (i /= n) do
+   {s = i**2}
+     -- s = i**2 => (s + (2*i-1)) = (i+1)**2
+     -- s = i**2 => (i**2 + (2*i-1)) = (i+1)**2
+   {s + (2 * i - 1) = (i+1)**2}
+   i := i + 1;
+   {s + (2 * i - 1) = i**2}
+   s := s + (2 * i - 1)
+   {s = i**2}
+done
+{s = i**2 and i = n}
+{s = n**2}
+
+===========================
+rev([]) = []
+rev(front & [last]) = [last] & rev(front)
+
+reverse(in x, in n, out y)
+--# length(x) = n
+--# post rev(x, 1, n) = y
+
+y := []
+i := 0  -- note the fault: should be i := 1
+while i /= n do 
+  --# invariant rev(x, 1, i) = y
+  {rev(x, 1, i) = y}
+    -- rev(x, 1, i) = y ==> rev(x, 1, i + 1) = (x[i]) & y
+    -- rev(x, 1, i) = y ==> rev(x, 1, i + 1) = (x[i]) & rev(x, 1, i)
+  {rev(x, 1, i + 1) = (x[i]) & y}
+  y := (x[i]) & y;
+  {rev(x, 1, i + 1) = y}
+  i := i + 1;
+  {rev(x, i, n)}
+done
+{rev(x, 1, i) = y and i = n}
+{rev(x, 1, n) = y}
+
+==============================
+
+length(s, len)
+
+i := 1;  -- fault: should be i := 0
+while s /= () do
+  {i = #(s - tail)}
+  i := i + 1;
+  s = tail(s)
+
+done
+
+==============================
+fizzbuzz (a, n)
+--# pre a'length = n
+--# post isfizzbuzz(a, 1, n)
+--# where isfizzbuzz(a, 1, n) <=> for all i in 1..n => 
+--#    ((i mod 15 = 0 <=> a[n] = fizzbuzz) and
+--#     (i mod 5 = 0 and i mod 15 /= 0 <=> a[n] = buzz) and
+--#     (i mod 3 = 0 and i mod 15 /= 0 <=> a[n] = fizz) and
+--#     (i mod 5 /= 0 and i mod 3 /= 0 <=> a[n] = a~[n])
+
+i := 0 -- note: an error. Should be i := 1
+while i /= n do
+  if i mod 3 = 0 then
+     a[n] = fizz;
+  end if;
+  if i mod 5 = 0 then
+     a[n] = buzz;
+  end if;
+  if i mod 15 = 0 then
+     a[n] = fizzbuzz;
+  end if;
+done
+
+=====================
+procedure GetMax(A : in Pos_Int_Array; Max : out Integer)
+--# post (A'Length = 0 -> Max = -1) and
+--#      (A'Length /= 0 -> (for all J in A'Range => Max >= A(J)))
+is begin
+  Max := -1;
+  I := 1;
+  while I <= A'Length do
+    --# invariant: for all J in range 1..I => (Max >= A(J))
+    if A(I) > Max then
+      Max := A(I);
+    end if;
+    I := I + 1;
+  end loop;
+end GetMax;

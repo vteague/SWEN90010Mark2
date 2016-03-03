@@ -1,0 +1,2902 @@
+*****************************************************************************
+                       Semantic Analysis of SPARK Text
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+*****************************************************************************
+
+
+CREATED 27-MAY-2013, 12:53:23  SIMPLIFIED 27-MAY-2013, 12:53:26
+
+SPARK Simplifier GPL 2011
+Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+
+procedure Sort.SelectionSort
+
+
+
+
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_1.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New C1:  true
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New C2:  true
+***  Proved C1:  true
+***  Proved C2:  true
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_2.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  index__last - index__first >= system__min_int
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  index__last - index__first <= system__max_int
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  true
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  index__last - 1 >= system__min_int
+<S>  New C2:  index__last - 1 <= system__max_int
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  true
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  9 >= system__min_int
+<S>  New C2:  9 <= system__max_int
+---  Eliminated hypothesis H1 (true-hypothesis).
+---  Eliminated hypothesis H5 (true-hypothesis).
+---  Eliminated hypothesis H6 (true-hypothesis).
+---  Eliminated hypothesis H3 (true-hypothesis).
+---  Eliminated hypothesis H4 (true-hypothesis).
+     +++  New H7:  integer__size >= 0
+     +++  New H8:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_3.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as H6)
+          .
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  index__last - index__first >= system__min_int
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  index__last - index__first <= system__max_int
+>>>  Restructured hypothesis H13 into:
+     >>>  H13:  index__last - index__first + 1 <= i + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H16:  element(list, [i]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H17:  element(list, [i]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  i >= 1
+<S>  New H5:  i >= 0
+<S>  New H13:  index__last <= i + 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  index__last - 1 >= system__min_int
+<S>  New C2:  index__last - 1 <= system__max_int
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  i <= 10
+<S>  New H6:  i <= 9
+<S>  New H13:  9 <= i
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  9 >= system__min_int
+<S>  New C2:  9 <= system__max_int
+%%%  Hypotheses H6 & H13 together imply that
+          i = 9.
+     H6 & H13 have therefore been deleted and a new H40 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H40).
+---  Eliminated hypothesis H4 (redundant, given H40).
+---  Eliminated hypothesis H5 (redundant, given H40).
+-S-  Eliminated hypothesis H40.
+     This was achieved by replacing all occurrences of i by:
+          9.
+<S>  New H1:  for_all(m_ : integer, 1 <= m_ and m_ <= 8 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= 8 and m_ <= n_ -> element(list, [m_]) <= 
+          element(list, [n_])))
+<S>  New H16:  element(list, [9]) >= - 2147483648
+<S>  New H17:  element(list, [9]) <= 2147483647
+     +++  New H41:  integer__size >= 0
+     +++  New H42:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_4.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  index__last - index__first >= system__min_int
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  index__last - index__first <= system__max_int
+>>>  Restructured hypothesis H22 into:
+     >>>  H22:  index__last - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H25:  element(list, [i]) >= - 2147483648
+<S>  New H31:  element(list, [j]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H26:  element(list, [i]) <= 2147483647
+<S>  New H32:  element(list, [j]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  index__last <= j + 1
+<S>  New H23:  i >= 1
+<S>  New H45:  i >= 0
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  index__last - 1 >= system__min_int
+<S>  New C2:  index__last - 1 <= system__max_int
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H19:  j <= 9
+<S>  New H24:  i <= 10
+<S>  New H46:  i <= 9
+<S>  New H22:  9 <= j
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  9 >= system__min_int
+<S>  New C2:  9 <= system__max_int
+%%%  Hypotheses H19 & H22 together imply that
+          j = 9.
+     H19 & H22 have therefore been deleted and a new H49 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H49).
+---  Eliminated hypothesis H4 (redundant, given H49).
+---  Eliminated hypothesis H18 (redundant, given H49).
+---  Eliminated hypothesis H24 (redundant, given H46).
+---  Eliminated hypothesis H45 (redundant, given H23).
+-S-  Eliminated hypothesis H49.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [9]) < element(list, [minindex])
+<S>  New H31:  element(list, [9]) >= - 2147483648
+<S>  New H32:  element(list, [9]) <= 2147483647
+     +++  New H50:  integer__size >= 0
+     +++  New H51:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_5.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H42).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  index__last - index__first >= system__min_int
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  index__last - index__first <= system__max_int
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+>>>  Restructured hypothesis H18 into:
+     >>>  H18:  index__last - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H21:  element(list, [i]) >= - 2147483648
+<S>  New H27:  element(list, [minindex]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H22:  element(list, [i]) <= 2147483647
+<S>  New H28:  element(list, [minindex]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  index__last <= j + 1
+<S>  New H19:  i >= 1
+<S>  New H41:  i >= 0
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  index__last - 1 >= system__min_int
+<S>  New C2:  index__last - 1 <= system__max_int
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H15:  j <= 9
+<S>  New H20:  i <= 10
+<S>  New H42:  i <= 9
+<S>  New H18:  9 <= j
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  9 >= system__min_int
+<S>  New C2:  9 <= system__max_int
+%%%  Hypotheses H15 & H18 together imply that
+          j = 9.
+     H15 & H18 have therefore been deleted and a new H45 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H45).
+---  Eliminated hypothesis H4 (redundant, given H45).
+---  Eliminated hypothesis H14 (redundant, given H45).
+---  Eliminated hypothesis H20 (redundant, given H42).
+---  Eliminated hypothesis H41 (redundant, given H19).
+-S-  Eliminated hypothesis H45.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [minindex]) <= element(list, [9])
+     +++  New H46:  integer__size >= 0
+     +++  New H47:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_6.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+%%%  Simplified H7 on reading formula in, to give:
+     %%%  H7:  index__last - index__first >= system__min_int
+%%%  Simplified H8 on reading formula in, to give:
+     %%%  H8:  index__last - index__first <= system__max_int
+%%%  Simplified H9 on reading formula in, to give:
+     %%%  H9:  1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, 1 <= m_ and m_ <= 0 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= 0 and m_ <= n_ -> element(list, [m_]) <= 
+          element(list, [n_])))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C1:  for_all(m_ : integer, 1 <= m_ and m_ <= 0 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= 0 and m_ <= n_ -> element(list, [m_]) <= 
+          element(list, [n_])))
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+     using hypothesis H2.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_7.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as H6)
+          .
+%%%  Simplified H40 on reading formula in, to give:
+     %%%  H40:  index__last - index__first >= system__min_int
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  index__last - index__first <= system__max_int
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, 1 <= m_ and m_ <= i -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i and m_ <= n_ -> element(list, [m_]) <= 
+          element(list, [n_])))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+     using hypothesis H2.
+>>>  Restructured hypothesis H13 into:
+     >>>  H13:  index__last - index__first + 1 <= i + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H16:  element(list, [i]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H17:  element(list, [i]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  i >= 1
+<S>  New H5:  i >= 0
+<S>  New H13:  index__last <= i + 1
+<S>  New H40:  index__last - 1 >= system__min_int
+<S>  New H41:  index__last - 1 <= system__max_int
+<S>  New H42:  i + 1 < index__last - 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  i <= 10
+<S>  New H6:  i <= 9
+<S>  New H13:  9 <= i
+<S>  New H40:  9 >= system__min_int
+<S>  New H41:  9 <= system__max_int
+<S>  New H42:  i < 8
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H6 & H13 together imply that
+          i = 9.
+     H6 & H13 have therefore been deleted and a new H43 added to this effect.
+###  Established a contradiction [P-and-not-P] among the following hypotheses:
+          H42 & H43.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_8.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H49 on reading formula in, to give:
+     %%%  H49:  index__last - index__first >= system__min_int
+%%%  Simplified H50 on reading formula in, to give:
+     %%%  H50:  index__last - index__first <= system__max_int
+%%%  Simplified H51 on reading formula in, to give:
+     %%%  H51:  i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, 1 <= m_ and m_ <= i -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i and m_ <= n_ -> element(update(update(
+          list, [i], element(list, [j])), [j], element(list, [i])), [m_]) <= 
+          element(update(update(list, [i], element(list, [j])), [j], element(
+          list, [i])), [n_])))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(update(update(list, [i], 
+          element(list, [j])), [j], element(list, [i])), [i___1]) and element(
+          update(update(list, [i], element(list, [j])), [j], element(list, [i]))
+          , [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(update(update(list, [i], 
+          element(list, [j])), [j], element(list, [i])), [i___1]) and element(
+          update(update(list, [i], element(list, [j])), [j], element(list, [i]))
+          , [i___1]) <= integer__last)
+     using hypotheses H2, H3, H4, H23, H24, H25, H26, H31 & H32.
+>>>  Restructured hypothesis H22 into:
+     >>>  H22:  index__last - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H25:  element(list, [i]) >= - 2147483648
+<S>  New H31:  element(list, [j]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H26:  element(list, [i]) <= 2147483647
+<S>  New H32:  element(list, [j]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  index__last <= j + 1
+<S>  New H23:  i >= 1
+<S>  New H45:  i >= 0
+<S>  New H49:  index__last - 1 >= system__min_int
+<S>  New H50:  index__last - 1 <= system__max_int
+<S>  New H51:  i + 1 < index__last - 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H19:  j <= 9
+<S>  New H24:  i <= 10
+<S>  New H46:  i <= 9
+<S>  New H22:  9 <= j
+<S>  New H49:  9 >= system__min_int
+<S>  New H50:  9 <= system__max_int
+<S>  New H51:  i < 8
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H19 & H22 together imply that
+          j = 9.
+     H19 & H22 have therefore been deleted and a new H52 added to this effect.
+###  Established a contradiction [P-and-not-P] among the following hypotheses:
+          H1, H11, H51 & H52.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_9.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H42).
+%%%  Simplified H45 on reading formula in, to give:
+     %%%  H45:  index__last - index__first >= system__min_int
+%%%  Simplified H46 on reading formula in, to give:
+     %%%  H46:  index__last - index__first <= system__max_int
+%%%  Simplified H47 on reading formula in, to give:
+     %%%  H47:  i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, 1 <= m_ and m_ <= i -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i and m_ <= n_ -> element(update(update(
+          list, [i], element(list, [minindex])), [minindex], element(list, [i]))
+          , [m_]) <= element(update(update(list, [i], element(list, [minindex]))
+          , [minindex], element(list, [i])), [n_])))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(update(update(list, [i], 
+          element(list, [minindex])), [minindex], element(list, [i])), [i___1]) 
+          and element(update(update(list, [i], element(list, [minindex])), [
+          minindex], element(list, [i])), [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(update(update(list, [i], 
+          element(list, [minindex])), [minindex], element(list, [i])), [i___1]) 
+          and element(update(update(list, [i], element(list, [minindex])), [
+          minindex], element(list, [i])), [i___1]) <= integer__last)
+     using hypotheses H2, H5, H6, H19, H20, H21, H22, H27 & H28.
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+>>>  Restructured hypothesis H18 into:
+     >>>  H18:  index__last - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H21:  element(list, [i]) >= - 2147483648
+<S>  New H27:  element(list, [minindex]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H22:  element(list, [i]) <= 2147483647
+<S>  New H28:  element(list, [minindex]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  index__last <= j + 1
+<S>  New H19:  i >= 1
+<S>  New H41:  i >= 0
+<S>  New H45:  index__last - 1 >= system__min_int
+<S>  New H46:  index__last - 1 <= system__max_int
+<S>  New H47:  i + 1 < index__last - 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H15:  j <= 9
+<S>  New H20:  i <= 10
+<S>  New H42:  i <= 9
+<S>  New H18:  9 <= j
+<S>  New H45:  9 >= system__min_int
+<S>  New H46:  9 <= system__max_int
+<S>  New H47:  i < 8
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H15 & H18 together imply that
+          j = 9.
+     H15 & H18 have therefore been deleted and a new H48 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H48).
+---  Eliminated hypothesis H4 (redundant, given H48).
+---  Eliminated hypothesis H14 (redundant, given H48).
+---  Eliminated hypothesis H20 (redundant, given H42).
+---  Eliminated hypothesis H41 (redundant, given H19).
+---  Eliminated hypothesis H42 (redundant, given H47).
+-S-  Eliminated hypothesis H48.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [minindex]) <= element(list, [9])
+     +++  New H49:  integer__size >= 0
+     +++  New H50:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_10.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C1:  i + 1 >= index__first
+     using hypothesis H3.
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New H4:  i <= 10
+<S>  New C2:  i <= 9
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  i >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+     +++  New H5:  integer__size >= 0
+     +++  New H6:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_11.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+***  Proved C1:  i >= index__first
+     using hypothesis H3.
+***  Proved C2:  i <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_12.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= i + 1 -> element(
+          list, [i]) <= element(list, [m_]))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+     using hypothesis H2.
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  i >= 1
+<S>  New H5:  i >= 0
+<S>  New H13:  i + 1 < index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  i <= 10
+<S>  New H6:  i <= 9
+<S>  New H13:  i < 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H4 (redundant, given H6).
+---  Eliminated hypothesis H5 (redundant, given H3).
+---  Eliminated hypothesis H6 (redundant, given H13).
+     +++  New H14:  integer__size >= 0
+     +++  New H15:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_13.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j + 1 -> element(
+          list, [j]) <= element(list, [m_]))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+     using hypothesis H2.
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  j + 1 < index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H19:  j <= 9
+<S>  New H22:  j < 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H4 (redundant, given H19).
+---  Eliminated hypothesis H18 (redundant, given H3).
+---  Eliminated hypothesis H19 (redundant, given H22).
+     +++  New H23:  integer__size >= 0
+     +++  New H24:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_14.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j + 1 -> element(
+          list, [minindex]) <= element(list, [m_]))
+%%%  Simplified C2 on reading formula in, to give:
+     %%%  C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+     using hypothesis H2.
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  j + 1 < index__last
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H15:  j <= 9
+<S>  New H18:  j < 9
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H4 (redundant, given H15).
+---  Eliminated hypothesis H14 (redundant, given H3).
+---  Eliminated hypothesis H15 (redundant, given H18).
+     +++  New H19:  integer__size >= 0
+     +++  New H20:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_15.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+***  Proved C1:  minindex >= index__first
+     using hypothesis H5.
+***  Proved C2:  minindex <= index__last
+     using hypothesis H6.
+***  Proved C3:  j >= index__first
+     using hypothesis H3.
+***  Proved C4:  j <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_16.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  j >= index__first
+     using hypothesis H3.
+***  Proved C2:  j <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_17.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  j + 1 >= index__first
+     using hypothesis H3.
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New C2:  j <= 9
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+     +++  New H18:  integer__size >= 0
+     +++  New H19:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_18.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  j + 1 >= index__first
+     using hypothesis H3.
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New C2:  j <= 9
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+     +++  New H14:  integer__size >= 0
+     +++  New H15:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_19.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypotheses H2, H3 & H4.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypotheses H2, H3 & H4.
+***  Proved C3:  i >= index__first
+     using hypothesis H3.
+***  Proved C4:  i <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_20.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypotheses H2, H23 & H24.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypotheses H2, H23 & H24.
+***  Proved C3:  i >= index__first
+     using hypothesis H23.
+***  Proved C4:  i <= index__last
+     using hypothesis H24.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_21.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypotheses H2, H19 & H20.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypotheses H2, H19 & H20.
+***  Proved C3:  i >= index__first
+     using hypothesis H19.
+***  Proved C4:  i <= index__last
+     using hypothesis H20.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_22.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypothesis H16.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypothesis H17.
+***  Proved C3:  i >= index__first
+     using hypothesis H3.
+***  Proved C4:  i <= index__last
+     using hypothesis H4.
+***  Proved C5:  i >= index__first
+     using hypothesis H3.
+***  Proved C6:  i <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_23.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  element(list, [j]) >= integer__first
+     using hypotheses H2, H3 & H4.
+***  Proved C2:  element(list, [j]) <= integer__last
+     using hypotheses H2, H3 & H4.
+***  Proved C3:  j >= index__first
+     using hypothesis H3.
+***  Proved C4:  j <= index__last
+     using hypothesis H4.
+***  Proved C5:  i >= index__first
+     using hypothesis H23.
+***  Proved C6:  i <= index__last
+     using hypothesis H24.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_24.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+***  Proved C1:  element(list, [minindex]) >= integer__first
+     using hypotheses H2, H5 & H6.
+***  Proved C2:  element(list, [minindex]) <= integer__last
+     using hypotheses H2, H5 & H6.
+***  Proved C3:  minindex >= index__first
+     using hypothesis H5.
+***  Proved C4:  minindex <= index__last
+     using hypothesis H6.
+***  Proved C5:  i >= index__first
+     using hypothesis H19.
+***  Proved C6:  i <= index__last
+     using hypothesis H20.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_25.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H17).
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypothesis H16.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypothesis H17.
+***  Proved C3:  i >= index__first
+     using hypothesis H3.
+***  Proved C4:  i <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_26.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H26).
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypothesis H25.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypothesis H26.
+***  Proved C3:  j >= index__first
+     using hypothesis H3.
+***  Proved C4:  j <= index__last
+     using hypothesis H4.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_27.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H22).
+***  Proved C1:  element(list, [i]) >= integer__first
+     using hypothesis H21.
+***  Proved C2:  element(list, [i]) <= integer__last
+     using hypothesis H22.
+***  Proved C3:  minindex >= index__first
+     using hypothesis H5.
+***  Proved C4:  minindex <= index__last
+     using hypothesis H6.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_28.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as H4)
+          .
+***  Proved C1:  i + 1 >= index__first
+     using hypothesis H5.
+***  Proved C2:  i + 1 <= index__last
+     using hypothesis H6.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_29.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H24).
+***  Proved C1:  i + 1 >= index__first
+     using hypothesis H23.
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H19:  j <= 9
+<S>  New H22:  not j + 1 < 10 - index__first + 1
+<S>  New H24:  i <= 10
+<S>  New C2:  i <= 9
+>>>  Restructured hypothesis H22 into:
+     >>>  H22:  10 - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          integer__last)
+<S>  New H25:  element(list, [i]) >= - 2147483648
+<S>  New H31:  element(list, [j]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H26:  element(list, [i]) <= 2147483647
+<S>  New H32:  element(list, [j]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  9 <= j
+<S>  New H23:  i >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H19 & H22 together imply that
+          j = 9.
+     H19 & H22 have therefore been deleted and a new H45 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H45).
+---  Eliminated hypothesis H4 (redundant, given H45).
+---  Eliminated hypothesis H18 (redundant, given H45).
+-S-  Eliminated hypothesis H45.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [9]) < element(list, [minindex])
+<S>  New H31:  element(list, [9]) >= - 2147483648
+<S>  New H32:  element(list, [9]) <= 2147483647
+     +++  New H46:  integer__size >= 0
+     +++  New H47:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_30.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H20).
+***  Proved C1:  i + 1 >= index__first
+     using hypothesis H19.
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          integer__first <= element(list, [i___1]) and element(list, [i___1]) 
+          <= integer__last)
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H15:  j <= 9
+<S>  New H18:  not j + 1 < 10 - index__first + 1
+<S>  New H20:  i <= 10
+<S>  New C2:  i <= 9
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+>>>  Restructured hypothesis H18 into:
+     >>>  H18:  10 - index__first + 1 <= j + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          integer__last)
+<S>  New H21:  element(list, [i]) >= - 2147483648
+<S>  New H27:  element(list, [minindex]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H22:  element(list, [i]) <= 2147483647
+<S>  New H28:  element(list, [minindex]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 10 -> 
+          - 2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  9 <= j
+<S>  New H19:  i >= 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+%%%  Hypotheses H15 & H18 together imply that
+          j = 9.
+     H15 & H18 have therefore been deleted and a new H41 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H41).
+---  Eliminated hypothesis H4 (redundant, given H41).
+---  Eliminated hypothesis H14 (redundant, given H41).
+-S-  Eliminated hypothesis H41.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [minindex]) <= element(list, [9])
+     +++  New H42:  integer__size >= 0
+     +++  New H43:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_31.  @@@@@@@@@@
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H5 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H6 has been replaced by "true".  (It is already present, as H4).
+%%%  Simplified H7 on reading formula in, to give:
+     %%%  H7:  index__last - index__first >= system__min_int
+%%%  Simplified H8 on reading formula in, to give:
+     %%%  H8:  index__last - index__first <= system__max_int
+%%%  Simplified H9 on reading formula in, to give:
+     %%%  H9:  not 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first + 1 -> for_all(j_ : integer, 1 <= j_ and j_ <= 
+          index__last - index__first + 1 and i_ <= j_ -> element(list, [i_]) <= 
+          element(list, [j_])))
+>>>  Restructured hypothesis H9 into:
+     >>>  H9:  index__last - index__first <= 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  true
+<S>  New H7:  index__last - 1 >= system__min_int
+<S>  New H8:  index__last - 1 <= system__max_int
+<S>  New H9:  index__last <= 2
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last -> for_all(j_ 
+          : integer, 1 <= j_ and j_ <= index__last and i_ <= j_ -> element(
+          list, [i_]) <= element(list, [j_])))
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  true
+<S>  New H7:  9 >= system__min_int
+<S>  New H8:  9 <= system__max_int
+<S>  New H9:  false
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : 
+          integer, 1 <= j_ and j_ <= 10 and i_ <= j_ -> element(list, [i_]) <= 
+          element(list, [j_])))
+###  Established a contradiction [false-hypothesis] using hypothesis H9.
+***  PROVED VC.
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_32.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, 1 <= m_ and m_ <= i - 1 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= i - 1 and m_ <= n_ -> element(list, [m_]) 
+          <= element(list, [n_])))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H4).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H11 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H18 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H19 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H22 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as 
+          H16).
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H17).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as H6)
+          .
+%%%  Simplified H40 on reading formula in, to give:
+     %%%  H40:  index__last - index__first >= system__min_int
+%%%  Simplified H41 on reading formula in, to give:
+     %%%  H41:  index__last - index__first <= system__max_int
+%%%  Simplified H42 on reading formula in, to give:
+     %%%  H42:  not i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first + 1 -> for_all(j_ : integer, 1 <= j_ and j_ <= 
+          index__last - index__first + 1 and i_ <= j_ -> element(list, [i_]) <= 
+          element(list, [j_])))
+>>>  Restructured hypothesis H13 into:
+     >>>  H13:  index__last - index__first + 1 <= i + 1
+>>>  Restructured hypothesis H42 into:
+     >>>  H42:  index__last - index__first <= i + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H16:  element(list, [i]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H17:  element(list, [i]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  i >= 1
+<S>  New H5:  i >= 0
+<S>  New H13:  index__last <= i + 1
+<S>  New H40:  index__last - 1 >= system__min_int
+<S>  New H41:  index__last - 1 <= system__max_int
+<S>  New H42:  index__last - 1 <= i + 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last -> for_all(j_ 
+          : integer, 1 <= j_ and j_ <= index__last and i_ <= j_ -> element(
+          list, [i_]) <= element(list, [j_])))
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  i <= 10
+<S>  New H6:  i <= 9
+<S>  New H13:  9 <= i
+<S>  New H40:  9 >= system__min_int
+<S>  New H41:  9 <= system__max_int
+<S>  New H42:  8 <= i
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : 
+          integer, 1 <= j_ and j_ <= 10 and i_ <= j_ -> element(list, [i_]) <= 
+          element(list, [j_])))
+%%%  Hypotheses H6 & H13 together imply that
+          i = 9.
+     H6 & H13 have therefore been deleted and a new H43 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H11 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H18 (true-hypothesis).
+---  Eliminated hypothesis H19 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H22 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H42).
+---  Eliminated hypothesis H4 (redundant, given H43).
+---  Eliminated hypothesis H5 (redundant, given H42).
+---  Eliminated hypothesis H42 (redundant, given H43).
+-S-  Eliminated hypothesis H43.
+     This was achieved by replacing all occurrences of i by:
+          9.
+<S>  New H1:  for_all(m_ : integer, 1 <= m_ and m_ <= 8 -> for_all(n_ : 
+          integer, 1 <= n_ and n_ <= 8 and m_ <= n_ -> element(list, [m_]) <= 
+          element(list, [n_])))
+<S>  New H16:  element(list, [9]) >= - 2147483648
+<S>  New H17:  element(list, [9]) <= 2147483647
+     +++  New H44:  integer__size >= 0
+     +++  New H45:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_33.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H14 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H15 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H20 has been replaced by "true".  (It is already present, as 
+          H18).
+---  Hypothesis H21 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H27 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H28 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H25).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H26).
+---  Hypothesis H41 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H42 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H23).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H24).
+---  Hypothesis H47 has been replaced by "true".  (It is already present, as 
+          H45).
+---  Hypothesis H48 has been replaced by "true".  (It is already present, as 
+          H46).
+%%%  Simplified H49 on reading formula in, to give:
+     %%%  H49:  index__last - index__first >= system__min_int
+%%%  Simplified H50 on reading formula in, to give:
+     %%%  H50:  index__last - index__first <= system__max_int
+%%%  Simplified H51 on reading formula in, to give:
+     %%%  H51:  not i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first + 1 -> for_all(j_ : integer, 1 <= j_ and j_ <= 
+          index__last - index__first + 1 and i_ <= j_ -> element(update(update(
+          list, [i], element(list, [j])), [j], element(list, [i])), [i_]) <= 
+          element(update(update(list, [i], element(list, [j])), [j], element(
+          list, [i])), [j_])))
+>>>  Restructured hypothesis H22 into:
+     >>>  H22:  index__last - index__first + 1 <= j + 1
+>>>  Restructured hypothesis H51 into:
+     >>>  H51:  index__last - index__first <= i + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H25:  element(list, [i]) >= - 2147483648
+<S>  New H31:  element(list, [j]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H26:  element(list, [i]) <= 2147483647
+<S>  New H32:  element(list, [j]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H18:  j >= 0
+<S>  New H22:  index__last <= j + 1
+<S>  New H23:  i >= 1
+<S>  New H45:  i >= 0
+<S>  New H49:  index__last - 1 >= system__min_int
+<S>  New H50:  index__last - 1 <= system__max_int
+<S>  New H51:  index__last - 1 <= i + 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last -> for_all(j_ 
+          : integer, 1 <= j_ and j_ <= index__last and i_ <= j_ -> element(
+          update(update(list, [i], element(list, [j])), [j], element(list, [i]))
+          , [i_]) <= element(update(update(list, [i], element(list, [j])), [j], 
+          element(list, [i])), [j_])))
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H19:  j <= 9
+<S>  New H24:  i <= 10
+<S>  New H46:  i <= 9
+<S>  New H22:  9 <= j
+<S>  New H49:  9 >= system__min_int
+<S>  New H50:  9 <= system__max_int
+<S>  New H51:  8 <= i
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : 
+          integer, 1 <= j_ and j_ <= 10 and i_ <= j_ -> element(update(update(
+          list, [i], element(list, [j])), [j], element(list, [i])), [i_]) <= 
+          element(update(update(list, [i], element(list, [j])), [j], element(
+          list, [i])), [j_])))
+%%%  Hypotheses H19 & H22 together imply that
+          j = 9.
+     H19 & H22 have therefore been deleted and a new H52 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H14 (true-hypothesis).
+---  Eliminated hypothesis H15 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H20 (true-hypothesis).
+---  Eliminated hypothesis H21 (true-hypothesis).
+---  Eliminated hypothesis H27 (true-hypothesis).
+---  Eliminated hypothesis H28 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H41 (true-hypothesis).
+---  Eliminated hypothesis H42 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H47 (true-hypothesis).
+---  Eliminated hypothesis H48 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H52).
+---  Eliminated hypothesis H4 (redundant, given H52).
+---  Eliminated hypothesis H18 (redundant, given H52).
+---  Eliminated hypothesis H23 (redundant, given H51).
+---  Eliminated hypothesis H24 (redundant, given H46).
+---  Eliminated hypothesis H45 (redundant, given H51).
+-S-  Eliminated hypothesis H52.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [9]) < element(list, [minindex])
+<S>  New H31:  element(list, [9]) >= - 2147483648
+<S>  New H32:  element(list, [9]) <= 2147483647
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : 
+          integer, 1 <= j_ and j_ <= 10 and i_ <= j_ -> element(update(update(
+          list, [i], element(list, [9])), [9], element(list, [i])), [i_]) <= 
+          element(update(update(list, [i], element(list, [9])), [9], element(
+          list, [i])), [j_])))
+     +++  New H53:  integer__size >= 0
+     +++  New H54:  index__size >= 0
+
+
+@@@@@@@@@@  VC: procedure_selectionsort_34.  @@@@@@@@@@
+%%%  Simplified H1 on reading formula in, to give:
+     %%%  H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= j -> element(list, [
+          minindex]) <= element(list, [m_]))
+%%%  Simplified H2 on reading formula in, to give:
+     %%%  H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> integer__first <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+---  Hypothesis H7 has been replaced by "true".  (It is already present, as H5).
+---  Hypothesis H8 has been replaced by "true".  (It is already present, as H6).
+---  Hypothesis H9 has been replaced by "true".  (It is already present, as H3).
+---  Hypothesis H10 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H12 has been replaced by "true".  (It is already present, as H3)
+          .
+---  Hypothesis H13 has been replaced by "true".  (It is already present, as H4)
+          .
+---  Hypothesis H16 has been replaced by "true".  (It is already present, as 
+          H14).
+---  Hypothesis H17 has been replaced by "true".  (It is already present, as 
+          H15).
+---  Hypothesis H23 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H24 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H25 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H26 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H29 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H30 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H31 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H32 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H33 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H34 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H35 has been replaced by "true".  (It is already present, as 
+          H21).
+---  Hypothesis H36 has been replaced by "true".  (It is already present, as 
+          H22).
+---  Hypothesis H37 has been replaced by "true".  (It is already present, as H5)
+          .
+---  Hypothesis H38 has been replaced by "true".  (It is already present, as H6)
+          .
+---  Hypothesis H39 has been replaced by "true".  (It is already present, as 
+          H19).
+---  Hypothesis H40 has been replaced by "true".  (It is already present, as 
+          H20).
+---  Hypothesis H43 has been replaced by "true".  (It is already present, as 
+          H41).
+---  Hypothesis H44 has been replaced by "true".  (It is already present, as 
+          H42).
+%%%  Simplified H45 on reading formula in, to give:
+     %%%  H45:  index__last - index__first >= system__min_int
+%%%  Simplified H46 on reading formula in, to give:
+     %%%  H46:  index__last - index__first <= system__max_int
+%%%  Simplified H47 on reading formula in, to give:
+     %%%  H47:  not i + 1 < index__last - index__first
+%%%  Simplified C1 on reading formula in, to give:
+     %%%  C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last - 
+          index__first + 1 -> for_all(j_ : integer, 1 <= j_ and j_ <= 
+          index__last - index__first + 1 and i_ <= j_ -> element(update(update(
+          list, [i], element(list, [minindex])), [minindex], element(list, [i]))
+          , [i_]) <= element(update(update(list, [i], element(list, [minindex]))
+          , [minindex], element(list, [i])), [j_])))
+>>>  Restructured hypothesis H11 into:
+     >>>  H11:  element(list, [minindex]) <= element(list, [j])
+>>>  Restructured hypothesis H18 into:
+     >>>  H18:  index__last - index__first + 1 <= j + 1
+>>>  Restructured hypothesis H47 into:
+     >>>  H47:  index__last - index__first <= i + 1
+-S-  Applied substitution rule selectionsor_rules(2).
+     This was achieved by replacing all occurrences of integer__first by:
+          - 2147483648.
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= integer__last)
+<S>  New H21:  element(list, [i]) >= - 2147483648
+<S>  New H27:  element(list, [minindex]) >= - 2147483648
+-S-  Applied substitution rule selectionsor_rules(3).
+     This was achieved by replacing all occurrences of integer__last by:
+          2147483647.
+<S>  New H22:  element(list, [i]) <= 2147483647
+<S>  New H28:  element(list, [minindex]) <= 2147483647
+<S>  New H2:  for_all(i___1 : integer, index__first <= i___1 and i___1 <= 
+          index__last -> - 2147483648 <= element(list, [i___1]) and element(
+          list, [i___1]) <= 2147483647)
+-S-  Applied substitution rule selectionsor_rules(7).
+     This was achieved by replacing all occurrences of index__first by:
+          1.
+<S>  New H3:  j >= 1
+<S>  New H5:  minindex >= 1
+<S>  New H14:  j >= 0
+<S>  New H18:  index__last <= j + 1
+<S>  New H19:  i >= 1
+<S>  New H41:  i >= 0
+<S>  New H45:  index__last - 1 >= system__min_int
+<S>  New H46:  index__last - 1 <= system__max_int
+<S>  New H47:  index__last - 1 <= i + 1
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= index__last -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= index__last -> for_all(j_ 
+          : integer, 1 <= j_ and j_ <= index__last and i_ <= j_ -> element(
+          update(update(list, [i], element(list, [minindex])), [minindex], 
+          element(list, [i])), [i_]) <= element(update(update(list, [i], 
+          element(list, [minindex])), [minindex], element(list, [i])), [j_])))
+-S-  Applied substitution rule selectionsor_rules(8).
+     This was achieved by replacing all occurrences of index__last by:
+          10.
+<S>  New H4:  j <= 10
+<S>  New H6:  minindex <= 10
+<S>  New H15:  j <= 9
+<S>  New H20:  i <= 10
+<S>  New H42:  i <= 9
+<S>  New H18:  9 <= j
+<S>  New H45:  9 >= system__min_int
+<S>  New H46:  9 <= system__max_int
+<S>  New H47:  8 <= i
+<S>  New H2:  for_all(i___1 : integer, 1 <= i___1 and i___1 <= 10 -> - 
+          2147483648 <= element(list, [i___1]) and element(list, [i___1]) <= 
+          2147483647)
+<S>  New C1:  for_all(i_ : integer, 1 <= i_ and i_ <= 10 -> for_all(j_ : 
+          integer, 1 <= j_ and j_ <= 10 and i_ <= j_ -> element(update(update(
+          list, [i], element(list, [minindex])), [minindex], element(list, [i]))
+          , [i_]) <= element(update(update(list, [i], element(list, [minindex]))
+          , [minindex], element(list, [i])), [j_])))
+%%%  Hypotheses H15 & H18 together imply that
+          j = 9.
+     H15 & H18 have therefore been deleted and a new H48 added to this effect.
+---  Eliminated hypothesis H7 (true-hypothesis).
+---  Eliminated hypothesis H8 (true-hypothesis).
+---  Eliminated hypothesis H9 (true-hypothesis).
+---  Eliminated hypothesis H10 (true-hypothesis).
+---  Eliminated hypothesis H12 (true-hypothesis).
+---  Eliminated hypothesis H13 (true-hypothesis).
+---  Eliminated hypothesis H16 (true-hypothesis).
+---  Eliminated hypothesis H17 (true-hypothesis).
+---  Eliminated hypothesis H23 (true-hypothesis).
+---  Eliminated hypothesis H24 (true-hypothesis).
+---  Eliminated hypothesis H25 (true-hypothesis).
+---  Eliminated hypothesis H26 (true-hypothesis).
+---  Eliminated hypothesis H29 (true-hypothesis).
+---  Eliminated hypothesis H30 (true-hypothesis).
+---  Eliminated hypothesis H31 (true-hypothesis).
+---  Eliminated hypothesis H32 (true-hypothesis).
+---  Eliminated hypothesis H33 (true-hypothesis).
+---  Eliminated hypothesis H34 (true-hypothesis).
+---  Eliminated hypothesis H35 (true-hypothesis).
+---  Eliminated hypothesis H36 (true-hypothesis).
+---  Eliminated hypothesis H37 (true-hypothesis).
+---  Eliminated hypothesis H38 (true-hypothesis).
+---  Eliminated hypothesis H39 (true-hypothesis).
+---  Eliminated hypothesis H40 (true-hypothesis).
+---  Eliminated hypothesis H43 (true-hypothesis).
+---  Eliminated hypothesis H44 (true-hypothesis).
+---  Eliminated hypothesis H3 (redundant, given H48).
+---  Eliminated hypothesis H4 (redundant, given H48).
+---  Eliminated hypothesis H14 (redundant, given H48).
+---  Eliminated hypothesis H19 (redundant, given H47).
+---  Eliminated hypothesis H20 (redundant, given H42).
+---  Eliminated hypothesis H41 (redundant, given H47).
+-S-  Eliminated hypothesis H48.
+     This was achieved by replacing all occurrences of j by:
+          9.
+<S>  New H1:  for_all(m_ : integer, i + 1 <= m_ and m_ <= 9 -> element(list, [
+          minindex]) <= element(list, [m_]))
+<S>  New H11:  element(list, [minindex]) <= element(list, [9])
+     +++  New H49:  integer__size >= 0
+     +++  New H50:  index__size >= 0
+

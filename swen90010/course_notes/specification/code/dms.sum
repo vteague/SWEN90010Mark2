@@ -1,0 +1,171 @@
+//A Sum specification of the Dependency Management System
+module DMS is
+
+  [DATA];
+
+  schema state is
+    dec
+      nodes : finite DATA;
+      ddo   : DATA <--> DATA;
+      tc    : DATA <--> DATA
+    pred
+      dom(ddo) subset nodes and 
+      //Note the inconsistency between the Sum typechecker and
+      // tc = t_closure(ddo) and 
+      tc = ddo+ and    
+      not(exists x : DATA @ (x,x) in tc)
+    end state;
+
+  schema init is
+    pred
+      nodes' = {};
+      ddo' = {}
+    end init;
+
+  op schema noNodes is
+    dec
+      result! : bool
+    pred
+      result! <=> nodes = {};
+      changes_only {}
+  end noNodes;
+
+  op schema isNode is
+    dec
+      x? : DATA;
+      result! : bool
+    pred
+      result! <=> x? in nodes;
+      changes_only {}
+  end isNode;
+
+  op schema addNode is
+    dec
+      x? : DATA 
+    pred
+      pre( x? not_in nodes );
+      nodes' = nodes union {x?} and
+      changes_only {nodes}
+  end addNode;
+
+  op schema removeNode is
+    dec
+      x? : DATA
+    pred
+      pre( x? in nodes diff ran ddo );
+      nodes' = nodes diff {x?} and
+      ddo' = {x?} dom_subtract ddo and
+      changes_only {nodes, ddo, tc}
+  end removeNode;
+
+  op schema noDependencies is
+    dec
+      result! : bool
+    pred
+      result! <=> ddo = {};
+      changes_only {}
+  end noDependencies;
+
+  op schema dependedUpon is
+    dec
+      x? : DATA;
+      result! : bool
+    pred
+      pre( x? in nodes );
+      result! <=> x? in ran ddo;
+      changes_only {}
+  end dependedUpon;
+
+  op schema isDependency is
+    dec
+      x? : DATA;
+      y? : DATA;
+      result! : bool
+    pred
+      pre({x?,y?} subset nodes);
+      result! <=> (x?,y?) in ddo;
+      changes_only {}
+  end isDependency;
+
+  op schema canAdd is
+    dec
+      x? : DATA;
+      y? : DATA;
+      result! : bool
+    pred
+      pre({x?,y?} subset nodes);
+      result! <=> ( (y?,x?) not_in tc and x? /= y?);
+      changes_only {}
+  end canAdd;
+
+  op schema addDependency is
+    dec
+      x? : DATA;
+      y? : DATA
+    pred
+      pre( {x?, y?} subset nodes and x? /= y? and (y?, x?) not_in tc);
+      ddo' = ddo union {(x?, y?)} and 
+      changes_only {ddo,tc}
+    end addDependency;
+
+  op schema removeDependency is 
+    dec
+      x? : DATA;
+      y? : DATA
+    pred
+      pre( (x?, y?) in ddo );
+      ddo' = ddo diff {(x?, y?)} and 
+      changes_only {ddo,tc}
+    end removeDependency;
+
+  op schema dependents is
+    dec
+      x? : DATA;
+      ns! : finite DATA
+    pred
+      pre( x? in nodes );
+      ns! = { dec n : nodes | (n,x?) in tc };
+      changes_only {}
+  end dependents;
+
+  op schema supporters is
+    dec
+      x? : DATA;
+      ns! : finite DATA
+    pred
+      pre( x? in nodes );
+      ns! = { dec n : nodes | (x?,n) in tc };
+      changes_only {}
+  end supporters; 
+
+  op schema ultSupporters is
+    dec
+      x? : DATA;
+      ns! : finite DATA
+    pred
+      pre( x? in nodes );
+      ns! = { dec n : nodes | (x?,n) in tc and n not_in dom ddo };
+      changes_only {}
+  end ultSupporters;
+
+  op schema candidateSupporters is
+    dec
+      x?  : DATA;
+      cs! : finite DATA
+    pred
+      pre( x? in nodes );
+      cs! = { dec n : nodes | (n,x?) not_in tc and n /= x? };
+      changes_only {}
+    end candidateSupporters;
+
+  op schema someDirectDependent is
+    dec
+      x? : DATA;
+      n! : DATA
+    pred
+      pre( x? in ran ddo );
+      (n!,x?) in ddo;
+      changes_only {}
+  end someDirectDependent
+
+end DMS

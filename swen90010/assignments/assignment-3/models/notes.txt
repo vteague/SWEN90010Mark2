@@ -1,0 +1,5 @@
+- Only one input (set dosage)
+- modular, but state variables used to communicate (not a program... a specification!)
+- some stuff only for animation: real specification is quite loose
+- change some values for animation (e.g. initial dosage, real to ints)
+- changes_only not work for schemas.

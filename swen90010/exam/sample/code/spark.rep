@@ -1,0 +1,87 @@
+           *******************************************************
+                         Report of SPARK Examination
+                              Examiner GPL 2011
+             Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.
+           *******************************************************
+
+
+                        DATE : 27-MAY-2013 13:49:21.66
+
+Options:
+    noswitch
+    noindex_file
+    nowarning_file
+    notarget_compiler_data
+    config_file=spark.cfg
+    source_extension=ada
+    listing_extension=lst
+    nodictionary_file
+    report_file=spark.rep
+    nohtml
+    vcg
+    nostatistics
+    fdl_identifiers=accept
+    flow_analysis=information
+    language=95
+    profile=sequential
+    annotation_character=#
+    rules=none
+    error_explanations=off
+    justification_option=full
+    output_directory=.
+    output_directory (actual)=/home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/
+
+Selected files:
+   sort.ads
+   sort.adb
+
+
+No Index files were used
+
+
+No Meta Files used
+
+
+Full warning reporting selected
+
+
+Target configuration file:
+Line
+   1  package Standard is
+   2  
+   3      type Integer is range -2**31 .. 2**31-1;
+   4      type Short_Short_Integer is range -2**7 .. 2**7-1;
+   5      type Short_Integer is range -2**15 .. 2**15-1;
+   6      type Long_Integer is range -2**31 .. 2**31-1;
+   7      type Long_Long_Integer is range -2**63 .. 2**63-1;
+   8  
+   9  end Standard;
+
+
+Source Filename(s) used were:
+   /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.ads
+   /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.adb
+
+
+
+Source Filename:   /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.ads
+Listing Filename:  /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.lst
+
+   Unit name:  Sort
+   Unit type:  package specification
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+Source Filename:   /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.adb
+Listing Filename:  /home/tmill/subjects/swen90010/repository/trunk/exam/sample/code/sort.lst
+
+   Unit name:  Sort
+   Unit type:  package body
+   Unit has been analysed, any errors are listed below.
+
+No errors found
+
+
+--End of file--------------------------------------------------

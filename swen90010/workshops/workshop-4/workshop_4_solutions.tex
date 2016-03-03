@@ -1,0 +1,101 @@
+\documentclass{article} 
+
+\def\rootdir{../}
+
+\input{../packages}
+\begin{document}
+
+%----------------------------------------------------------------------
+%    Title Page
+%
+
+\tutorialsolutionstitle{4}
+\lstset{language=}
+\section*{Problem-solving tasks}
+
+\begin{enumerate}
+
+ \item 
+\begin{lstlisting}
+ NON_PRIMES == {n : (2..100) | exists s,t : (2..50) @ s * t = n}
+\end{lstlisting}
+
+ \item 
+\begin{lstlisting}
+ PRIMES == (2..100) diff NON_PRIMES
+\end{lstlisting}
+ 
+ \item 
+
+\begin{lstlisting}
+ not (exists n : PRIMES @ n > 2 and n mod 2 = 0)
+\end{lstlisting}
+
+Alternatively, this could be phrased as ``all numbers in the set \texttt{PRIMES} are odd'':
+
+\vspace{2mm}
+
+\begin{lstlisting}
+ forall n : PRIMES @ (n > 2 => n mod 2 = 1)
+\end{lstlisting}
+
+\item The expression \texttt{square} evaluates to the following (when maxint is 1000):
+
+\vspace{2mm}
+
+\begin{lstlisting}
+{(0, 0), (1, 1), (2, 4), (3, 9), (4, 16), (5, 25), (6, 36), (7, 49),
+ (8, 64), (9, 81), (10, 100), (11, 121), (12, 144), (13, 169), 
+ (14, 196), (15, 225), (16, 256), (17, 289), (18, 324), (19, 361), 
+ (20, 400), (21, 441),  (22, 484), (23, 529), (24, 576), (25, 625), 
+ (26, 676), (27, 729), (28, 784), (29, 841), (30, 900), (31, 961)}
+\end{lstlisting}
+
+\item The following will return true if and only if there are no duplicates in a sequence of integers:
+
+\vspace{2mm}
+
+\begin{lstlisting}
+axiom is
+dec
+  no_duplicates : (seq int) --> bool
+pred
+  forall s : seq int @ no_duplicates(s) <=> 
+      not (exists i,j : dom(s) @ i /= j and s(i) = s(j))
+end
+\end{lstlisting}
+
+This states that for \texttt{no\_duplicates(s)} to hold for a sequence \texttt{s}, then there cannot exist two non-equal (\texttt{i /= j}) indices in the sequence that map to the same element value.
+
+Let's run a few evaluations through Possum to convince ourselves:
+
+\vspace{2mm}
+
+\begin{lstlisting}
+2 sum:  no_duplicates(<>)    //empty sequence
+true
+
+3 sum:  no_duplicates(<1>)   //sequence with one element
+true
+
+4 sum:  no_duplicates(<1,2,3>)  //sequence with no duplicates
+true
+
+5 sum:  no_duplicates(<1,1>)   //2 elements, both duplicates
+false
+
+6 sum:  no_duplicates(<1,2,3,1>) //more than 2 elements, with duplicates
+false
+
+7 sum:  no_duplicates(<1,2,3,3,1>) //more than one pair of duplicates
+false
+
+8 sum:  no_duplicates(<1,2,2,2,3>) //more than two duplicates
+false
+\end{lstlisting}
+
+Phew!
+
+\end{enumerate}
+
+\end{document}

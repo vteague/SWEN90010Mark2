@@ -1,0 +1,8 @@
+Swapping                 spec is in    swapping.ads
+Swapping                 body is in    swapping.adb
+IncorrectReassignment    spec is in    incorrectreassignment.ads
+IncorrectReassignment    body is in    incorrectreassignment.adb
+WeirdSwap		 spec is in    weirdswap.ads
+WeirdSwap		 body is in    weirdswap.adb
+InitialiseLocal		 spec is in    initialiselocal.ads
+InitialiseLocal		 body is in    initialiselocal.adb

@@ -1,0 +1,90 @@
+// set difference and union, to overcome a small bug in Possum
+axiom[X] is
+dec
+        setdiff : finite X cross finite X --> finite X;
+	setunion : finite X cross finite X --> finite X
+pred
+        forall s, t : finite X @
+                setdiff(s,t) = {x : s | x not_in t};
+	forall s, t : finite X @ 
+		setunion(s,t) = {x : X | x in s or x in t}
+end;
+
+DATA == (1 .. 100);
+
+module Graph is
+
+  //Maintains a set of nodes and edges between ndoes
+  schema state is
+    dec
+      nodes : finite DATA;
+      edges : DATA <--> DATA
+    pred
+      //Must be a node to be part of an edge
+      dom(edges) union ran(edges) subset nodes;
+
+      //No edges between a node and itself
+      not(exists x : DATA @ (x,x) in edges)
+  end state;
+
+  schema init is
+    pred
+      nodes' = {};
+      edges' = {}
+  end init;
+
+  op schema AddNode is
+    dec
+      d? : DATA
+    pred
+      pre( d? not_in nodes );
+//      nodes' = nodes union {d?};
+      nodes' = setunion(nodes, {d?});
+      changes_only {nodes}
+  end AddNode;
+
+  op schema RemoveNode is
+    dec
+      d? : DATA
+    pred 
+      //Cannot remove a node if it forms part of an edge
+      pre( not( exists n : nodes @ (n,d?) in edges or (d?,n) in edges) );
+//      nodes' = nodes diff {d?};
+      nodes' = setdiff(nodes, {d?});
+      changes_only {nodes}
+  end RemoveNode;
+
+  op schema AddEdge is
+    dec
+      x?, y? : DATA
+    pred
+      //Must be a node alread, no self nodes, and no cycles
+      pre( {x?, y?} subset nodes and x? /= y? and (x?,y?) not_in edges);
+//      edges' = edges union {(x?, y?)};
+      edges' = setunion(edges, {(x?,y?)});
+      changes_only {edges}
+  end AddEdge;
+
+  op schema RemoveEdge is
+    dec
+      x?, y? : DATA
+    pred
+      pre( (x?, y?) in edges );
+//      edges' = edges diff {(x?, y?)};
+      edges' = setdiff(edges, {(x?, y?)});
+      changes_only {edges}
+  end RemoveEdge;
+
+  //Find a path (sequence of edges) between two paths on the graph
+  op schema FindPath is
+    dec
+      x?, y? : DATA;
+      s! : iseq nodes
+    pred
+      pre( (x?,y?) in edges+ and x? /= y?);
+      head(s!) = x? and last(s!) = y?;
+      forall i : 1..#s!-1 @ (s!(i), s!(i+1)) in edges;
+      changes_only{}
+  end FindPath
+end Graph
+

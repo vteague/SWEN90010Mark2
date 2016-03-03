@@ -1,0 +1,18 @@
+axiom is
+dec
+  leap_years : power (1800 .. 2100)
+pred
+  leap_years = {y : 1800 .. 2100 | y mod 400 = 0 or 
+                 (y mod 4 = 0 and not(y mod 100 = 0))}
+end;
+
+schema Date is
+dec
+  day : 1 .. 31;
+  month : 1 .. 12;
+  year : 1800 .. 2100
+pred
+  month in {4,6,9,11} => day in 0 .. 30;
+  month = 2 and year in leap_years => day in 0 .. 29;
+  month = 2 and year not_in leap_years => day in 0 .. 28
+end Date

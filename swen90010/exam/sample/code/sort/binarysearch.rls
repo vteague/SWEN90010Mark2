@@ -1,0 +1,27 @@
+           /*********************************************************/
+                           /*Proof Rule Declarations*/
+                              /*Examiner GPL 2011*/
+             /*Copyright (C) 2011 Altran Praxis Limited, Bath, U.K.*/
+           /*********************************************************/
+
+
+                        /*DATE : 27-MAY-2013 13:49:21.65*/
+
+                        /*procedure Sort.BinarySearch*/
+
+
+rule_family binarysearch_rules:
+     X      requires [X:any] &
+     X <= Y requires [X:ire, Y:ire] &
+     X >= Y requires [X:ire, Y:ire].
+
+binarysearch_rules(1): integer__size >= 0 may_be_deduced.
+binarysearch_rules(2): integer__first may_be_replaced_by -2147483648.
+binarysearch_rules(3): integer__last may_be_replaced_by 2147483647.
+binarysearch_rules(4): integer__base__first may_be_replaced_by -2147483648.
+binarysearch_rules(5): integer__base__last may_be_replaced_by 2147483647.
+binarysearch_rules(6): index__size >= 0 may_be_deduced.
+binarysearch_rules(7): index__first may_be_replaced_by 1.
+binarysearch_rules(8): index__last may_be_replaced_by 10.
+binarysearch_rules(9): index__base__first may_be_replaced_by -2147483648.
+binarysearch_rules(10): index__base__last may_be_replaced_by 2147483647.

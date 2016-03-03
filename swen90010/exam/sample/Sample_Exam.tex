@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+
+\input{../exam-header}
+
+\usepackage{enumerate}
+\usepackage{fullpage}
+
+
+%%--------------------------------------------------------------------
+%%
+%%        Pages
+
+%%
+%%        Counting Parts
+
+\newcounter{epart}
+\newcommand{\epart}[1]{%[2]{
+        \stepcounter{epart}
+%       \vspace{1ex}
+%       \par
+%       \noindent
+        \section*{Part \Alph{epart}~--~#1} %\hfill
+                %{\large [{#1} marks, {#2} mins]}}
+      }
+
+%%--------------------------------------------------------------------
+%%
+%%        Counting questions
+
+%\newcounter{question}%[epart]
+\renewcommand{\question}[1]{
+        \stepcounter{question}
+        \subsection*{Question \thequestion \hfill
+          {\normalsize [{#1} Marks]}} }
+
+
+%%--------------------------------------------------------------------
+%%
+%%        The Exam!
+
+
+\begin{document}
+%%
+%%--------------------------------------------------------------------
+%%
+%%        The University Crest
+%%
+\vspace*{1cm}
+\begin{center}
+{\Large\bf SWEN90010 Sample exam questions}
+\end{center}
+%%
+%%--------------------------------------------------------------------
+%%
+%%        Instructions
+%%
+
+\input{Sample_Exam_Body}
+
+
+\end{document}
+

@@ -1,0 +1,116 @@
+V "GNAT Lib v2014"
+A -g
+A -gnatc
+A -mtune=generic
+A -march=pentiumpro
+P ZX
+
+RN
+RV NO_ELABORATION_CODE
+
+U impulsegenerator%b	impulsegenerator.adb	082059de OO PK
+W heart%s		heart.adb		heart.ali
+W randomnumber%s	randomnumber.adb	randomnumber.ali
+
+U impulsegenerator%s	impulsegenerator.ads	736c8d3a EE OO PK
+W heart%s		heart.adb		heart.ali
+W measures%s		measures.adb		measures.ali
+
+D heart.ads		20150516044454 04d2b5a0 heart%s
+D impulsegenerator.ads	20150516044454 93990709 impulsegenerator%s
+D impulsegenerator.adb	20150516044454 f18d3d15 impulsegenerator%b
+D measures.ads		20150516044454 e4273f93 measures%s
+D randomnumber.ads	20150516044454 6ee6d662 randomnumber%s
+D system.ads		20140406181356 bd760655 system%s
+X 1 heart.ads
+8K9*Heart 50e10 2|2w6 47r32 3|2w6 39r32 40r21 48r10
+12R9*HeartType 22e17 2|47r38 3|39r38 40r27
+15i10*Rate{4|17I12} 2|49r26 49r41
+18i10*Impulse{4|11I12} 2|49r54 49r72
+34U14*SetImpulse 3|48s16
+X 2 impulsegenerator.ads
+7K9*ImpulseGenerator 51l5 51e21 3|4b14 53l5 53t21
+12R9*GeneratorType 20e17 23r35 27r36 31r37 35r33 39r44 46r34 3|8r35 14r36
+. 19r37 24r33 29r44 38r34
+16i10*Impulse{4|11I12} 24r57 41r54 3|11m17 34m20 48r50
+19b10*IsOn{boolean} 24r30 28r30 32r34 36r44 41r34 43r37 48r37 3|10m17 16m17
+. 21m17 26r24 33r20 43r20
+23U14*Init 23<19 3|8b14 12l8 12t12
+23r19 Generator{12R9} 24r20 24r47 3|8b19 10m7 11m7
+27U14*On 27=17 3|14b14 17l8 17t10
+27r17 Generator{12R9} 28r20 3|14b17 16m7
+31U14*Off 31=18 3|19b14 22l8 22t11
+31r18 Generator{12R9} 32r24 3|19b18 21m7
+35V13*IsOn{boolean} 35>18 36r20 3|24b13 27l8 27t12
+35r18 Generator{12R9} 36r34 3|24b18 26r14
+39U14*SetImpulse 39=25 40>25 3|29b14 36l8 36t18
+39r25 Generator{12R9} 41r24 41r44 43r27 43r47 43r59 3|29b25 33r10 34m10
+40i25 J{4|11I12} 41r64 3|30b25 34r31
+46U14*Tick 46>19 47=19 3|38b14 51l8 51t12
+46r19 Generator{12R9} 48r27 3|38b19 43r10 48r40
+47r19 Hrt{1|12R9} 49r22 49r33 49r50 49r64 3|39b19 47r25 49m10
+X 3 impulsegenerator.adb
+40r7 HrtVariable{1|12R9} 47m10 48m27 48r27 49r17
+X 4 measures.ads
+3K9*Measures 2|1w6 16r20 40r32 3|11r28 30r32 4|33e13
+11I12*Joules{integer} 2|16r29 40r41 3|11r37 30r41
+17I12*BPM{integer}
+X 5 randomnumber.ads
+2K9*RandomNumber 3|1w6 5|34e17
+FD 1 heart.ads
+FS .1 8K9 heart
+FS .2 26U14 heart__init
+FS .3 34U14 heart__setimpulse
+FS .4 38V13 heart__getimpulse
+FS .5 43U14 heart__getrate
+FS .6 48U14 heart__tick
+FD 2 impulsegenerator.ads
+FS .1 7K9 impulsegenerator
+FS .2 23U14 impulsegenerator__init
+FS .3 27U14 impulsegenerator__on
+FS .4 31U14 impulsegenerator__off
+FS .5 35V13 impulsegenerator__ison
+FS .6 39U14 impulsegenerator__setimpulse
+FS .7 46U14 impulsegenerator__tick
+FD 3 impulsegenerator.adb
+FS .1 4K14 standard__impulsegenerator -> 2.1
+FS .2 8U14 impulsegenerator__init -> 2.2
+FS .3 14U14 impulsegenerator__on -> 2.3
+FS .4 19U14 impulsegenerator__off -> 2.4
+FS .5 24V13 impulsegenerator__ison -> 2.5
+FS .6 29U14 impulsegenerator__setimpulse -> 2.6
+FS .7 38U14 impulsegenerator__tick -> 2.7
+FD 4 measures.ads
+FS .1 3K9 measures
+FS .2 20V13 measures__limit
+FS .3 26V13 measures__limitbpm
+FS .4 30V13 measures__limitjoules
+FD 5 randomnumber.ads
+FS .1 2K9 randomnumber
+FS .2 7V13 randomnumber__normalinteger
+FS .3 12V13 randomnumber__normalfloat
+FS .4 17V13 randomnumber__uniforminteger
+FS .5 22V13 randomnumber__uniformfloat
+FS .6 27V13 randomnumber__uniformfloatwitherror
+FS .7 32V13 randomnumber__uniformintegerwitherror
+FD 6 system.ads
+FX 1 heart.ads .1 heart
+F 34*14 heart__setimpulse 3|.7:48s16
+FX 2 impulsegenerator.ads .2 impulsegenerator__init
+F 23<19 impulsegenerator__init__generator 24r20 24r47 3|.2:10m7 11m7
+FX 2 impulsegenerator.ads .3 impulsegenerator__on
+F 27=17 impulsegenerator__on__generator 28r20 3|.3:16m7
+FX 2 impulsegenerator.ads .4 impulsegenerator__off
+F 31=18 impulsegenerator__off__generator 32r24 3|.4:21m7
+FX 2 impulsegenerator.ads .5 impulsegenerator__ison
+F 35>18 impulsegenerator__ison__generator 36c34 3|.5:26c14
+FX 2 impulsegenerator.ads .6 impulsegenerator__setimpulse
+F 39=25 impulsegenerator__setimpulse__generator 41r24 41r44 43r27 43r47 43r59
+. 3|.6:33r10 34m10
+F 40>25 impulsegenerator__setimpulse__j 41c64 3|.6:34c31
+FX 2 impulsegenerator.ads .7 impulsegenerator__tick
+F 46>19 impulsegenerator__tick__generator 48c27 3|.7:43c10 48c40
+F 47=19 impulsegenerator__tick__hrt 49r22 49r33 49r50 49r64 3|.7:47r25 49m10
+FX 3 impulsegenerator.adb .7 impulsegenerator__tick
+F 40*7 impulsegenerator__tick__hrtvariable 47m10 48m27 48r27 49r17
+

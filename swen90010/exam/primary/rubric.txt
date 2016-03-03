@@ -1,0 +1,79 @@
+Question 1 [13 marks]
+---------------------
+
+(a) Three inputs failure [2 marks]
+(b) Calculate status failure [1 mark]
+(c) Voting failure [1 mark]
+(d) Correct identification of necessary events [2 marks]
+(e) Correct identification of sufficient events [2 marks]
+(f) Good justification of (d) and (e) [2 marks]
+(g) Correct breakdown [1 marks]
+(h) Joules "output" failure [1 mark]
+(i) Correct syntax [1 mark]
+
+Question 2 [12 marks]
+---------------------
+
+[6 marks]
+(a) Correct preconditions (both operations) (1 mark)
+    Correct adding/removing of messages to queues -- including per process ID (2 marks)
+    Correct compositions (2 marks)
+
+[6 marks]
+(b) Correct way of calculating expected parity (1 mark)
+    Elegant solution for calculating expected parity (1 mark)
+    Correct comparison of real and expected parity (1 mark)
+    Other correct (process ID, removing message, etc) (1 mark)
+    Correct preconditions (1 mark)
+    Correct composition (1 mark)
+
+Question 3 [8 marks]
+--------------------
+
+1. Fault detection: 
+   + Both can detect faults [2 marks]
+   + N=3 can detect 2 faults, while N=2 can only detect 1 [1 mark]
+
+2. Fault tolerance:
+   + N=2 cannot tolerate faults [1 mark]
+   + N=3 can tolerate at most one fault [1 mark]
+
+3. Voting systems: 
+   + N=2: cannot use any voting system, because no majority can be reached [1 marks]
+   + N=3: median and majority can be used [1 mark]
+   + N=3: k-plurality with k=2 [1 mark]
+
+
+Question 4 [6 marks]
+--------------------
+
+The correct answer should be:
+
+11111000-0010
+
+So the 2nd parity bit is incorrect. As such, P1 is the faulty bit.
+
+(a) State that there is an error [1 mark]
+(a) Calculate the correct parity code [2 marks]
+(c) Find the bit in error [2 marks]
+(d) Good working [1 mark]
+
+Question 5 [1 mark]
+-------------------
+
+Ada Countess of Lovelace. First computer programmer. [1 mark]
+
+Question 6 [11 marks]
+---------------------
+
+(a) Note that the program does NOT establish contract [1 mark]
+(b) Correct proof that precondition implies weakest precondition [1 mark]
+(c) Correct application of loop rule [1 mark]
+(e) Correct proof that loop invariant is maintained [1 mark]
+(f) Correct proof that loop invariant implies weakest pre of remainder (NOT postcondition) [1 mark]
+(g) Correct application of branch rule [2 marks]
+(h) Correct application of sequence rule throughout [2 mark]
+(i) Correct application of array rule [1 mark]
+(j) Good working [1 mark]
+
+

@@ -1,0 +1,213 @@
+%---------------------------------------------------------------------
+%    Operators overriden by packages
+%
+
+\newcommand{\divides}{\div}
+
+%---------------------------------------------------------------------
+%    Packages
+%
+%\usepackage{times}
+%\usepackage{fullpage}
+%\usepackage{moreverb}
+%\usepackage{fancybox}
+%usepackage{zed-csp}
+\usepackage{amssymb}
+\usepackage{epic,eepic}
+\usepackage{epsfig}
+%\usepackage{citesort}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{latexsym}
+\usepackage{verbatim}
+\usepackage{ifthen}
+\usepackage{version}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{../../course_notes/sty/alloy}
+
+
+%----------------------------------------------------------------------
+%      Style parameters
+%
+
+\sloppy
+
+\oddsidemargin  -1.0cm          % (subtracted 1inch bias)
+\evensidemargin -1.0cm          %
+%\topmargin      -1.0cm  % (adjusted for printer bias)
+%\headheight      .00in  % (no headers)
+%\headsep         .5in   % (top margin + headers + skip)
+%\footheight     12.0pt  
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0cm}
+
+% The 75pt setting effectively hides all footers
+% \footskip       75.0pt  
+%\footskip       24.0pt
+
+\textheight     23cm  % (instructions: 9 1/8" min, 9 7/16" max)
+\textwidth      18cm  % 2*3.33 + .33 = 6.99
+
+%----------------------------------------------------------------------
+%    Counters
+%
+\newcounter{a}
+\newcounter{b}
+\newcounter{c}
+\setcounter{a}{0}
+\setcounter{b}{0}
+\setcounter{c}{0}
+
+\setcounter{section}{10}
+
+%----------------------------------------------------------------------
+%    Fonts
+%
+\newcommand{\textsb}[1]{{\upshape\bfseries\sffamily #1}}
+
+
+%----------------------------------------------------------------------
+%    Commands
+%
+
+\newcommand{\homepage}{\symbol{126}}
+\newcommand{\email}{\symbol{64}}
+\newcommand{\yes}{\ding{51}}
+\newcommand{\no}{\ding{55}}
+\newcommand{\Z}{\textbf{Z}}
+\newcommand{\msubseq}{\; \mbox{subseq} \;}
+\newcommand{\V}{\verb}
+\newcommand{\HL}[1]{\textsf{#1}}
+\newcommand{\nPage}{\newpage\mbox{}\\\newpage\mbox{}\\\newpage}
+
+\newcommand{\LA}{\ensuremath{\langle}}                  % Math mode
+\newcommand{\RA}{\ensuremath{\rangle}}                  % Math mode
+\newcommand{\sEmpty}{\ensuremath{\LA\RA}}               % Math mode
+\newcommand{\edelta}{\ensuremath{\hat{\delta}}}         % Math mode
+\newcommand{\elambda}{\ensuremath{\hat{\lambda}}}       % Math mode
+\newcommand{\ldelta}{\ensuremath{\delta_{\lambda}}}     % Math mode
+%\newcommand{\TR}{\ensuremath{\bullet}}                 % Math mode
+\newcommand{\TB}{\ensuremath{\longrightarrow}}          % Math mode
+\newcommand{\by}{\ensuremath{\times}}                   % Math mode
+\newcommand{\ra}{\ensuremath{\rightarrow}}              % Math mode
+\newcommand{\dra}{\ensuremath{\Rightarrow}}             % Math mode
+\newcommand{\LT}{\ensuremath{\lambda-}}                 % Math mode
+\newcommand{\OV}[1]{\ensuremath{\overline{#1}}}         % Math mode
+\newcommand{\OH}[1]{\ensuremath{\hat{#1}}}              % Math mode
+\newcommand{\TA}{\ensuremath{\tau}-action}
+%\newcommand{\BS}{\ensuremath{\backslash}}               % Math mode
+
+\newcommand{\cA}{\ensuremath{{\cal A}}}                 % Math mode
+\newcommand{\cE}{\ensuremath{{\cal E}}}                 % Math mode
+\newcommand{\cS}{\ensuremath{{\cal S}}}                 % Math mode
+\newcommand{\cT}{\ensuremath{{\cal T}}}                 % Math mode
+\newcommand{\cL}{\ensuremath{{\cal L}}}                 % Math mode
+\newcommand{\cP}{\ensuremath{{\cal P}}}                 % Math mode
+\newcommand{\sdelta}{\ensuremath{{\delta^\star}}}       % Math mode
+\newcommand{\slambda}{\ensuremath{{\lambda^\star}}}     % Math mode
+\newcommand{\zero}{\ensuremath{\mathbf{0}}}             % Math mode
+\newcommand{\tprime}{\ensuremath{\prime\prime}}         % Math mode
+\newcommand{\ptr}{\ensuremath{\rhd}}                    % Math mode
+
+%----------------------------------------------------------------------
+%    Syntax - to keep things tidy in math environments
+%
+
+\DeclareSymbolFontAlphabet{\bbold}{AMSb}
+\newcommand{\lookup}{\textrm{lookup}}
+\newcommand{\abbrev}{\textrm{abbrev}}
+\newcommand{\axiomdef}{\textrm{axdef}}
+\newcommand{\mult}{\textrm{multiply}}
+\newcommand{\mdet}{\ensuremath{\Rightarrow}}
+\newcommand{\sx}[1]{\ensuremath{#1}}
+\newcommand{\cif}{\ensuremath{\mathbf{if}}}
+\newcommand{\cthen}{\ensuremath{\mathbf{then}}}
+\newcommand{\upto}{\mathrel{\ldotp\ldotp}}
+\newcommand{\implies}{\rightarrow}
+\newcommand{\real}{\bbold R}
+
+%----------------------------------------------------------------------
+%    Lengths 
+%
+
+\newlength{\tab}
+\setlength{\tab}{1em}
+\setlength{\parskip}{4pt}
+\setlength{\evensidemargin}{0.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\textwidth}{16cm}
+%  \setlength{\headsep}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{23cm}
+\setlength{\itemsep}{0pt}
+\setlength{\topsep}{0pt}
+
+\renewcommand{\t}[1]{\hskip #1\tab}
+
+
+%=======================================================================
+%      New Environments
+%
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{exercise}[definition]{Exercise}
+\newtheorem{example}[definition]{Example}
+
+\newenvironment{myitem}{\begin{itemize}%
+                        \setlength{\itemsep}{0pt}% 
+                        \setlength{\topsep}{0pt}}{%
+                        \end{itemize}}
+
+\newenvironment{myenum}{\begin{enumerate}%
+                        \setlength{\itemsep}{0pt}% 
+                        \setlength{\topsep}{0pt}}{%
+                        \end{enumerate}}
+
+\newenvironment{mydescription}{\begin{description}%
+                        \setlength{\itemsep}{0pt}% 
+                        \setlength{\topsep}{0pt}}{%
+                        \end{description}}
+
+\newenvironment{myroman}{\begin{list}{(\roman{a})}%
+                                     {\usecounter{a}%
+                                      \setlength{\itemsep}{0pt}% 
+                                      \setlength{\topsep}{0pt}}}{%
+                        \end{list}}
+
+\newcounter{question}
+\newcounter{answer}
+\newcounter{discussion}
+
+\newcommand{\task}{
+        \stepcounter{question} \subsubsection*{Task \thequestion }} 
+
+\newcommand{\question}{
+        \stepcounter{question} \subsubsection*{Question \thequestion }} 
+
+
+\newenvironment{answer}
+               {\begin{quote}{\large\bf Answer}}
+               {\end{quote}}
+
+\newenvironment{discussion}
+               {\begin{quote}{\large\bf Discussion}}
+               {\end{quote}}
+
+\newenvironment{omitable}[1]{}
+
+%======================================================================
+%
+%      New Commands
+%
+
+\newcommand{\mc}[1]{
+        \marginpar{$\Longleftrightarrow$} {\small\sffamily\bfseries\slshape #1}
+        \typeout{Margin comment:\space#1}
+        }
