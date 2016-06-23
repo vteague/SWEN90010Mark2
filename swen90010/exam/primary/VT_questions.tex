@@ -1,0 +1,116 @@
+epart{Model-based specification and verification}
+
+\question{2}
+
+
+A banking database is distributed over $s$ servers, of which up to $t$ might be under the control of thieves trying to steal others' money.  Any server may receive a transaction request from a client, which they then send out to the other servers.  Then all the servers try to agree on incorporating this transaction request into the database using Byzantine agreement.
+
+Suppose that each message is digitally signed using RSA signatures, and that processes communicate (synchronously) in rounds. Answer the following questions:
+		\begin{enumerate}[(i)]
+		\item \textbf{[1 mark]} How many servers do we need in total to tolerate $t$ compromised ones?
+		\item \textbf{[1 mark]} How many communication rounds are needed to reconcile the databases?
+		\end{enumerate}
+
+\begin{comment}
+\begin{enumerate}[(a)]
+\item  \textbf{[2 marks]} Suppose for that there are no digital signatures or other means of authentication, and that processors communicate (synchronously) in rounds.
+	\begin{enumerate}[(i)]
+		\item How many servers do we need in total to tolerate $t$ compromised ones?
+		\item How many communication rounds are needed to reconcile the databases?
+		\end{enumerate}
+\item \textbf{[2 marks]} Suppose that each message is digitally signed using RSA signatures, and that processes communicate (synchronously) in rounds.
+		\begin{enumerate}[(i)]
+		\item How many servers do we need in total to tolerate $t$ compromised ones?
+		\item How many communication rounds are needed to reconcile the databases?
+		\end{enumerate}
+
+\item 
+\end{comment}
+
+\question{10}
+
+The following Alloy code  describes the \emph{Authenticated Version} of the Exponential Information Gathering algorithm, which the banking servers use to agree on the transaction from the previous question.    Your job is to describe the state transitions of honest processes, and to fill in the predicates about what it means to agree.  
+
+Most of  the details about message sending and receiving are omitted.  Also, we deal only with the behaviour and agreement of the honest nodes, though they have to assume that there might be some dishonest ones.  Rounds are indexed by natural numbers, which can be incremented with \texttt{inc}.
+
+There are two possible transactions: crediting or debiting the bank account:
+
+
+\begin{alloy}
+sig Instruction {}
+sig Debit10dollars extends Instruction {}
+sig Credit10dollars extends Instruction {}
+\end{alloy}
+
+Further, there are two possible node states for an honest node: undecided or decided:
+
+\begin{alloy}
+sig NodeState {}
+sig Undecided extends NodeState {}
+sig Decided extends NodeState {
+   decisionValue  : Instruction  
+}
+\end{alloy}
+
+A \A+BANode+ represents a node in the gathering algorithm. Rounds are represented using natural numbers (ascending), and all nodes are initiated with the same number of traitors to detect:
+
+\begin{alloy}
+sig BANode {
+   currentRound: num/Natural,
+   traitorsTolerated: num/Natural,
+   instructionsReceived: set Instruction, -- instructions received so far
+   defaultDecision: Instruction,          -- default decision if cheating is detected
+
+   -- A mapping from round numbers to decision states
+   decisionstatus: num/Natural -> one NodeState
+}
+\end{alloy}
+
+Finally, a message contains a sender, receiver, and a set of values:
+
+\begin{alloy}
+sig Msg {
+   from: BANode,
+   to: set BANode,
+   values: set Instruction
+}
+\end{alloy}
+
+The following are two example facts on this domain:
+
+\begin{alloy}
+-- Initially, all nodes are undecided 
+fact initiallyUndecided {
+   all node : BANode {
+      node.decisionstatus[Zero] = Undecided
+   }
+}
+
+-- Once a good node has decided, it never un-decides
+-- Note that inc[number] increments the number by 1.
+fact neverUnDecide {
+   all node: BANode, round : num/Natural {
+      node.decisionstatus[round] = Decided => 
+         node.decisionstatus[inc[round]] = Decided
+   }
+}
+\end{alloy}
+
+Model the following three items:
+
+\begin{enumerate}
+
+ \item \textbf{[2 marks]} An operation \texttt{MessageReceived}, in which a node updates its \texttt{instructionsReceived} set when it receives a new message.
+
+ \item \textbf{[3 marks]} An assertion \texttt{EventuallyAgree}, which asserts that all nodes should agree (since they are all good).  Be explicit about what agreement means, and at what round
+ they agree.  This can  assume that all nodes are good, but that they must tolerate up to \texttt{traitorsTolerated} traitors. 
+
+ \item \textbf{[5 marks]} An operation \texttt{MakeDecision}, which models an individual node's decision making process.  Make sure that you consider when it should decide and what decision it should make in each possible case.
+
+\end{enumerate}
+
+%\end{enumerate}
+
+
+
+You do not need to get the syntax 100\% to obtain full marks for this question.
